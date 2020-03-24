@@ -8,6 +8,7 @@ package circuitikztool;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
+import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
@@ -18,9 +19,12 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
+    static int GRID_SIZE = 25;
+
     int x_offset, y_offset = 0;
     boolean dragging = false;
     int lastMouseX, lastMouseY;
+
 
     public CircuitMaker() {
         addMouseListener(new MouseAdapter() {
@@ -34,7 +38,6 @@ public class CircuitMaker extends JPanel {
                     lastMouseX = MouseInfo.getPointerInfo().getLocation().x;
                     lastMouseY = MouseInfo.getPointerInfo().getLocation().y;
                 }
-
             }
 
             @Override
@@ -57,13 +60,29 @@ public class CircuitMaker extends JPanel {
             lastMouseX = MouseInfo.getPointerInfo().getLocation().x;
             lastMouseY = MouseInfo.getPointerInfo().getLocation().y;
         }
+
+        int snapOffsetX = (x_offset / GRID_SIZE) * GRID_SIZE;
+        int snapOffsetY = (y_offset / GRID_SIZE) * GRID_SIZE;
+
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 10000, 10000);
 
         g.setColor(Color.white);
-        g.drawOval(250 + x_offset, 250 + y_offset, 5, 5);
-        
-        
-    }
+        for (int x = 5; x < this.getWidth(); x += GRID_SIZE) {
+            for (int y = 5; y < this.getHeight(); y += GRID_SIZE) {
+                g.drawLine(x, y, x, y);
+            }
+        }
 
+        //draw origin
+        g.setColor(Color.white);
+        g.drawOval(252 + snapOffsetX, 252 + snapOffsetY, 6, 6);
+
+        //draw tool bar 
+        g.setColor(Color.BLACK);
+        g.fillRect(this.getWidth() - 80, 0, 80, this.getHeight());
+        g.setColor(Color.white);
+        g.drawRect(this.getWidth() - 80, 0, 80, this.getHeight());
+
+    }
 }
