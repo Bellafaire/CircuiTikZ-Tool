@@ -11,6 +11,10 @@ import java.awt.MouseInfo;
 import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /**
@@ -24,7 +28,6 @@ public class CircuitMaker extends JPanel {
     int x_offset, y_offset = 0;
     boolean dragging = false;
     int lastMouseX, lastMouseY;
-
 
     public CircuitMaker() {
         addMouseListener(new MouseAdapter() {
@@ -83,6 +86,16 @@ public class CircuitMaker extends JPanel {
         g.fillRect(this.getWidth() - 80, 0, 80, this.getHeight());
         g.setColor(Color.white);
         g.drawRect(this.getWidth() - 80, 0, 80, this.getHeight());
+    }
 
+    public static BufferedImage getImage(String filename) {
+        try {
+            ClassLoader cldr = CircuitikzTool.ct.getClass().getClassLoader();;
+            URL imageURL = cldr.getResource("images/" + filename);
+            return ImageIO.read(imageURL);
+        } catch (IOException ex) {
+            System.out.println("Failed to load image: " + filename);
+        }
+        return new BufferedImage(1, 1, 1);
     }
 }
