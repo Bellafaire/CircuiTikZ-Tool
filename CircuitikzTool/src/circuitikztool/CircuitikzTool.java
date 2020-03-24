@@ -16,20 +16,23 @@ public class CircuitikzTool extends JFrame {
     /**
      * @param args the command line arguments
      */
-    
-  static public CircuitikzTool ct = new CircuitikzTool();
-  static public CircuitMaker cm = new CircuitMaker();
-  
-    public static void main(String[] args) {
+    static public CircuitikzTool ct = new CircuitikzTool();
+    static public CircuitMaker cm = new CircuitMaker();
+
+    public CircuitikzTool() {
+
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
         GUI ui = new GUI();
         ui.setTitle("CircuiTikz Tool Ver 1.0.0");
         ui.setLocationRelativeTo(null);
-        ui.jPanel1.add(cm);
         ui.setVisible(true);
-
-        while(true){
-            cm.repaint();
+        while (true) {
+            ui.schematicWindow.repaint();
         }
     }
-    
+
+
 }
