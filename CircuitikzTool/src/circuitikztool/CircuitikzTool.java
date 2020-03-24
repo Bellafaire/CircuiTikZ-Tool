@@ -17,8 +17,8 @@ public class CircuitikzTool extends JFrame {
      * @param args the command line arguments
      */
     
-  static CircuitikzTool ct = new CircuitikzTool();
-  static CircuitMaker cm = new CircuitMaker();
+  static public CircuitikzTool ct = new CircuitikzTool();
+  static public CircuitMaker cm = new CircuitMaker();
   
     public static void main(String[] args) {
         GUI ui = new GUI();
