@@ -29,6 +29,8 @@ public class CircuitMaker extends JPanel {
     boolean dragging = false;
     int lastMouseX, lastMouseY;
 
+   private static String[] availableTools = {"Wire", "Resistor", "Capacaitor"};
+    
     public CircuitMaker() {
         addMouseListener(new MouseAdapter() {
             @Override
@@ -55,6 +57,10 @@ public class CircuitMaker extends JPanel {
         });
     }
 
+    public static String[] getAvailableTools(){
+        return availableTools;
+    }
+    
     @Override
     public void paint(Graphics g) {
         if (dragging) {

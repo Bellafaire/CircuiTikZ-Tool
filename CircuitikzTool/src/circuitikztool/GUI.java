@@ -33,6 +33,7 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         schematicWindow = new CircuitMaker();
+        toolSelector = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -54,6 +55,13 @@ public class GUI extends javax.swing.JFrame {
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 485, Short.MAX_VALUE)
         );
+
+        toolSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wire", "Resistor", "Component" }));
+        toolSelector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolSelectorActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -91,13 +99,19 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(150, 150, 150))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(toolSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(toolSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -119,6 +133,10 @@ public class GUI extends javax.swing.JFrame {
           d.setLocationRelativeTo(null);
          d.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void toolSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolSelectorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toolSelectorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,5 +181,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     public javax.swing.JPanel schematicWindow;
+    private javax.swing.JComboBox<String> toolSelector;
     // End of variables declaration//GEN-END:variables
 }
