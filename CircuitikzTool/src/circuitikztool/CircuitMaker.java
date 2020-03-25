@@ -82,10 +82,10 @@ public class CircuitMaker extends JPanel {
         g.drawOval(252 + snapOffsetX, 252 + snapOffsetY, 6, 6);
 
         //draw tool bar 
-        g.setColor(Color.BLACK);
-        g.fillRect(this.getWidth() - 80, 0, 80, this.getHeight());
-        g.setColor(Color.white);
-        g.drawRect(this.getWidth() - 80, 0, 80, this.getHeight());
+//        g.setColor(Color.BLACK);
+//        g.fillRect(this.getWidth() - 80, 0, 80, this.getHeight());
+//        g.setColor(Color.white);
+//        g.drawRect(this.getWidth() - 80, 0, 80, this.getHeight());
     }
 
     public static BufferedImage getImage(String filename) {

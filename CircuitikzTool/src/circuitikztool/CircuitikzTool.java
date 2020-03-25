@@ -13,9 +13,6 @@ import javax.swing.JFrame;
  */
 public class CircuitikzTool extends JFrame {
 
-    /**
-     * @param args the command line arguments
-     */
     static public CircuitikzTool ct = new CircuitikzTool();
     static public CircuitMaker cm = new CircuitMaker();
 
