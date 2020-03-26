@@ -22,7 +22,6 @@ public class CircuitikzTool extends JFrame {
 
     public static void main(String[] args) throws InterruptedException {
 
-//         ui = new GUI();
         ui.setTitle("CircuiTikz Tool Ver 1.0.0");
         ui.setLocationRelativeTo(null);
         ui.setVisible(true);

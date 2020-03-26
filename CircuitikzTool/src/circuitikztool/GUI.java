@@ -44,6 +44,9 @@ public class GUI extends javax.swing.JFrame {
         threeTerminalSelectButton = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         componentString = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        componentList = new javax.swing.JList<>();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -90,6 +93,25 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel1.setText("Component String");
 
+        componentList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { " " };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        componentList.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                componentListFocusGained(evt);
+            }
+        });
+        componentList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                componentListValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(componentList);
+
+        jLabel2.setText("Components");
+
         jMenu1.setText("File");
 
         jMenuItem1.setText("Save");
@@ -132,8 +154,10 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(twoTerminalSelectButton)
                     .addComponent(jLabel1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(componentString, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(threeTerminalSelectButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(threeTerminalSelectButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -151,6 +175,10 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(componentString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -191,6 +219,16 @@ public class GUI extends javax.swing.JFrame {
         twoTerminalSelectButton.setSelected(false);
     }//GEN-LAST:event_threeTerminalSelectButtonActionPerformed
 
+    private void componentListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_componentListValueChanged
+
+//        CircuitikzTool.cm.setSelectedComponentIndex(componentList.getSelectedIndex());
+
+    }//GEN-LAST:event_componentListValueChanged
+
+    private void componentListFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentListFocusGained
+//      CircuitikzTool.cm.setSelectedComponentIndex(componentList.getSelectedIndex());
+    }//GEN-LAST:event_componentListFocusGained
+
     public int getCurrentToolSelected() {
         if (twoTerminalSelectButton.isSelected()) {
             return Component.TWO_TERMINAL;
@@ -199,6 +237,10 @@ public class GUI extends javax.swing.JFrame {
         } else {
             return Component.WIRE;
         }
+    }
+
+    public void deslectList() {
+        componentList.clearSelection();
     }
 
     /**
@@ -243,14 +285,17 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.ButtonGroup buttonGroup6;
+    public javax.swing.JList<String> componentList;
     private javax.swing.JTextField componentString;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JPanel schematicWindow;
     private javax.swing.JRadioButton threeTerminalSelectButton;
     private javax.swing.JRadioButton twoTerminalSelectButton;

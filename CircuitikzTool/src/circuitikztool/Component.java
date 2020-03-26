@@ -1,5 +1,6 @@
 package circuitikztool;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -10,6 +11,7 @@ public class Component {
     Point position;
     BufferedImage Icon;
     String name;
+
     int componentType;
 
     final static int WIRE = 0;
@@ -39,7 +41,13 @@ public class Component {
         componentType = componentSelected;
     }
 
-    public void paint(Graphics g, int gridSize, Point offset) {
+    public void paint(Graphics g, int gridSize, Point offset, boolean selected) {
+        if (selected) {
+            g.setColor(Color.blue);
+        } else {
+            g.setColor(Color.white);
+        }
+
         switch (componentType) {
             case WIRE:
                 g.drawLine(
@@ -56,6 +64,25 @@ public class Component {
             default:
                 break;
         }
+    }
+
+    public String getComponentLabelString() {
+        String retString = "";
+        switch (componentType) {
+            case WIRE:
+                retString += "Wire ";
+                break;
+            case TWO_TERMINAL:
+                retString += "2 Term ";
+                break;
+            case THREE_TERMINAL:
+                retString += "3 Term ";
+                break;
+            default:
+                break;
+        }
+        retString += "[" + wireStart.x + "," + wireStart.y + "] to [" + wireEnd.x + "," + wireEnd.y + "]";
+        return retString;
     }
 
 }

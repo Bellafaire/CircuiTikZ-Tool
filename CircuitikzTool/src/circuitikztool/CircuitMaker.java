@@ -16,6 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -33,6 +35,8 @@ public class CircuitMaker extends JPanel {
     boolean clicking = false;
     int lastMouseX, lastMouseY;
 
+    private int componentIndexSelected = 0;
+
     int xGridPosition;
     int yGridPosition;
 
@@ -40,13 +44,16 @@ public class CircuitMaker extends JPanel {
 
     ArrayList<Component> components;
 
-    private static String[] availableTools = {"Wire", "Resistor", "Capacaitor"};
-
     static int currentTool = Component.WIRE;
     private Point wireStart;
 
     public static void setCurrentTool(int tool) {
         currentTool = tool;
+    }
+
+    public void setSelectedComponentIndex(int index) {
+        componentIndexSelected = index;
+        System.out.println("Selected " + componentIndexSelected);
     }
 
     public CircuitMaker() {
@@ -58,13 +65,13 @@ public class CircuitMaker extends JPanel {
             public void mouseMoved(MouseEvent e) {
                 xGridPosition = (e.getX() / GRID_SIZE);
                 yGridPosition = (e.getY() / GRID_SIZE);
-
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
                 xGridPosition = (e.getX() / GRID_SIZE);
                 yGridPosition = (e.getY() / GRID_SIZE);
+                System.out.println(componentIndexSelected);
             }
         }
         );
@@ -73,7 +80,6 @@ public class CircuitMaker extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-
                 switch (e.getButton()) {
                     case MouseEvent.BUTTON1:
                         //left click
@@ -83,6 +89,7 @@ public class CircuitMaker extends JPanel {
                         if (currentTool == Component.WIRE) {
                             wireStart = new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y);
                         }
+
                         break;
                     case MouseEvent.BUTTON2:
                         //center click
@@ -100,23 +107,35 @@ public class CircuitMaker extends JPanel {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     //left click
                     clicking = false;
+
                     if (currentTool == Component.WIRE) {
                         placeWire();
                     }
+                    //things that have to do with the selected component. 
+                    //the program needs to track the placed components and highlight properly the one that's selected
+                    String[] listItems = new String[components.size()];
+                    for (int a = 0; a < listItems.length; a++) {
+                        listItems[a] = components.get(a).getComponentLabelString();
+                    }
+
+                    CircuitikzTool.ui.componentList.setListData(listItems);
+                    CircuitikzTool.ui.componentList.setSelectedIndex(componentIndexSelected);
+
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     //center click
                     dragging = false;
                 }
+
             }
         });
     }
 
-    public static String[] getAvailableTools() {
-        return availableTools;
-    }
-
     @Override
     public void paint(Graphics g) {
+
+        //first figure out what placed component has already been selected (we need to highlight it so the user can interact with it)
+        setSelectedComponentIndex(CircuitikzTool.ui.componentList.getSelectedIndex());
+
         if (dragging) {
             x_offset += (MouseInfo.getPointerInfo().getLocation().x - lastMouseX);
             y_offset += (MouseInfo.getPointerInfo().getLocation().y - lastMouseY);
@@ -174,7 +193,13 @@ public class CircuitMaker extends JPanel {
         }
 
         for (int a = 0; a < components.size(); a++) {
-            components.get(a).paint(g, GRID_SIZE, originOffset);
+            if (a == componentIndexSelected) {
+                components.get(a).paint(g, GRID_SIZE, originOffset, true);
+            } else {
+                components.get(a).paint(g, GRID_SIZE, originOffset, false);
+
+            }
+
         }
 
     }
@@ -192,5 +217,6 @@ public class CircuitMaker extends JPanel {
 
     public void placeWire() {
         components.add(new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), Component.WIRE));
+        setSelectedComponentIndex(components.size() - 1);
     }
 }
