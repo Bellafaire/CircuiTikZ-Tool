@@ -15,19 +15,20 @@ public class CircuitikzTool extends JFrame {
 
     static public CircuitikzTool ct = new CircuitikzTool();
     static public CircuitMaker cm = new CircuitMaker();
-
+    static public GUI ui = new GUI(); 
     public CircuitikzTool() {
 
     }
 
     public static void main(String[] args) throws InterruptedException {
 
-        GUI ui = new GUI();
+//         ui = new GUI();
         ui.setTitle("CircuiTikz Tool Ver 1.0.0");
         ui.setLocationRelativeTo(null);
         ui.setVisible(true);
         while (true) {
             ui.schematicWindow.repaint();
+            CircuitMaker.setCurrentTool(ui.getCurrentToolSelected());
         }
     }
 

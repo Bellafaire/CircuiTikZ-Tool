@@ -42,6 +42,8 @@ public class GUI extends javax.swing.JFrame {
         wireSelectButton = new javax.swing.JRadioButton();
         twoTerminalSelectButton = new javax.swing.JRadioButton();
         threeTerminalSelectButton = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        componentString = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -57,13 +59,14 @@ public class GUI extends javax.swing.JFrame {
         schematicWindow.setLayout(schematicWindowLayout);
         schematicWindowLayout.setHorizontalGroup(
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 625, Short.MAX_VALUE)
+            .addGap(0, 621, Short.MAX_VALUE)
         );
         schematicWindowLayout.setVerticalGroup(
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 485, Short.MAX_VALUE)
         );
 
+        wireSelectButton.setSelected(true);
         wireSelectButton.setText("Wire");
         wireSelectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,6 +87,8 @@ public class GUI extends javax.swing.JFrame {
                 threeTerminalSelectButtonActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Component String");
 
         jMenu1.setText("File");
 
@@ -125,7 +130,10 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(wireSelectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(twoTerminalSelectButton)
-                    .addComponent(threeTerminalSelectButton))
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(componentString, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(threeTerminalSelectButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -139,6 +147,10 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(twoTerminalSelectButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(threeTerminalSelectButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(componentString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -149,18 +161,18 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-      JDialog d = new JDialog(this, "currently unsupported"); 
-       d.setSize(500, 100); 
-              d.setLocationRelativeTo(null);
-      d.setVisible(true);
+        JDialog d = new JDialog(this, "currently unsupported");
+        d.setSize(500, 100);
+        d.setLocationRelativeTo(null);
+        d.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-         JDialog d = new JDialog(this, "currently unsupported"); 
-          d.setSize(100, 100); 
-          d.setLocationRelativeTo(null);
-         d.setVisible(true);
+        JDialog d = new JDialog(this, "currently unsupported");
+        d.setSize(100, 100);
+        d.setLocationRelativeTo(null);
+        d.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void wireSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wireSelectButtonActionPerformed
@@ -175,9 +187,19 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_twoTerminalSelectButtonActionPerformed
 
     private void threeTerminalSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_threeTerminalSelectButtonActionPerformed
-         wireSelectButton.setSelected(false);     
+        wireSelectButton.setSelected(false);
         twoTerminalSelectButton.setSelected(false);
     }//GEN-LAST:event_threeTerminalSelectButtonActionPerformed
+
+    public int getCurrentToolSelected() {
+        if (twoTerminalSelectButton.isSelected()) {
+            return Component.TWO_TERMINAL;
+        } else if (threeTerminalSelectButton.isSelected()) {
+            return Component.THREE_TERMINAL;
+        } else {
+            return Component.WIRE;
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -213,7 +235,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
@@ -221,6 +243,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.ButtonGroup buttonGroup6;
+    private javax.swing.JTextField componentString;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

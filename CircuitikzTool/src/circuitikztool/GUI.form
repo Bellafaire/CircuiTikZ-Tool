@@ -84,7 +84,11 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="wireSelectButton" min="-2" pref="142" max="-2" attributes="0"/>
                   <Component id="twoTerminalSelectButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="threeTerminalSelectButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="componentString" alignment="0" max="32767" attributes="0"/>
+                      <Component id="threeTerminalSelectButton" alignment="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -101,6 +105,10 @@
                       <Component id="twoTerminalSelectButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="threeTerminalSelectButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="componentString" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Component id="schematicWindow" max="32767" attributes="0"/>
@@ -125,7 +133,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="625" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="621" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -137,6 +145,7 @@
     </Container>
     <Component class="javax.swing.JRadioButton" name="wireSelectButton">
       <Properties>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Wire"/>
       </Properties>
       <Events>
@@ -158,6 +167,13 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="threeTerminalSelectButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Component String"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="componentString">
     </Component>
   </SubComponents>
 </Form>
