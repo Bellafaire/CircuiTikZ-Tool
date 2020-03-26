@@ -32,8 +32,16 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        buttonGroup4 = new javax.swing.ButtonGroup();
+        buttonGroup5 = new javax.swing.ButtonGroup();
+        buttonGroup6 = new javax.swing.ButtonGroup();
         schematicWindow = new CircuitMaker();
-        toolSelector = new javax.swing.JComboBox<>();
+        wireSelectButton = new javax.swing.JRadioButton();
+        twoTerminalSelectButton = new javax.swing.JRadioButton();
+        threeTerminalSelectButton = new javax.swing.JRadioButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -49,17 +57,31 @@ public class GUI extends javax.swing.JFrame {
         schematicWindow.setLayout(schematicWindowLayout);
         schematicWindowLayout.setHorizontalGroup(
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 626, Short.MAX_VALUE)
+            .addGap(0, 625, Short.MAX_VALUE)
         );
         schematicWindowLayout.setVerticalGroup(
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 485, Short.MAX_VALUE)
         );
 
-        toolSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wire", "Resistor", "Component" }));
-        toolSelector.addActionListener(new java.awt.event.ActionListener() {
+        wireSelectButton.setText("Wire");
+        wireSelectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolSelectorActionPerformed(evt);
+                wireSelectButtonActionPerformed(evt);
+            }
+        });
+
+        twoTerminalSelectButton.setText("Two Terminal Generic");
+        twoTerminalSelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                twoTerminalSelectButtonActionPerformed(evt);
+            }
+        });
+
+        threeTerminalSelectButton.setText("Three Terminal Generic");
+        threeTerminalSelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                threeTerminalSelectButtonActionPerformed(evt);
             }
         });
 
@@ -100,7 +122,10 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(toolSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(wireSelectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(twoTerminalSelectButton)
+                    .addComponent(threeTerminalSelectButton))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -109,7 +134,11 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(toolSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(wireSelectButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(twoTerminalSelectButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(threeTerminalSelectButton)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -134,9 +163,21 @@ public class GUI extends javax.swing.JFrame {
          d.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void toolSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolSelectorActionPerformed
+    private void wireSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wireSelectButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_toolSelectorActionPerformed
+        twoTerminalSelectButton.setSelected(false);
+        threeTerminalSelectButton.setSelected(false);
+    }//GEN-LAST:event_wireSelectButtonActionPerformed
+
+    private void twoTerminalSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoTerminalSelectButtonActionPerformed
+        wireSelectButton.setSelected(false);
+        threeTerminalSelectButton.setSelected(false);
+    }//GEN-LAST:event_twoTerminalSelectButtonActionPerformed
+
+    private void threeTerminalSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_threeTerminalSelectButtonActionPerformed
+         wireSelectButton.setSelected(false);     
+        twoTerminalSelectButton.setSelected(false);
+    }//GEN-LAST:event_threeTerminalSelectButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,6 +215,12 @@ public class GUI extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.ButtonGroup buttonGroup4;
+    private javax.swing.ButtonGroup buttonGroup5;
+    private javax.swing.ButtonGroup buttonGroup6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -181,6 +228,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     public javax.swing.JPanel schematicWindow;
-    private javax.swing.JComboBox<String> toolSelector;
+    private javax.swing.JRadioButton threeTerminalSelectButton;
+    private javax.swing.JRadioButton twoTerminalSelectButton;
+    private javax.swing.JRadioButton wireSelectButton;
     // End of variables declaration//GEN-END:variables
 }
