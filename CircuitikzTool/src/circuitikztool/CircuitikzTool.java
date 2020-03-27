@@ -7,29 +7,25 @@ package circuitikztool;
 
 import javax.swing.JFrame;
 
-/**
- *
- * @author James
- */
-public class CircuitikzTool extends JFrame {
+public class CircuitikzTool extends JFrame{
 
     static public CircuitikzTool ct = new CircuitikzTool();
-    static public CircuitMaker cm = new CircuitMaker();
-    static public GUI ui = new GUI(); 
+    static public GUI ui = new GUI();
+
     public CircuitikzTool() {
 
     }
 
-    public static void main(String[] args) throws InterruptedException {
-
+    public static void main(String[] args) {
         ui.setTitle("CircuiTikz Tool Ver 1.0.0");
         ui.setLocationRelativeTo(null);
         ui.setVisible(true);
+        ui.setFocusable(true);
+        ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         while (true) {
             ui.schematicWindow.repaint();
             CircuitMaker.setCurrentTool(ui.getCurrentToolSelected());
         }
     }
-
 
 }

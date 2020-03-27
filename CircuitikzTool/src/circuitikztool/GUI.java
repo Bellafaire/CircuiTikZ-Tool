@@ -5,10 +5,8 @@
  */
 package circuitikztool;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import com.sun.glass.events.KeyEvent;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -55,6 +53,14 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
         schematicWindow.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -228,6 +234,19 @@ public class GUI extends javax.swing.JFrame {
     private void componentListFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentListFocusGained
 //      CircuitikzTool.cm.setSelectedComponentIndex(componentList.getSelectedIndex());
     }//GEN-LAST:event_componentListFocusGained
+
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+
+
+    }//GEN-LAST:event_formKeyTyped
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+            //removing items in this manner causes a bug where the list doesn't update properly since it's controlled in circuitmaker.java
+            CircuitMaker.components.remove(componentList.getSelectedIndex());
+            componentList.setSelectedIndex(componentList.getSelectedIndex() - 1);
+        }
+    }//GEN-LAST:event_formKeyPressed
 
     public int getCurrentToolSelected() {
         if (twoTerminalSelectButton.isSelected()) {

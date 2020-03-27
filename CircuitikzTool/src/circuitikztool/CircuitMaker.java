@@ -9,15 +9,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.Polygon;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -42,7 +41,7 @@ public class CircuitMaker extends JPanel {
 
     Point originOffset;
 
-    ArrayList<Component> components;
+    static ArrayList<Component> components;
 
     static int currentTool = Component.WIRE;
     private Point wireStart;
@@ -53,7 +52,6 @@ public class CircuitMaker extends JPanel {
 
     public void setSelectedComponentIndex(int index) {
         componentIndexSelected = index;
-        System.out.println("Selected " + componentIndexSelected);
     }
 
     public CircuitMaker() {
@@ -71,7 +69,7 @@ public class CircuitMaker extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 xGridPosition = (e.getX() / GRID_SIZE);
                 yGridPosition = (e.getY() / GRID_SIZE);
-                System.out.println(componentIndexSelected);
+//                System.out.println(componentIndexSelected);
             }
         }
         );
@@ -109,7 +107,7 @@ public class CircuitMaker extends JPanel {
                     clicking = false;
 
                     if (currentTool == Component.WIRE) {
-                        placeWire();
+                        placeComponent();
                     }
                     //things that have to do with the selected component. 
                     //the program needs to track the placed components and highlight properly the one that's selected
@@ -197,11 +195,8 @@ public class CircuitMaker extends JPanel {
                 components.get(a).paint(g, GRID_SIZE, originOffset, true);
             } else {
                 components.get(a).paint(g, GRID_SIZE, originOffset, false);
-
             }
-
         }
-
     }
 
     public static BufferedImage getImage(String filename) {
@@ -215,8 +210,14 @@ public class CircuitMaker extends JPanel {
         return new BufferedImage(1, 1, 1);
     }
 
-    public void placeWire() {
-        components.add(new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), Component.WIRE));
+    public void placeComponent() {
+        Component c = new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), Component.WIRE);
+        components.add(c);
         setSelectedComponentIndex(components.size() - 1);
+        System.out.println("added component to index " + (components.size() - 1));
+    }
+
+    public void deleteComponent(int selectedIndex) {
+
     }
 }
