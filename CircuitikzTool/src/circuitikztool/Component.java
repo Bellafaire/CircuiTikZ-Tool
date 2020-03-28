@@ -66,6 +66,14 @@ public class Component {
         }
     }
 
+    public Point getStart(){
+        return wireStart;
+    }
+    
+    public Point getEnd(){
+        return wireEnd;
+    }
+    
     public String getComponentLabelString() {
         String retString = "";
         switch (componentType) {

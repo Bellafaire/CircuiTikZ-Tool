@@ -102,6 +102,7 @@ public class CircuitMaker extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                updateUIString();
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     //left click
                     clicking = false;
@@ -126,6 +127,11 @@ public class CircuitMaker extends JPanel {
 
             }
         });
+    }
+
+    public void updateUIString() {
+        //update output with the current LaTex string of the circuit
+        CircuitikzTool.ui.outputField.setText(generateLatexString());
     }
 
     @Override
@@ -219,5 +225,26 @@ public class CircuitMaker extends JPanel {
 
     public void deleteComponent(int selectedIndex) {
 
+    }
+
+    public String generateLatexString() {
+        String output = "\\begin{circuitikz}\n";
+
+        for (int a = 0; a < components.size(); a++) {
+            switch (components.get(a).componentType) {
+                case Component.WIRE:
+                    output += "\\draw (" + (int)components.get(a).getStart().getX() + "," + (int)(components.get(a).getStart().getY()) + ") -- (" + (int)components.get(a).getEnd().getX() + "," + (int)components.get(a).getEnd().getY() + ");\n";
+                    break;
+                case Component.TWO_TERMINAL:
+                    break;
+                case Component.THREE_TERMINAL:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        output += "\\end{circuitikz}";
+        return output;
     }
 }
