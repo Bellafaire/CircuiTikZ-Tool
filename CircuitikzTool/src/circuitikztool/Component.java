@@ -10,8 +10,8 @@ public class Component {
     Point wireStart, wireEnd;
     Point position;
     BufferedImage Icon;
-    String name;
-
+    String Text;
+    
     int componentType;
 
     final static int WIRE = 0;

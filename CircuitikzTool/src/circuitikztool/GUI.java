@@ -102,6 +102,22 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel1.setText("Component String");
 
+        componentString.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                componentStringCaretUpdate(evt);
+            }
+        });
+        componentString.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                componentStringFocusGained(evt);
+            }
+        });
+        componentString.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                componentStringActionPerformed(evt);
+            }
+        });
+
         componentList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { " " };
             public int getSize() { return strings.length; }
@@ -240,9 +256,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_threeTerminalSelectButtonActionPerformed
 
     private void componentListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_componentListValueChanged
-
-//        CircuitikzTool.cm.setSelectedComponentIndex(componentList.getSelectedIndex());
-
+        
     }//GEN-LAST:event_componentListValueChanged
 
     private void componentListFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentListFocusGained
@@ -262,6 +276,24 @@ public class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formKeyPressed
 
+    private void componentStringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentStringActionPerformed
+      
+
+    }//GEN-LAST:event_componentStringActionPerformed
+
+    private void componentStringCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_componentStringCaretUpdate
+
+    }//GEN-LAST:event_componentStringCaretUpdate
+
+    private void componentStringFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentStringFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_componentStringFocusGained
+
+    
+    public void updateComponentString(String text){
+        componentString.setText(text);
+    }
+    
     public int getCurrentToolSelected() {
         if (twoTerminalSelectButton.isSelected()) {
             return Component.TWO_TERMINAL;
@@ -276,6 +308,10 @@ public class GUI extends javax.swing.JFrame {
         componentList.clearSelection();
     }
 
+    public void repaintCircuitMaker(){
+        schematicWindow.repaint();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -332,7 +368,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTextPane outputField;
-    public javax.swing.JPanel schematicWindow;
+    /*
+    private javax.swing.JPanel schematicWindow;
+    */
+    private CircuitMaker schematicWindow;
     private javax.swing.JRadioButton threeTerminalSelectButton;
     private javax.swing.JRadioButton twoTerminalSelectButton;
     private javax.swing.JRadioButton wireSelectButton;

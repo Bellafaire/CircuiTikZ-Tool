@@ -23,8 +23,9 @@ public class CircuitikzTool extends JFrame{
         ui.setFocusable(true);
         ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         while (true) {
-            ui.schematicWindow.repaint();
-            CircuitMaker.setCurrentTool(ui.getCurrentToolSelected());
+//            ui.schematicWindow.repaint();
+            ui.repaintCircuitMaker();
+         //   CircuitMaker.setCurrentTool(ui.getCurrentToolSelected());
         }
     }
 
