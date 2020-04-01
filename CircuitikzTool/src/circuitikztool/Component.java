@@ -15,26 +15,26 @@ public class Component {
 
     int componentType;
 
-    final static int WIRE = 0;
+    final static int PATH = 0;
     final static int TWO_TERMINAL = 1;
     final static int THREE_TERMINAL = 2;
 
     public Component(int grid_x, int grid_y, int componentSelected) {
-        if (componentSelected == WIRE) {
+        if (componentSelected == PATH) {
             throw new IllegalArgumentException("Component Selected == Wire but no start/end point is defined");
         }
         componentType = componentSelected;
     }
 
     public Component(int grid_x_start, int grid_y_start, int grid_x_end, int grid_y_end, int componentSelected) {
-        if (componentSelected != WIRE) {
+        if (componentSelected != PATH) {
             throw new IllegalArgumentException("Component Selected != Wire");
         }
         componentType = componentSelected;
     }
 
     public Component(Point wireStart, Point wireEnd, int componentSelected) {
-        if (componentSelected != WIRE) {
+        if (componentSelected != PATH) {
             throw new IllegalArgumentException("Component Selected != Wire");
         }
         this.wireStart = wireStart;
@@ -52,7 +52,7 @@ public class Component {
         }
 
         switch (componentType) {
-            case WIRE:
+            case PATH:
                 g.drawLine(
                         gridSize * (wireStart.x + offset.x),
                         gridSize * (wireStart.y + offset.y),

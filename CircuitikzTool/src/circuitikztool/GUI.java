@@ -37,9 +37,6 @@ public class GUI extends javax.swing.JFrame {
         buttonGroup5 = new javax.swing.ButtonGroup();
         buttonGroup6 = new javax.swing.ButtonGroup();
         schematicWindow = new CircuitMaker();
-        wireSelectButton = new javax.swing.JRadioButton();
-        twoTerminalSelectButton = new javax.swing.JRadioButton();
-        threeTerminalSelectButton = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         componentString = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -50,6 +47,8 @@ public class GUI extends javax.swing.JFrame {
         outputField = new javax.swing.JTextPane();
         jLabel4 = new javax.swing.JLabel();
         componentLabel = new javax.swing.JTextField();
+        toolSelector = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -79,28 +78,6 @@ public class GUI extends javax.swing.JFrame {
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        wireSelectButton.setSelected(true);
-        wireSelectButton.setText("Path");
-        wireSelectButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wireSelectButtonActionPerformed(evt);
-            }
-        });
-
-        twoTerminalSelectButton.setText("Two Terminal Generic");
-        twoTerminalSelectButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                twoTerminalSelectButtonActionPerformed(evt);
-            }
-        });
-
-        threeTerminalSelectButton.setText("Three Terminal Generic");
-        threeTerminalSelectButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                threeTerminalSelectButtonActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Component String");
 
@@ -169,6 +146,11 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        toolSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Path" }));
+        toolSelector.setToolTipText("");
+
+        jLabel5.setText("Tool");
+
         jMenu1.setText("File");
 
         jMenuItem1.setText("Save");
@@ -208,16 +190,15 @@ public class GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3)
-                    .addComponent(threeTerminalSelectButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(componentString, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(twoTerminalSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(wireSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4)
-                    .addComponent(componentLabel))
+                    .addComponent(componentLabel)
+                    .addComponent(jLabel5)
+                    .addComponent(toolSelector, 0, 171, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -226,11 +207,9 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(wireSelectButton)
+                        .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(twoTerminalSelectButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(threeTerminalSelectButton)
+                        .addComponent(toolSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -239,10 +218,10 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(componentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -270,22 +249,6 @@ public class GUI extends javax.swing.JFrame {
         d.setLocationRelativeTo(null);
         d.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void wireSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wireSelectButtonActionPerformed
-        // TODO add your handling code here:
-        twoTerminalSelectButton.setSelected(false);
-        threeTerminalSelectButton.setSelected(false);
-    }//GEN-LAST:event_wireSelectButtonActionPerformed
-
-    private void twoTerminalSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoTerminalSelectButtonActionPerformed
-        wireSelectButton.setSelected(false);
-        threeTerminalSelectButton.setSelected(false);
-    }//GEN-LAST:event_twoTerminalSelectButtonActionPerformed
-
-    private void threeTerminalSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_threeTerminalSelectButtonActionPerformed
-        wireSelectButton.setSelected(false);
-        twoTerminalSelectButton.setSelected(false);
-    }//GEN-LAST:event_threeTerminalSelectButtonActionPerformed
 
     private void componentListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_componentListValueChanged
         //stuff that happens whenever we change the selected component in the selection list
@@ -356,13 +319,7 @@ public class GUI extends javax.swing.JFrame {
     }
 
     public int getCurrentToolSelected() {
-        if (twoTerminalSelectButton.isSelected()) {
-            return Component.TWO_TERMINAL;
-        } else if (threeTerminalSelectButton.isSelected()) {
-            return Component.THREE_TERMINAL;
-        } else {
-            return Component.WIRE;
-        }
+        return toolSelector.getSelectedIndex();
     }
 
     private void keyHandler(java.awt.event.KeyEvent evt) {
@@ -432,6 +389,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -445,8 +403,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel schematicWindow;
     */
     private CircuitMaker schematicWindow;
-    private javax.swing.JRadioButton threeTerminalSelectButton;
-    private javax.swing.JRadioButton twoTerminalSelectButton;
-    private javax.swing.JRadioButton wireSelectButton;
+    private javax.swing.JComboBox<String> toolSelector;
     // End of variables declaration//GEN-END:variables
 }

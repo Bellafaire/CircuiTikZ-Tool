@@ -46,7 +46,7 @@ public class CircuitMaker extends JPanel {
 
     private ArrayList<Component> components;
 
-    static int currentTool = Component.WIRE;
+    static int currentTool = Component.PATH;
     private Point wireStart;
 
     public static void setCurrentTool(int tool) {
@@ -87,7 +87,7 @@ public class CircuitMaker extends JPanel {
                         clicking = true;
 
                         //wire's are a special case, since they require two points to be placed
-                        if (currentTool == Component.WIRE) {
+                        if (currentTool == Component.PATH) {
                             wireStart = new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y);
                         }
 
@@ -110,7 +110,7 @@ public class CircuitMaker extends JPanel {
                     //left click
                     clicking = false;
 
-                    if (currentTool == Component.WIRE) {
+                    if (currentTool == Component.PATH) {
                         placeComponent();
                         componentIndexSelected = components.size();
                         CircuitikzTool.ui.updateComponentList(); //this is very bad and we shouldn't do it this way but eh whatever
@@ -200,7 +200,7 @@ public class CircuitMaker extends JPanel {
 
         if (clicking) {
             switch (currentTool) {
-                case Component.WIRE:
+                case Component.PATH:
                     g.setColor(Color.white);
                     g.drawLine(
                             GRID_SIZE * (wireStart.x + originOffset.x),
@@ -268,7 +268,7 @@ public class CircuitMaker extends JPanel {
     }
 
     public void placeComponent() {
-        Component c = new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), Component.WIRE);
+        Component c = new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), Component.PATH);
         components.add(c);
         setSelectedComponentIndex(components.size() - 1);
         System.out.println("added component to index " + (components.size() - 1));
@@ -287,7 +287,7 @@ public class CircuitMaker extends JPanel {
 
         for (int a = 0; a < components.size(); a++) {
             switch (components.get(a).componentType) {
-                case Component.WIRE:
+                case Component.PATH:
                     output += "\\draw (";
                     output += (int) components.get(a).getStart().getX() + "," + (int) (-1)*(components.get(a).getStart().getY()) + ") ";
                     output += components.get(a).getComponentString();
