@@ -71,11 +71,11 @@ public class GUI extends javax.swing.JFrame {
         schematicWindow.setLayout(schematicWindowLayout);
         schematicWindowLayout.setHorizontalGroup(
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 622, Short.MAX_VALUE)
+            .addGap(0, 595, Short.MAX_VALUE)
         );
         schematicWindowLayout.setVerticalGroup(
             schematicWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 485, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         wireSelectButton.setSelected(true);
@@ -128,6 +128,11 @@ public class GUI extends javax.swing.JFrame {
                 componentListFocusGained(evt);
             }
         });
+        componentList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                componentListKeyPressed(evt);
+            }
+        });
         componentList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 componentListValueChanged(evt);
@@ -178,19 +183,16 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(componentString)
-                    .addComponent(threeTerminalSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(wireSelectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(twoTerminalSelectButton)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3)
+                    .addComponent(threeTerminalSelectButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(componentString, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(twoTerminalSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(wireSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -211,11 +213,11 @@ public class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
-                        .addGap(5, 5, 5)
-                        .addComponent(jScrollPane2))
+                        .addGap(1, 1, 1)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
                     .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -256,44 +258,52 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_threeTerminalSelectButtonActionPerformed
 
     private void componentListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_componentListValueChanged
-        
+        //stuff that happens whenever we change the selected component in the selection list
+        schematicWindow.setSelectedComponentIndex(componentList.getSelectedIndex());
+        componentString.setText(schematicWindow.getSelectedComponentString());
     }//GEN-LAST:event_componentListValueChanged
 
     private void componentListFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentListFocusGained
-//      CircuitikzTool.cm.setSelectedComponentIndex(componentList.getSelectedIndex());
+
     }//GEN-LAST:event_componentListFocusGained
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
 
-
     }//GEN-LAST:event_formKeyTyped
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
-            //removing items in this manner causes a bug where the list doesn't update properly since it's controlled in circuitmaker.java
-            CircuitMaker.components.remove(componentList.getSelectedIndex());
-            componentList.setSelectedIndex(componentList.getSelectedIndex() - 1);
-        }
+        keyHandler(evt);
     }//GEN-LAST:event_formKeyPressed
 
     private void componentStringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentStringActionPerformed
-      
+
 
     }//GEN-LAST:event_componentStringActionPerformed
 
     private void componentStringCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_componentStringCaretUpdate
-
+        //stuff that happens whenever component string is updated, mostly just need to pass the current string down the line so that the component's field can be updated
+        schematicWindow.setSelectedComponentString(componentString.getText());
     }//GEN-LAST:event_componentStringCaretUpdate
 
     private void componentStringFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentStringFocusGained
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_componentStringFocusGained
 
-    
-    public void updateComponentString(String text){
+    private void componentListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_componentListKeyPressed
+       keyHandler(evt);
+       updateComponentList();
+    }//GEN-LAST:event_componentListKeyPressed
+
+    public void updateComponentList() {
+        String[] listItems = schematicWindow.getComponentList();
+        CircuitikzTool.ui.componentList.setListData(listItems);
+        CircuitikzTool.ui.componentList.setSelectedIndex(schematicWindow.getSelectedComponentIndex());
+    }
+
+    public void updateComponentString(String text) {
         componentString.setText(text);
     }
-    
+
     public int getCurrentToolSelected() {
         if (twoTerminalSelectButton.isSelected()) {
             return Component.TWO_TERMINAL;
@@ -304,14 +314,24 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
+    private void keyHandler(java.awt.event.KeyEvent evt) {
+        System.out.print("Key pressed ");
+        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+            //removing items in this manner causes a bug where the list doesn't update properly since it's controlled in circuitmaker.java
+            schematicWindow.deleteSelectedComponent();
+            System.out.print("delete");
+        }
+        System.out.println("");
+    }
+
     public void deslectList() {
         componentList.clearSelection();
     }
 
-    public void repaintCircuitMaker(){
+    public void repaintCircuitMaker() {
         schematicWindow.repaint();
     }
-    
+
     /**
      * @param args the command line arguments
      */

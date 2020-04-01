@@ -10,7 +10,7 @@ public class Component {
     Point wireStart, wireEnd;
     Point position;
     BufferedImage Icon;
-    String Text;
+    String Text = "";
     
     int componentType;
 
@@ -18,6 +18,8 @@ public class Component {
     final static int TWO_TERMINAL = 1;
     final static int THREE_TERMINAL = 2;
 
+
+    
     public Component(int grid_x, int grid_y, int componentSelected) {
         if (componentSelected == WIRE) {
             throw new IllegalArgumentException("Component Selected == Wire but no start/end point is defined");
@@ -66,6 +68,14 @@ public class Component {
         }
     }
 
+        public String getComponentString(){
+        return Text;
+    }
+    
+    public void setComponentString(String text){
+        Text = text;
+    }
+    
     public Point getStart(){
         return wireStart;
     }

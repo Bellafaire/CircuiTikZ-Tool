@@ -13,10 +13,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -41,7 +44,7 @@ public class CircuitMaker extends JPanel {
 
     Point originOffset;
 
-    static ArrayList<Component> components;
+    private ArrayList<Component> components;
 
     static int currentTool = Component.WIRE;
     private Point wireStart;
@@ -109,16 +112,9 @@ public class CircuitMaker extends JPanel {
 
                     if (currentTool == Component.WIRE) {
                         placeComponent();
+                        componentIndexSelected = components.size();
+                        CircuitikzTool.ui.updateComponentList(); //this is very bad and we shouldn't do it this way but eh whatever
                     }
-                    //things that have to do with the selected component. 
-                    //the program needs to track the placed components and highlight properly the one that's selected
-                    String[] listItems = new String[components.size()];
-                    for (int a = 0; a < listItems.length; a++) {
-                        listItems[a] = components.get(a).getComponentLabelString();
-                    }
-
-                    CircuitikzTool.ui.componentList.setListData(listItems);
-                    CircuitikzTool.ui.componentList.setSelectedIndex(componentIndexSelected);
 
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     //center click
@@ -127,6 +123,31 @@ public class CircuitMaker extends JPanel {
 
             }
         });
+
+        addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                //we don't cap the user from zooming in, they can make the grid as big as they want
+                //however if they make the grid too small it becomes difficult to render anything properly so we cap 
+                //the zoom in to a gridsize of 10. if we're at a grid size of 10 we make sure the user can also zoom out
+                if (GRID_SIZE > 10 || e.getWheelRotation() < 0) {
+                    GRID_SIZE -= e.getWheelRotation(); //very simple zoom method here, could be improved
+                } 
+        //     System.out.println("Grid size is now " + GRID_SIZE);
+            }
+        });
+    }
+
+    public int getSelectedComponentIndex() {
+        return componentIndexSelected;
+    }
+
+    public String[] getComponentList() {
+        String[] listItems = new String[components.size()];
+        for (int a = 0; a < listItems.length; a++) {
+            listItems[a] = components.get(a).getComponentLabelString();
+        }
+        return listItems;
     }
 
     public void updateUIString() {
@@ -205,6 +226,21 @@ public class CircuitMaker extends JPanel {
         }
     }
 
+    public void setSelectedComponentString(String text) {
+        if (componentIndexSelected >= 0) {
+            components.get(componentIndexSelected).setComponentString(text);
+        } else {
+        }
+    }
+
+    public String getSelectedComponentString() {
+        if (componentIndexSelected >= 0) {
+            return components.get(componentIndexSelected).getComponentString();
+        } else {
+            return "";
+        }
+    }
+
     public static BufferedImage getImage(String filename) {
         try {
             ClassLoader cldr = CircuitikzTool.ct.getClass().getClassLoader();;
@@ -223,8 +259,12 @@ public class CircuitMaker extends JPanel {
         System.out.println("added component to index " + (components.size() - 1));
     }
 
-    public void deleteComponent(int selectedIndex) {
-
+    public void deleteSelectedComponent() {
+        try {
+            components.remove(componentIndexSelected);
+            componentIndexSelected = (componentIndexSelected > 0) ? componentIndexSelected-- : 0;
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
     }
 
     public String generateLatexString() {
@@ -233,7 +273,7 @@ public class CircuitMaker extends JPanel {
         for (int a = 0; a < components.size(); a++) {
             switch (components.get(a).componentType) {
                 case Component.WIRE:
-                    output += "\\draw (" + (int)components.get(a).getStart().getX() + "," + (int)(components.get(a).getStart().getY()) + ") -- (" + (int)components.get(a).getEnd().getX() + "," + (int)components.get(a).getEnd().getY() + ");\n";
+                    output += "\\draw (" + (int) components.get(a).getStart().getX() + "," + (int) (components.get(a).getStart().getY()) + ") -- (" + (int) components.get(a).getEnd().getX() + "," + (int) components.get(a).getEnd().getY() + ");\n";
                     break;
                 case Component.TWO_TERMINAL:
                     break;
