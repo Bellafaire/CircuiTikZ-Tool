@@ -289,9 +289,9 @@ public class CircuitMaker extends JPanel {
             switch (components.get(a).componentType) {
                 case Component.WIRE:
                     output += "\\draw (";
-                    output += (int) components.get(a).getStart().getX() + "," + (int) (components.get(a).getStart().getY()) + ") ";
+                    output += (int) components.get(a).getStart().getX() + "," + (int) (-1)*(components.get(a).getStart().getY()) + ") ";
                     output += components.get(a).getComponentString();
-                    output += "(" + (int) components.get(a).getEnd().getX() + "," + (int) components.get(a).getEnd().getY() + ");\n";
+                    output += "(" + (int) components.get(a).getEnd().getX() + "," + (int)  (-1)*components.get(a).getEnd().getY() + ");\n";
                     break;
                 case Component.TWO_TERMINAL:
                     break;
