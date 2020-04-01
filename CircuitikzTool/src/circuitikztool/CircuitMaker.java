@@ -29,6 +29,8 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
+  
+    
     static int GRID_SIZE = 50;
     int xGridPosition;
     int yGridPosition;
@@ -85,10 +87,7 @@ public class CircuitMaker extends JPanel {
                         //left click
                         clicking = true;
 
-                        //wire's are a special case, since they require two points to be placed
-                        if (currentTool == Component.PATH) {
-                            wireStart = new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y);
-                        }
+                        wireStart = new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y);
 
                         break;
                     case MouseEvent.BUTTON2:
@@ -109,11 +108,9 @@ public class CircuitMaker extends JPanel {
                     //left click
                     clicking = false;
 
-                    if (currentTool == Component.PATH) {
-                        placeComponent();
-                        componentIndexSelected = components.size();
-                        CircuitikzTool.ui.updateComponentList(); //this is very bad and we shouldn't do it this way but eh whatever
-                    }
+                    placeComponent();
+                    componentIndexSelected = components.size();
+                    CircuitikzTool.ui.updateComponentList(); //this is very bad and we shouldn't do it this way but eh whatever
 
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     //center click
@@ -198,23 +195,12 @@ public class CircuitMaker extends JPanel {
         g.fillOval(GRID_SIZE * xGridPosition - 3, GRID_SIZE * yGridPosition - 3, 5, 5);
 
         if (clicking) {
-            switch (currentTool) {
-                case Component.PATH:
-                    g.setColor(Color.white);
-                    g.drawLine(
-                            GRID_SIZE * (wireStart.x + originOffset.x),
-                            GRID_SIZE * (wireStart.y + originOffset.y),
-                            GRID_SIZE * xGridPosition,
-                            GRID_SIZE * yGridPosition);
-
-                    break;
-                case Component.TWO_TERMINAL:
-                    break;
-                case Component.THREE_TERMINAL:
-                    break;
-                default:
-                    throw new IllegalStateException("Current Tool Selected does not exist");
-            }
+            g.setColor(Color.white);
+            g.drawLine(
+                    GRID_SIZE * (wireStart.x + originOffset.x),
+                    GRID_SIZE * (wireStart.y + originOffset.y),
+                    GRID_SIZE * xGridPosition,
+                    GRID_SIZE * yGridPosition);
         }
 
         for (int a = 0; a < components.size(); a++) {
@@ -268,7 +254,7 @@ public class CircuitMaker extends JPanel {
     }
 
     public void placeComponent() {
-        Component c = new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), Component.PATH);
+        Component c = new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), currentTool);
         components.add(c);
         setSelectedComponentIndex(components.size() - 1);
         System.out.println("added component to index " + (components.size() - 1));
@@ -286,20 +272,10 @@ public class CircuitMaker extends JPanel {
         String output = "\\begin{circuitikz}\n";
 
         for (int a = 0; a < components.size(); a++) {
-            switch (components.get(a).componentType) {
-                case Component.PATH:
-                    output += "\\draw (";
-                    output += (int) components.get(a).getStart().getX() + "," + (int) (-1) * (components.get(a).getStart().getY()) + ") ";
-                    output += components.get(a).getComponentString();
-                    output += "(" + (int) components.get(a).getEnd().getX() + "," + (int) (-1) * components.get(a).getEnd().getY() + ");\n";
-                    break;
-                case Component.TWO_TERMINAL:
-                    break;
-                case Component.THREE_TERMINAL:
-                    break;
-                default:
-                    break;
-            }
+            output += "\\draw (";
+            output += (int) components.get(a).getStart().getX() + "," + (int) (-1) * (components.get(a).getStart().getY()) + ") ";
+            output += components.get(a).getComponentString() + " ";
+            output += "(" + (int) components.get(a).getEnd().getX() + "," + (int) (-1) * components.get(a).getEnd().getY() + ");\n";
         }
 
         output += "\\end{circuitikz}";

@@ -146,8 +146,13 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        toolSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Path" }));
+        toolSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Path", "Resistor", "Capacitor", "Inductor", "Diode", "Voltage Source", "Current Source", "Ground Node", "VCC Node" }));
         toolSelector.setToolTipText("");
+        toolSelector.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                toolSelectorItemStateChanged(evt);
+            }
+        });
 
         jLabel5.setText("Tool");
 
@@ -301,8 +306,12 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_componentLabelActionPerformed
 
     private void componentLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentLabelFocusLost
-      updateComponentList(); //since what we're changing here affects how the list displays this is important
+        updateComponentList(); //since what we're changing here affects how the list displays this is important
     }//GEN-LAST:event_componentLabelFocusLost
+
+    private void toolSelectorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_toolSelectorItemStateChanged
+        CircuitMaker.currentTool = toolSelector.getSelectedIndex();
+    }//GEN-LAST:event_toolSelectorItemStateChanged
 
     public void updateComponentList() {
         String[] listItems = schematicWindow.getComponentList();

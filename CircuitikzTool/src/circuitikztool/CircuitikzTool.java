@@ -5,9 +5,11 @@
  */
 package circuitikztool;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
-public class CircuitikzTool extends JFrame{
+public class CircuitikzTool extends JFrame {
 
     static public CircuitikzTool ct = new CircuitikzTool();
     static public GUI ui = new GUI();
@@ -23,9 +25,12 @@ public class CircuitikzTool extends JFrame{
         ui.setFocusable(true);
         ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         while (true) {
-//            ui.schematicWindow.repaint();
             ui.repaintCircuitMaker();
-         //   CircuitMaker.setCurrentTool(ui.getCurrentToolSelected());
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(CircuitikzTool.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
