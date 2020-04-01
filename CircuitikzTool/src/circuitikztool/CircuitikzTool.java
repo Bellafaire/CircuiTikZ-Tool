@@ -19,7 +19,7 @@ public class CircuitikzTool extends JFrame {
     }
 
     public static void main(String[] args) {
-        ui.setTitle("CircuiTikz Tool Ver 1.0.0");
+        ui.setTitle("CircuiTikz Tool");
         ui.setLocationRelativeTo(null);
         ui.setVisible(true);
         ui.setFocusable(true);

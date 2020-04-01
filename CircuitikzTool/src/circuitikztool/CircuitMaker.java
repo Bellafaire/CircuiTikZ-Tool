@@ -105,7 +105,6 @@ public class CircuitMaker extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                updateUIString();
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     //left click
                     clicking = false;
@@ -148,10 +147,10 @@ public class CircuitMaker extends JPanel {
         return listItems;
     }
 
-    public void updateUIString() {
-        //update output with the current LaTex string of the circuit
-        CircuitikzTool.ui.outputField.setText(generateLatexString());
-    }
+//    public void updateUIString() {
+//        //update output with the current LaTex string of the circuit
+//        CircuitikzTool.ui.outputField.setText(generateLatexString());
+//    }
 
     @Override
     public void paint(Graphics g) {
@@ -308,7 +307,7 @@ public class CircuitMaker extends JPanel {
 
         output += "\\end{circuitikz}";
         if (wrapInFigure) {
-            output += "\\end{figure}";
+            output += "\n\\end{figure}";
         }
         return output;
     }

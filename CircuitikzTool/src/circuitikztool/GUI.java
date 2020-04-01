@@ -6,7 +6,10 @@
 package circuitikztool;
 
 import com.sun.glass.events.KeyEvent;
+import java.util.Set;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,6 +39,7 @@ public class GUI extends javax.swing.JFrame {
         buttonGroup4 = new javax.swing.ButtonGroup();
         buttonGroup5 = new javax.swing.ButtonGroup();
         buttonGroup6 = new javax.swing.ButtonGroup();
+        jTextField1 = new javax.swing.JTextField();
         schematicWindow = new CircuitMaker();
         jLabel1 = new javax.swing.JLabel();
         componentString = new javax.swing.JTextField();
@@ -58,6 +62,8 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
+
+        jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -126,6 +132,11 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setText("LaTex String");
 
+        outputField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                outputFieldFocusGained(evt);
+            }
+        });
         jScrollPane2.setViewportView(outputField);
 
         jLabel4.setText("Component Label");
@@ -206,6 +217,11 @@ public class GUI extends javax.swing.JFrame {
         jMenu2.setText("Help");
 
         jMenuItem3.setText("About");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
@@ -319,6 +335,7 @@ public class GUI extends javax.swing.JFrame {
     private void componentStringCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_componentStringCaretUpdate
         //stuff that happens whenever component string is updated, mostly just need to pass the current string down the line so that the component's field can be updated
         schematicWindow.setSelectedComponentString(componentString.getText());
+        updateLatexString(); //since we made a change that affects the latex output we need to update the output window
     }//GEN-LAST:event_componentStringCaretUpdate
 
     private void componentStringFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentStringFocusGained
@@ -332,6 +349,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void componentLabelCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_componentLabelCaretUpdate
         schematicWindow.setSelectedComponentLabel(componentLabel.getText());
+        updateLatexString(); //since we made a change that affects the latex output we need to update the output window
     }//GEN-LAST:event_componentLabelCaretUpdate
 
     private void componentLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentLabelFocusGained
@@ -339,7 +357,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_componentLabelFocusGained
 
     private void componentLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentLabelActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_componentLabelActionPerformed
 
     private void componentLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentLabelFocusLost
@@ -352,15 +370,27 @@ public class GUI extends javax.swing.JFrame {
 
     private void hCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hCheckboxActionPerformed
         schematicWindow.useHMarker = hCheckbox.isSelected();
+        updateLatexString(); //since we made a change that affects the latex output we need to update the output window
     }//GEN-LAST:event_hCheckboxActionPerformed
 
     private void wrapFigureCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrapFigureCheckboxActionPerformed
         schematicWindow.wrapInFigure = wrapFigureCheckbox.isSelected();
+        updateLatexString(); //since we made a change that affects the latex output we need to update the output window
     }//GEN-LAST:event_wrapFigureCheckboxActionPerformed
 
     private void americanCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_americanCheckboxActionPerformed
-       schematicWindow.americanStyleComponents = americanCheckbox.isSelected();
+        schematicWindow.americanStyleComponents = americanCheckbox.isSelected();
+        updateLatexString(); //since we made a change that affects the latex output we need to update the output window
     }//GEN-LAST:event_americanCheckboxActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        JOptionPane.showMessageDialog(this, "Circuitikz Tool by Matthew James Bellafaire \nProject Github Repo https://github.com/Bellafaire/CircuiTikZ-Tool", "About", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void outputFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_outputFieldFocusGained
+       //last check, when the user clicks into this window we need to make sure the output is up to date
+        updateLatexString(); 
+    }//GEN-LAST:event_outputFieldFocusGained
 
     public void updateComponentList() {
         String[] listItems = schematicWindow.getComponentList();
@@ -396,6 +426,11 @@ public class GUI extends javax.swing.JFrame {
 
     public void repaintCircuitMaker() {
         schematicWindow.repaint();
+    }
+
+    public void updateLatexString() {
+        //update output with the current LaTex string of the circuit
+        outputField.setText(schematicWindow.generateLatexString());
     }
 
     /**
@@ -458,6 +493,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTextField1;
     public javax.swing.JTextPane outputField;
     /*
     private javax.swing.JPanel schematicWindow;
