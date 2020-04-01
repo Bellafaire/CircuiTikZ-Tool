@@ -132,8 +132,8 @@ public class CircuitMaker extends JPanel {
                 //the zoom in to a gridsize of 10. if we're at a grid size of 10 we make sure the user can also zoom out
                 if (GRID_SIZE > 10 || e.getWheelRotation() < 0) {
                     GRID_SIZE -= e.getWheelRotation(); //very simple zoom method here, could be improved
-                } 
-        //     System.out.println("Grid size is now " + GRID_SIZE);
+                }
+                //     System.out.println("Grid size is now " + GRID_SIZE);
             }
         });
     }
@@ -226,6 +226,21 @@ public class CircuitMaker extends JPanel {
         }
     }
 
+    public void setSelectedComponentLabel(String text) {
+        if (componentIndexSelected >= 0) {
+            components.get(componentIndexSelected).setComponentLabel(text);
+        } else {
+        }
+    }
+
+    public String getSelectedComponentLabel() {
+        if (componentIndexSelected >= 0) {
+            return components.get(componentIndexSelected).getComponentLabel();
+        } else {
+            return "";
+        }
+    }
+
     public void setSelectedComponentString(String text) {
         if (componentIndexSelected >= 0) {
             components.get(componentIndexSelected).setComponentString(text);
@@ -273,7 +288,10 @@ public class CircuitMaker extends JPanel {
         for (int a = 0; a < components.size(); a++) {
             switch (components.get(a).componentType) {
                 case Component.WIRE:
-                    output += "\\draw (" + (int) components.get(a).getStart().getX() + "," + (int) (components.get(a).getStart().getY()) + ") -- (" + (int) components.get(a).getEnd().getX() + "," + (int) components.get(a).getEnd().getY() + ");\n";
+                    output += "\\draw (";
+                    output += (int) components.get(a).getStart().getX() + "," + (int) (components.get(a).getStart().getY()) + ") ";
+                    output += components.get(a).getComponentString();
+                    output += "(" + (int) components.get(a).getEnd().getX() + "," + (int) components.get(a).getEnd().getY() + ");\n";
                     break;
                 case Component.TWO_TERMINAL:
                     break;

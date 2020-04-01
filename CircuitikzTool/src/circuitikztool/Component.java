@@ -11,15 +11,14 @@ public class Component {
     Point position;
     BufferedImage Icon;
     String Text = "";
-    
+    String Label = "";
+
     int componentType;
 
     final static int WIRE = 0;
     final static int TWO_TERMINAL = 1;
     final static int THREE_TERMINAL = 2;
 
-
-    
     public Component(int grid_x, int grid_y, int componentSelected) {
         if (componentSelected == WIRE) {
             throw new IllegalArgumentException("Component Selected == Wire but no start/end point is defined");
@@ -40,6 +39,8 @@ public class Component {
         }
         this.wireStart = wireStart;
         this.wireEnd = wireEnd;
+        Text = "to[short]";
+        Label = "Wire";
         componentType = componentSelected;
     }
 
@@ -68,37 +69,33 @@ public class Component {
         }
     }
 
-        public String getComponentString(){
+    public String getComponentLabel() {
+        return Label;
+    }
+
+    public void setComponentLabel(String text) {
+        Label = text;
+    }
+
+    public String getComponentString() {
         return Text;
     }
-    
-    public void setComponentString(String text){
+
+    public void setComponentString(String text) {
         Text = text;
     }
-    
-    public Point getStart(){
+
+    public Point getStart() {
         return wireStart;
     }
-    
-    public Point getEnd(){
+
+    public Point getEnd() {
         return wireEnd;
     }
-    
+
     public String getComponentLabelString() {
         String retString = "";
-        switch (componentType) {
-            case WIRE:
-                retString += "Wire ";
-                break;
-            case TWO_TERMINAL:
-                retString += "2 Term ";
-                break;
-            case THREE_TERMINAL:
-                retString += "3 Term ";
-                break;
-            default:
-                break;
-        }
+        retString += Label + " ";
         retString += "[" + wireStart.x + "," + wireStart.y + "] to [" + wireEnd.x + "," + wireEnd.y + "]";
         return retString;
     }

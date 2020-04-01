@@ -48,6 +48,8 @@ public class GUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         outputField = new javax.swing.JTextPane();
+        jLabel4 = new javax.swing.JLabel();
+        componentLabel = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -79,7 +81,7 @@ public class GUI extends javax.swing.JFrame {
         );
 
         wireSelectButton.setSelected(true);
-        wireSelectButton.setText("Wire");
+        wireSelectButton.setText("Path");
         wireSelectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 wireSelectButtonActionPerformed(evt);
@@ -146,6 +148,27 @@ public class GUI extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(outputField);
 
+        jLabel4.setText("Component Label");
+
+        componentLabel.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                componentLabelCaretUpdate(evt);
+            }
+        });
+        componentLabel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                componentLabelFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                componentLabelFocusLost(evt);
+            }
+        });
+        componentLabel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                componentLabelActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("File");
 
         jMenuItem1.setText("Save");
@@ -187,12 +210,14 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(threeTerminalSelectButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(componentString, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(twoTerminalSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(wireSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(componentLabel))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -211,13 +236,18 @@ public class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(componentString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(componentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
-                        .addGap(1, 1, 1)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5))
                     .addComponent(schematicWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -261,6 +291,7 @@ public class GUI extends javax.swing.JFrame {
         //stuff that happens whenever we change the selected component in the selection list
         schematicWindow.setSelectedComponentIndex(componentList.getSelectedIndex());
         componentString.setText(schematicWindow.getSelectedComponentString());
+        componentLabel.setText(schematicWindow.getSelectedComponentLabel());
     }//GEN-LAST:event_componentListValueChanged
 
     private void componentListFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentListFocusGained
@@ -290,14 +321,34 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_componentStringFocusGained
 
     private void componentListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_componentListKeyPressed
-       keyHandler(evt);
-       updateComponentList();
+        keyHandler(evt);
+        updateComponentList();
     }//GEN-LAST:event_componentListKeyPressed
+
+    private void componentLabelCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_componentLabelCaretUpdate
+        schematicWindow.setSelectedComponentLabel(componentLabel.getText());
+    }//GEN-LAST:event_componentLabelCaretUpdate
+
+    private void componentLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentLabelFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_componentLabelFocusGained
+
+    private void componentLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentLabelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_componentLabelActionPerformed
+
+    private void componentLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentLabelFocusLost
+      updateComponentList(); //since what we're changing here affects how the list displays this is important
+    }//GEN-LAST:event_componentLabelFocusLost
 
     public void updateComponentList() {
         String[] listItems = schematicWindow.getComponentList();
         CircuitikzTool.ui.componentList.setListData(listItems);
         CircuitikzTool.ui.componentList.setSelectedIndex(schematicWindow.getSelectedComponentIndex());
+    }
+
+    public void updateComponentLabel(String text) {
+        componentLabel.setText(text);
     }
 
     public void updateComponentString(String text) {
@@ -374,11 +425,13 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.ButtonGroup buttonGroup6;
+    private javax.swing.JTextField componentLabel;
     public javax.swing.JList<String> componentList;
     private javax.swing.JTextField componentString;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
