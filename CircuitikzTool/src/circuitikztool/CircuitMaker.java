@@ -29,8 +29,10 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
-  
-    
+    boolean wrapInFigure = true;
+    boolean americanStyleComponents = true;
+    boolean useHMarker = true;
+
     static int GRID_SIZE = 50;
     int xGridPosition;
     int yGridPosition;
@@ -269,7 +271,33 @@ public class CircuitMaker extends JPanel {
     }
 
     public String generateLatexString() {
-        String output = "\\begin{circuitikz}\n";
+        String output = "";
+
+        if (wrapInFigure) {
+            output += "\\begin{figure}";
+            if (useHMarker) {
+                output += "[h]\n";
+            } else {
+                output += "\n";
+            }
+            output += "\\centering\n";
+            output += "\\begin{circuitikz}";
+            if (americanStyleComponents) {
+                output += "[american]";
+            }
+            output += "\n";
+        } else {
+            output += "\\begin{circuitikz}";
+            if (useHMarker && americanStyleComponents) {
+                output += "[h, american]\n";
+            } else if (useHMarker && !americanStyleComponents) {
+                output += "[h]\n";
+            } else if (!useHMarker && americanStyleComponents) {
+                 output += "[american]\n";
+            } else {
+                output += "\n";
+            }
+        }
 
         for (int a = 0; a < components.size(); a++) {
             output += "\\draw (";
@@ -279,6 +307,9 @@ public class CircuitMaker extends JPanel {
         }
 
         output += "\\end{circuitikz}";
+        if (wrapInFigure) {
+            output += "\\end{figure}";
+        }
         return output;
     }
 }
