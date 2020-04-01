@@ -1,4 +1,4 @@
-#CircuiTikZ Tool
+# CircuiTikZ Tool
 This project is designed to be an open-source tool for creating schematics with CircuiTikz. 
 Currently this program only supports path objects (resistors, capacitors, wires, etc.) but hopefully more will come along in the future. 
 The goal here isn't to create a "full eda experience" but instead to simplify creating schematics in CircuiTikz by removing the tedious part of creating paths using the coordinate system. 
