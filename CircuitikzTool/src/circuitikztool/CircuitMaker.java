@@ -29,7 +29,9 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
-    static int GRID_SIZE = 25;
+    static int GRID_SIZE = 50;
+    int xGridPosition;
+    int yGridPosition;
 
     int x_offset = GRID_SIZE * 5;
     int y_offset = GRID_SIZE * 5;
@@ -38,9 +40,6 @@ public class CircuitMaker extends JPanel {
     int lastMouseX, lastMouseY;
 
     private int componentIndexSelected = 0;
-
-    int xGridPosition;
-    int yGridPosition;
 
     Point originOffset;
 
@@ -207,6 +206,7 @@ public class CircuitMaker extends JPanel {
                             GRID_SIZE * (wireStart.y + originOffset.y),
                             GRID_SIZE * xGridPosition,
                             GRID_SIZE * yGridPosition);
+
                     break;
                 case Component.TWO_TERMINAL:
                     break;
@@ -219,9 +219,9 @@ public class CircuitMaker extends JPanel {
 
         for (int a = 0; a < components.size(); a++) {
             if (a == componentIndexSelected) {
-                components.get(a).paint(g, GRID_SIZE, originOffset, true);
+                components.get(a).paint(g, GRID_SIZE, originOffset, true, originOffsetX, originOffsetY);
             } else {
-                components.get(a).paint(g, GRID_SIZE, originOffset, false);
+                components.get(a).paint(g, GRID_SIZE, originOffset, false, originOffsetX, originOffsetY);
             }
         }
     }
@@ -289,9 +289,9 @@ public class CircuitMaker extends JPanel {
             switch (components.get(a).componentType) {
                 case Component.PATH:
                     output += "\\draw (";
-                    output += (int) components.get(a).getStart().getX() + "," + (int) (-1)*(components.get(a).getStart().getY()) + ") ";
+                    output += (int) components.get(a).getStart().getX() + "," + (int) (-1) * (components.get(a).getStart().getY()) + ") ";
                     output += components.get(a).getComponentString();
-                    output += "(" + (int) components.get(a).getEnd().getX() + "," + (int)  (-1)*components.get(a).getEnd().getY() + ");\n";
+                    output += "(" + (int) components.get(a).getEnd().getX() + "," + (int) (-1) * components.get(a).getEnd().getY() + ");\n";
                     break;
                 case Component.TWO_TERMINAL:
                     break;
