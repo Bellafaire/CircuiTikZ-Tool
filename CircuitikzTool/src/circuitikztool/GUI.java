@@ -160,7 +160,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        toolSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Path", "Resistor", "Capacitor", "Inductor", "Diode", "Voltage Source", "Current Source", "Ground Node", "VCC Node", "Transistor" }));
+        toolSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Path", "Resistor", "Capacitor", "Inductor", "Diode", "Voltage Source", "Current Source", "Ground Node", "VCC Node", "NPN Transistor", "PNP Transistor" }));
         toolSelector.setToolTipText("");
         toolSelector.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {

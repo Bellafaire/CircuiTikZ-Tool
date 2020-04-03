@@ -33,29 +33,30 @@ public class Component {
     final static int VCC_NODE = 8;
 
     //non-path components
-    final static int TRANSISTOR = 9;
+    final static int TRANSISTOR_NPN = 9;
+    final static int TRANSISTOR_PNP = 10;
 
     private static int nonPathCount = 1;
     private int threeTerminalIdentifier;
 
-    //special identifiers used only in the latex string generation, we need to know exactly what 
-    //type of three terminal device we're working with here
-    private boolean BJT = false;
-    private boolean FET = false;
-
     public Component(Point position, int componentSelected) {
         this.position = position;
         switch (componentSelected) {
-            case TRANSISTOR:
+            case TRANSISTOR_NPN:
                 threeTerminalIdentifier = nonPathCount++;
-                BJT = true;
                 Text = "node[npn](Q" + threeTerminalIdentifier + "){}";
-                Label = "Transistor";
+                Label = "NPN Transistor";
+                break;
+            case TRANSISTOR_PNP:
+                threeTerminalIdentifier = nonPathCount++;
+                Text = "node[pnp](Q" + threeTerminalIdentifier + "){}";
+                Label = "PNP Transistor";
                 break;
             default:
                 throw new IllegalArgumentException("No NON-PATH component type exists for constant " + componentSelected);
         }
         pathComponent = false;
+        componentType = componentSelected;
     }
 
     public Component(Point wireStart, Point wireEnd, int componentSelected) {
@@ -240,11 +241,17 @@ public class Component {
             output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
             output += getComponentString() + ";";
 
-            //we need to make special modifications to the latex output when we're drawing 3 terminal devices so they fit into our grid setup
-            if (BJT) {
-                output += "\\draw (Q" + threeTerminalIdentifier + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
-                output += "\\draw (Q" + threeTerminalIdentifier + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
-                output += "\\draw (Q" + threeTerminalIdentifier + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+            switch (componentType) {
+                case TRANSISTOR_NPN:
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
+                case TRANSISTOR_PNP:
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
             }
         }
         output += "\n";
