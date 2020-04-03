@@ -33,10 +33,11 @@ public class Component {
     //non-path components
     final static int GROUND_NODE = 7;
     final static int VCC_NODE = 8;
-    final static int TRANSISTOR_NPN = 9;
-    final static int TRANSISTOR_PNP = 10;
-    final static int NMOS = 11;
-    final static int PMOS = 12;
+    final static int VSS_NODE = 9;
+    final static int TRANSISTOR_NPN = 10;
+    final static int TRANSISTOR_PNP = 11;
+    final static int NMOS = 12;
+    final static int PMOS = 13;
 
     private static int nonPathCount = 1;
     private int threeTerminalIdentifier;
@@ -69,8 +70,12 @@ public class Component {
                 Label = "GND";
                 break;
             case VCC_NODE:
-                Text = "node[vcc]{}";
+                Text = "node[vcc]{VCC}";
                 Label = "VCC";
+                break;
+            case VSS_NODE:
+                Text = "node[vss]{VSS}";
+                Label = "VSS";
                 break;
             default:
                 //this exception is important in isPathComponent();
@@ -152,6 +157,8 @@ public class Component {
             drawVCCNode(g, gridSize, position.x + offset.x, position.y + offset.y);
         } else if (componentType == GROUND_NODE) {
             drawGNDNode(g, gridSize, position.x + offset.x, position.y + offset.y);
+        } else if (componentType == VSS_NODE) {
+            drawVSSNode(g, gridSize, position.x + offset.x, position.y + offset.y);
         } else {
             g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) - gridSize);
             g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) + gridSize);
@@ -185,9 +192,9 @@ public class Component {
                     ((int) wireStart.getY() * gridSize + (int) wireEnd.getY() * gridSize) / 2
             );
         } else if (componentType == VCC_NODE) {
-            mid = new Point(position.x * gridSize, position.y * gridSize - 2*gridSize / 3);
-        } else if (componentType == GROUND_NODE) {
-            mid = new Point(position.x * gridSize, position.y * gridSize + 2*gridSize / 3);
+            mid = new Point(position.x * gridSize, position.y * gridSize - 2 * gridSize / 3);
+        } else if (componentType == GROUND_NODE || componentType == VSS_NODE) {
+            mid = new Point(position.x * gridSize, position.y * gridSize + 2 * gridSize / 3);
         } else {
             mid = new Point(position.x * gridSize, position.y * gridSize);
         }
@@ -314,6 +321,28 @@ public class Component {
                 gridSize * xPos + gridSize / 16,
                 gridSize * yPos + 2 * gridSize / 8
         );
+    }
+
+    public static void drawVSSNode(Graphics g, int gridSize, int xPos, int yPos) {
+        g.drawLine(
+                gridSize * xPos,
+                gridSize * yPos,
+                gridSize * xPos,
+                gridSize * yPos + gridSize / 3
+        );
+        g.drawLine(
+                gridSize * xPos,
+                gridSize * yPos + gridSize / 3,
+                gridSize * xPos - gridSize / 8,
+                gridSize * yPos + gridSize / 5 - gridSize / 8
+        );
+        g.drawLine(
+                gridSize * xPos,
+                gridSize * yPos + gridSize / 3,
+                gridSize * xPos + gridSize / 8,
+                gridSize * yPos + gridSize / 5 - gridSize / 8
+        );
+
     }
 
     public static void drawVCCNode(Graphics g, int gridSize, int xPos, int yPos) {

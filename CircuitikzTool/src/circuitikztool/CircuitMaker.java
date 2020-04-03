@@ -205,7 +205,9 @@ public class CircuitMaker extends JPanel {
             } else if (currentTool == Component.VCC_NODE) {
                 Component.drawVCCNode(g, GRID_SIZE, xGridPosition, yGridPosition);
             } else if (currentTool == Component.GROUND_NODE) {
-
+                Component.drawGNDNode(g, GRID_SIZE, xGridPosition, yGridPosition);
+            } else if (currentTool == Component.VSS_NODE) {
+                Component.drawVSSNode(g, GRID_SIZE, xGridPosition, yGridPosition);
             } else {
                 g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition - GRID_SIZE);
                 g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition + GRID_SIZE);
