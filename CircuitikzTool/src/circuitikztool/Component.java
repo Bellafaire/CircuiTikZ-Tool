@@ -35,6 +35,8 @@ public class Component {
     //non-path components
     final static int TRANSISTOR_NPN = 9;
     final static int TRANSISTOR_PNP = 10;
+    final static int NMOS = 11;
+    final static int PMOS = 12;
 
     private static int nonPathCount = 1;
     private int threeTerminalIdentifier;
@@ -52,7 +54,18 @@ public class Component {
                 Text = "node[pnp](Q" + threeTerminalIdentifier + "){}";
                 Label = "PNP Transistor";
                 break;
+            case NMOS:
+                threeTerminalIdentifier = nonPathCount++;
+                Text = "node[nmos](Q" + threeTerminalIdentifier + "){}";
+                Label = "N-MOS";
+                break;
+            case PMOS:
+                threeTerminalIdentifier = nonPathCount++;
+                Text = "node[pmos](Q" + threeTerminalIdentifier + "){}";
+                Label = "P-MOS";
+                break;
             default:
+                //this exception is important in isPathComponent();
                 throw new IllegalArgumentException("No NON-PATH component type exists for constant " + componentSelected);
         }
         pathComponent = false;
@@ -100,6 +113,7 @@ public class Component {
                 Label = "VCC";
                 break;
             default:
+                //this exception is important in isPathComponent();
                 throw new IllegalArgumentException("No PATH component type exists for constant " + componentSelected);
         }
         componentType = componentSelected;
@@ -203,6 +217,10 @@ public class Component {
         return Text;
     }
 
+    public boolean isFet() {
+        return componentType == NMOS || componentType == PMOS;
+    }
+
     public void setComponentString(String text) {
         Text = text;
     }
@@ -237,6 +255,7 @@ public class Component {
             output += getComponentString() + " ";
             output += "(" + (int) getEnd().getX() + "," + (int) (-1) * getEnd().getY() + ");";
         } else {
+
             output += "\\draw (";
             output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
             output += getComponentString() + ";";
@@ -251,6 +270,16 @@ public class Component {
                     output += "\\draw (Q" + threeTerminalIdentifier + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
                     output += "\\draw (Q" + threeTerminalIdentifier + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
                     output += "\\draw (Q" + threeTerminalIdentifier + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
+                case NMOS:
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
+                case PMOS:
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + threeTerminalIdentifier + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
             }
         }

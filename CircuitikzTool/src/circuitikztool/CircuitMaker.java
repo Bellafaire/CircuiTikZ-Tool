@@ -312,6 +312,20 @@ public class CircuitMaker extends JPanel {
             }
         }
 
+        //determine whether we have any mosfets in the placed components, if we do then we need to add some extra formatting 
+        boolean containsFet = false;
+        for (int a = 0; a < components.size(); a++) {
+            if (components.get(a).isFet()) {
+                containsFet = true;
+                break;
+            }
+        }
+        if (containsFet) {
+            output += "\\ctikzset{tripoles/mos style/arrows}\n";
+            output += "\\ctikzset{tripoles/pmos style/nocircle}\n";
+        }
+        
+        //generate latex string for each component placed in the circuitmaker window
         for (int a = 0; a < components.size(); a++) {
             output += components.get(a).getLatexLine();
         }
