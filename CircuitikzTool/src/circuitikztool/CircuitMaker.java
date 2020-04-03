@@ -202,6 +202,10 @@ public class CircuitMaker extends JPanel {
                         GRID_SIZE * (wireStart.y + originOffset.y),
                         GRID_SIZE * xGridPosition,
                         GRID_SIZE * yGridPosition);
+            } else if (currentTool == Component.VCC_NODE) {
+                Component.drawVCCNode(g, GRID_SIZE, xGridPosition, yGridPosition);
+            } else if (currentTool == Component.GROUND_NODE) {
+
             } else {
                 g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition - GRID_SIZE);
                 g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition + GRID_SIZE);
@@ -324,7 +328,7 @@ public class CircuitMaker extends JPanel {
             output += "\\ctikzset{tripoles/mos style/arrows}\n";
             output += "\\ctikzset{tripoles/pmos style/nocircle}\n";
         }
-        
+
         //generate latex string for each component placed in the circuitmaker window
         for (int a = 0; a < components.size(); a++) {
             output += components.get(a).getLatexLine();

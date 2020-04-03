@@ -29,10 +29,10 @@ public class Component {
     final static int DIODE = 4;
     final static int VOLTAGE_SOURCE = 5;
     final static int CURRENT_SOURCE = 6;
-    final static int GROUND_NODE = 7;
-    final static int VCC_NODE = 8;
 
     //non-path components
+    final static int GROUND_NODE = 7;
+    final static int VCC_NODE = 8;
     final static int TRANSISTOR_NPN = 9;
     final static int TRANSISTOR_PNP = 10;
     final static int NMOS = 11;
@@ -63,6 +63,14 @@ public class Component {
                 threeTerminalIdentifier = nonPathCount++;
                 Text = "node[pmos](Q" + threeTerminalIdentifier + "){}";
                 Label = "P-MOS";
+                break;
+            case GROUND_NODE:
+                Text = "node[ground]{}";
+                Label = "GND";
+                break;
+            case VCC_NODE:
+                Text = "node[vcc]{}";
+                Label = "VCC";
                 break;
             default:
                 //this exception is important in isPathComponent();
@@ -104,14 +112,6 @@ public class Component {
                 Text = "to[isource,l=$I$]";
                 Label = "I";
                 break;
-            case GROUND_NODE:
-                Text = "node[ground]{}";
-                Label = "GND";
-                break;
-            case VCC_NODE:
-                Text = "node[vcc]{}";
-                Label = "VCC";
-                break;
             default:
                 //this exception is important in isPathComponent();
                 throw new IllegalArgumentException("No PATH component type exists for constant " + componentSelected);
@@ -148,6 +148,10 @@ public class Component {
                     gridSize * (wireEnd.x + offset.x),
                     gridSize * (wireEnd.y + offset.y)
             );
+        } else if (componentType == VCC_NODE) {
+            drawVCCNode(g, gridSize, position.x + offset.x, position.y + offset.y);
+        } else if (componentType == GROUND_NODE) {
+            drawGNDNode(g, gridSize, position.x + offset.x, position.y + offset.y);
         } else {
             g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) - gridSize);
             g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) + gridSize);
@@ -180,6 +184,10 @@ public class Component {
                     ((int) wireStart.getX() * gridSize + (int) wireEnd.getX() * gridSize) / 2,
                     ((int) wireStart.getY() * gridSize + (int) wireEnd.getY() * gridSize) / 2
             );
+        } else if (componentType == VCC_NODE) {
+            mid = new Point(position.x * gridSize, position.y * gridSize - 2*gridSize / 3);
+        } else if (componentType == GROUND_NODE) {
+            mid = new Point(position.x * gridSize, position.y * gridSize + 2*gridSize / 3);
         } else {
             mid = new Point(position.x * gridSize, position.y * gridSize);
         }
@@ -285,6 +293,48 @@ public class Component {
         }
         output += "\n";
         return output;
+    }
+
+    public static void drawGNDNode(Graphics g, int gridSize, int xPos, int yPos) {
+        g.drawLine(
+                gridSize * xPos - gridSize / 4,
+                gridSize * yPos,
+                gridSize * xPos + gridSize / 4,
+                gridSize * yPos
+        );
+        g.drawLine(
+                gridSize * xPos - gridSize / 8,
+                gridSize * yPos + gridSize / 8,
+                gridSize * xPos + gridSize / 8,
+                gridSize * yPos + gridSize / 8
+        );
+        g.drawLine(
+                gridSize * xPos - gridSize / 16,
+                gridSize * yPos + 2 * gridSize / 8,
+                gridSize * xPos + gridSize / 16,
+                gridSize * yPos + 2 * gridSize / 8
+        );
+    }
+
+    public static void drawVCCNode(Graphics g, int gridSize, int xPos, int yPos) {
+        g.drawLine(
+                gridSize * xPos,
+                gridSize * yPos,
+                gridSize * xPos,
+                gridSize * yPos - gridSize / 3
+        );
+        g.drawLine(
+                gridSize * xPos,
+                gridSize * yPos - gridSize / 3,
+                gridSize * xPos - gridSize / 8,
+                gridSize * yPos - gridSize / 5 + gridSize / 8
+        );
+        g.drawLine(
+                gridSize * xPos,
+                gridSize * yPos - gridSize / 3,
+                gridSize * xPos + gridSize / 8,
+                gridSize * yPos - gridSize / 5 + gridSize / 8
+        );
     }
 
 }
