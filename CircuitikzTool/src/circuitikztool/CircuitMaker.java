@@ -151,7 +151,6 @@ public class CircuitMaker extends JPanel {
 //        //update output with the current LaTex string of the circuit
 //        CircuitikzTool.ui.outputField.setText(generateLatexString());
 //    }
-
     @Override
     public void paint(Graphics g) {
 
@@ -197,11 +196,21 @@ public class CircuitMaker extends JPanel {
 
         if (clicking) {
             g.setColor(Color.white);
-            g.drawLine(
-                    GRID_SIZE * (wireStart.x + originOffset.x),
-                    GRID_SIZE * (wireStart.y + originOffset.y),
-                    GRID_SIZE * xGridPosition,
-                    GRID_SIZE * yGridPosition);
+            if (Component.isPathComponent(currentTool)) {
+                g.drawLine(
+                        GRID_SIZE * (wireStart.x + originOffset.x),
+                        GRID_SIZE * (wireStart.y + originOffset.y),
+                        GRID_SIZE * xGridPosition,
+                        GRID_SIZE * yGridPosition);
+            } else {
+                g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition - GRID_SIZE);
+                g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition + GRID_SIZE);
+                g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition - GRID_SIZE, GRID_SIZE * yGridPosition);
+                g.setColor(Color.black);
+                g.fillOval(GRID_SIZE * xGridPosition - GRID_SIZE / 3, GRID_SIZE * yGridPosition - GRID_SIZE / 3, GRID_SIZE * 2 / 3, GRID_SIZE * 2 / 3);
+                g.setColor(Color.white);
+                g.drawOval(GRID_SIZE * xGridPosition - GRID_SIZE / 3, GRID_SIZE * yGridPosition - GRID_SIZE / 3, GRID_SIZE * 2 / 3, GRID_SIZE * 2 / 3);
+            }
         }
 
         for (int a = 0; a < components.size(); a++) {
@@ -255,7 +264,12 @@ public class CircuitMaker extends JPanel {
     }
 
     public void placeComponent() {
-        Component c = new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), currentTool);
+        Component c;
+        try {
+            c = new Component(wireStart, new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), currentTool);
+        } catch (IllegalArgumentException e) {
+            c = new Component(new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y), currentTool);
+        }
         components.add(c);
         setSelectedComponentIndex(components.size() - 1);
         System.out.println("added component to index " + (components.size() - 1));
@@ -292,17 +306,14 @@ public class CircuitMaker extends JPanel {
             } else if (useHMarker && !americanStyleComponents) {
                 output += "[h]\n";
             } else if (!useHMarker && americanStyleComponents) {
-                 output += "[american]\n";
+                output += "[american]\n";
             } else {
                 output += "\n";
             }
         }
 
         for (int a = 0; a < components.size(); a++) {
-            output += "\\draw (";
-            output += (int) components.get(a).getStart().getX() + "," + (int) (-1) * (components.get(a).getStart().getY()) + ") ";
-            output += components.get(a).getComponentString() + " ";
-            output += "(" + (int) components.get(a).getEnd().getX() + "," + (int) (-1) * components.get(a).getEnd().getY() + ");\n";
+            output += components.get(a).getLatexLine();
         }
 
         output += "\\end{circuitikz}";

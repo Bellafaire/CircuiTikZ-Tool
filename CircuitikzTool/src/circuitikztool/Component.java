@@ -3,20 +3,25 @@ package circuitikztool;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 public class Component {
 
+    //path specific placement variables
     Point wireStart, wireEnd;
+
+    //non path placement variables
     Point position;
+
     BufferedImage Icon;
     String Text = "";
     String Label = "";
 
     int componentType;
+    private boolean pathComponent = true;
 
+    //path components
     final static int PATH = 0;
     final static int RESISTOR = 1;
     final static int CAPACITOR = 2;
@@ -26,6 +31,24 @@ public class Component {
     final static int CURRENT_SOURCE = 6;
     final static int GROUND_NODE = 7;
     final static int VCC_NODE = 8;
+
+    //non-path components
+    final static int TRANSISTOR = 9;
+
+    private static int nonPathCount = 1;
+
+    public Component(Point position, int componentSelected) {
+        this.position = position;
+        switch (componentSelected) {
+            case TRANSISTOR:
+                Text = "node[npn](Q" + nonPathCount++ + "){}";
+                Label = "Transistor";
+                break;
+            default:
+                throw new IllegalArgumentException("No NON-PATH component type exists for constant " + componentSelected);
+        }
+        pathComponent = false;
+    }
 
     public Component(Point wireStart, Point wireEnd, int componentSelected) {
         this.wireStart = wireStart;
@@ -67,8 +90,26 @@ public class Component {
                 Text = "node[vcc]{}";
                 Label = "VCC";
                 break;
+            default:
+                throw new IllegalArgumentException("No PATH component type exists for constant " + componentSelected);
         }
         componentType = componentSelected;
+    }
+
+    public boolean isPathComponent() {
+        return pathComponent;
+    }
+
+    /*Since the circuit maker class will need to know which indexes are pathing components and which ones arent
+    we use this function to test a given index to determine whether or not a component is a path component. 
+    This relys on the constructor's being properly split between pathing and non pathing components*/
+    public static boolean isPathComponent(int componentIndex) {
+        try {
+            Component c = new Component(new Point(0, 0), new Point(0, 0), componentIndex);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     public void paint(Graphics g, int gridSize, Point offset, boolean selected, int gridX, int gridY) {
@@ -77,12 +118,26 @@ public class Component {
         } else {
             g.setColor(Color.white);
         }
-        g.drawLine(
-                gridSize * (wireStart.x + offset.x),
-                gridSize * (wireStart.y + offset.y),
-                gridSize * (wireEnd.x + offset.x),
-                gridSize * (wireEnd.y + offset.y)
-        );
+        if (pathComponent) {
+            g.drawLine(
+                    gridSize * (wireStart.x + offset.x),
+                    gridSize * (wireStart.y + offset.y),
+                    gridSize * (wireEnd.x + offset.x),
+                    gridSize * (wireEnd.y + offset.y)
+            );
+        } else {
+            g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) - gridSize);
+            g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) + gridSize);
+            g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x) - gridSize, gridSize * (position.y + offset.y));
+            g.setColor(Color.BLACK);
+            g.fillOval(gridSize * (position.x + offset.x) - gridSize / 3, gridSize * (position.y + offset.y) - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
+            if (selected) {
+                g.setColor(Color.blue);
+            } else {
+                g.setColor(Color.white);
+            }
+            g.drawOval(gridSize * (position.x + offset.x) - gridSize / 3, gridSize * (position.y + offset.y) - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
+        }
 
         /*
                     this section of code implements the "Draw label to wire" functionality of the circuitmaker, 
@@ -93,11 +148,19 @@ public class Component {
          */
         int fontSize = 10;
         g.setFont(new Font("Dialog", Font.PLAIN, fontSize));
-        //find midpoint of the line
-        Point mid = new Point(
-                ((int) wireStart.getX() * CircuitMaker.GRID_SIZE + (int) wireEnd.getX() * CircuitMaker.GRID_SIZE) / 2,
-                ((int) wireStart.getY() * CircuitMaker.GRID_SIZE + (int) wireEnd.getY() * CircuitMaker.GRID_SIZE) / 2
-        );
+        Point mid;
+
+        /*            if the component we're drawing is a path component then we want to place the label right on the midpoint
+        otherwise we can just place it at the position of the component.        */
+        if (isPathComponent()) {
+            mid = new Point(
+                    ((int) wireStart.getX() * gridSize + (int) wireEnd.getX() * gridSize) / 2,
+                    ((int) wireStart.getY() * gridSize + (int) wireEnd.getY() * gridSize) / 2
+            );
+        } else {
+            mid = new Point(position.x * gridSize, position.y * gridSize);
+        }
+
         //calculate width of the string itself
         int stringWidth = g.getFontMetrics().stringWidth(Label);
 
@@ -144,10 +207,33 @@ public class Component {
     }
 
     public String getComponentLabelString() {
-        String retString = "";
-        retString += Label + " ";
-        retString += "[" + wireStart.x + "," + wireStart.y + "] to [" + wireEnd.x + "," + wireEnd.y + "]";
-        return retString;
+        if (isPathComponent()) {
+            String retString = "";
+            retString += Label + " ";
+            retString += "[" + wireStart.x + "," + wireStart.y + "] to [" + wireEnd.x + "," + wireEnd.y + "]";
+            return retString;
+        } else {
+            String retString = "";
+            retString += Label + " ";
+            retString += "[" + position.x + "," + position.y + "] ";
+            return retString;
+        }
+    }
+
+    String getLatexLine() {
+        String output = "";
+        if (isPathComponent()) {
+            output += "\\draw (";
+            output += (int) wireStart.getX() + "," + (int) (-1) * (wireStart.getY()) + ") ";
+            output += getComponentString() + " ";
+            output += "(" + (int) getEnd().getX() + "," + (int) (-1) * getEnd().getY() + ");";
+        } else {
+            output += "\\draw (";
+            output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
+            output += getComponentString() + ";";
+        }
+        output += "\n";
+        return output;
     }
 
 }
