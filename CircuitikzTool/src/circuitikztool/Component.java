@@ -36,12 +36,20 @@ public class Component {
     final static int TRANSISTOR = 9;
 
     private static int nonPathCount = 1;
+    private int threeTerminalIdentifier;
+
+    //special identifiers used only in the latex string generation, we need to know exactly what 
+    //type of three terminal device we're working with here
+    private boolean BJT = false;
+    private boolean FET = false;
 
     public Component(Point position, int componentSelected) {
         this.position = position;
         switch (componentSelected) {
             case TRANSISTOR:
-                Text = "node[npn](Q" + nonPathCount++ + "){}";
+                threeTerminalIdentifier = nonPathCount++;
+                BJT = true;
+                Text = "node[npn](Q" + threeTerminalIdentifier + "){}";
                 Label = "Transistor";
                 break;
             default:
@@ -231,6 +239,13 @@ public class Component {
             output += "\\draw (";
             output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
             output += getComponentString() + ";";
+
+            //we need to make special modifications to the latex output when we're drawing 3 terminal devices so they fit into our grid setup
+            if (BJT) {
+                output += "\\draw (Q" + threeTerminalIdentifier + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                output += "\\draw (Q" + threeTerminalIdentifier + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                output += "\\draw (Q" + threeTerminalIdentifier + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+            }
         }
         output += "\n";
         return output;
