@@ -5,6 +5,7 @@
  */
 package circuitikztool;
 
+import static circuitikztool.Component.drawTransistor;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
@@ -290,13 +291,7 @@ public class CircuitMaker extends JPanel {
             } else {
                 //TODO put this in a seperate function inside of Components class
                 //draw the transistor as a preview for the user
-                g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition - GRID_SIZE);
-                g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition + GRID_SIZE);
-                g.drawLine(GRID_SIZE * xGridPosition, GRID_SIZE * yGridPosition, GRID_SIZE * xGridPosition - GRID_SIZE, GRID_SIZE * yGridPosition);
-                g.setColor(Color.black);
-                g.fillOval(GRID_SIZE * xGridPosition - GRID_SIZE / 3, GRID_SIZE * yGridPosition - GRID_SIZE / 3, GRID_SIZE * 2 / 3, GRID_SIZE * 2 / 3);
-                g.setColor(Color.white);
-                g.drawOval(GRID_SIZE * xGridPosition - GRID_SIZE / 3, GRID_SIZE * yGridPosition - GRID_SIZE / 3, GRID_SIZE * 2 / 3, GRID_SIZE * 2 / 3);
+                drawTransistor(g, GRID_SIZE, xGridPosition, yGridPosition, false);
             }
         }
 
@@ -439,7 +434,7 @@ public class CircuitMaker extends JPanel {
                 break;
             }
         }
-        
+
         //eventually these should be changeable by the user through some kind of settings window. 
         if (containsFet) {
             output += "\\ctikzset{tripoles/mos style/arrows}\n";

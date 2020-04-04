@@ -258,18 +258,8 @@ public class Component {
         } else if (componentType == VSS_NODE) {
             drawVSSNode(g, gridSize, position.x + offset.x, position.y + offset.y);
         } else {
-            //move this to a seperate function eventually
-            g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) - gridSize);
-            g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x), gridSize * (position.y + offset.y) + gridSize);
-            g.drawLine(gridSize * (position.x + offset.x), gridSize * (position.y + offset.y), gridSize * (position.x + offset.x) - gridSize, gridSize * (position.y + offset.y));
-            g.setColor(Color.BLACK);
-            g.fillOval(gridSize * (position.x + offset.x) - gridSize / 3, gridSize * (position.y + offset.y) - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
-            if (selected) {
-                g.setColor(Color.blue);
-            } else {
-                g.setColor(Color.white);
-            }
-            g.drawOval(gridSize * (position.x + offset.x) - gridSize / 3, gridSize * (position.y + offset.y) - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
+            //if it's not any of those then it's a three terminal transistor so we just draw the transistor
+            drawTransistor(g, gridSize, position.x + offset.x, position.y + offset.y, selected);
         }
 
         /*
@@ -423,13 +413,15 @@ public class Component {
         }
     }
 
-    /** outputs the formatted LaTeX line representing this component, in special cases this function may return multiple lines of LaTeX code
+    /**
+     * outputs the formatted LaTeX line representing this component, in special
+     * cases this function may return multiple lines of LaTeX code
      *
-     * @return Circuitikz code representing current component 
+     * @return Circuitikz code representing current component
      */
     public String getLatexLine() {
         String output = "";
-        
+
         //path components are simple, just insert the label between the start and end position. 
         if (isPathComponent()) {
             output += "\\draw (";
@@ -443,7 +435,7 @@ public class Component {
             such as the BJT devices we need to make sure that their terminals are "broken out" to our standardized grid system so that everything plays nicely
             together in the final output, there are much better and more human-readable ways to do this in CircuiTikz however those are much more difficult to implement
             and for the time being this serves most of the functionality at the cost of outputing more code. 
-            */
+             */
             output += "\\draw (";
             output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
             output += getLatexString() + ";";
@@ -479,12 +471,14 @@ public class Component {
         return output;
     }
 
-    /** draws the gndNode at an x and y position (in CircuiTikz coordinates) to the schematic window
+    /**
+     * draws the gndNode at an x and y position (in CircuiTikz coordinates) to
+     * the schematic window
      *
      * @param g graphics object to be drawn onto
-     * @param gridSize current size of the grid 
-     * @param xPos x position in circuitikz coordinates 
-     * @param yPos y position in circuitikz coordinates 
+     * @param gridSize current size of the grid
+     * @param xPos x position in circuitikz coordinates
+     * @param yPos y position in circuitikz coordinates
      */
     public static void drawGNDNode(Graphics g, int gridSize, int xPos, int yPos) {
         g.drawLine(
@@ -507,12 +501,14 @@ public class Component {
         );
     }
 
-    /** draws the vss node at an x and y position (in CircuiTikz coordinates) to the schematic window
+    /**
+     * draws the vss node at an x and y position (in CircuiTikz coordinates) to
+     * the schematic window
      *
      * @param g graphics object to be drawn onto
-     * @param gridSize current size of the grid 
-     * @param xPos x position in circuitikz coordinates 
-     * @param yPos y position in circuitikz coordinates 
+     * @param gridSize current size of the grid
+     * @param xPos x position in circuitikz coordinates
+     * @param yPos y position in circuitikz coordinates
      */
     public static void drawVSSNode(Graphics g, int gridSize, int xPos, int yPos) {
         g.drawLine(
@@ -536,12 +532,14 @@ public class Component {
 
     }
 
-    /** draws the vcc Node at an x and y position (in CircuiTikz coordinates) to the schematic window
+    /**
+     * draws the vcc Node at an x and y position (in CircuiTikz coordinates) to
+     * the schematic window
      *
      * @param g graphics object to be drawn onto
-     * @param gridSize current size of the grid 
-     * @param xPos x position in circuitikz coordinates 
-     * @param yPos y position in circuitikz coordinates 
+     * @param gridSize current size of the grid
+     * @param xPos x position in circuitikz coordinates
+     * @param yPos y position in circuitikz coordinates
      */
     public static void drawVCCNode(Graphics g, int gridSize, int xPos, int yPos) {
         g.drawLine(
@@ -562,6 +560,36 @@ public class Component {
                 gridSize * xPos + gridSize / 8,
                 gridSize * yPos - gridSize / 5 + gridSize / 8
         );
+    }
+
+    /**
+     * draws the transistor at an x and y position (in CircuiTikz coordinates)
+     * to the schematic window, must
+     *
+     * @param g graphics object to be drawn onto
+     * @param gridSize current size of the grid
+     * @param xPos x position in circuitikz coordinates
+     * @param yPos y position in circuitikz coordinates
+     * @param selected boolean indicating whether or not the transistor should
+     * be drawn as a selected component
+     */
+    public static void drawTransistor(Graphics g, int gridSize, int xPos, int yPos, boolean selected) {
+        if (selected) {
+            g.setColor(Color.blue);
+        } else {
+            g.setColor(Color.white);
+        }
+        g.drawLine(gridSize * xPos, gridSize * yPos, gridSize * xPos, gridSize * yPos - gridSize);
+        g.drawLine(gridSize * xPos, gridSize * yPos, gridSize * xPos, gridSize * yPos + gridSize);
+        g.drawLine(gridSize * xPos, gridSize * yPos, gridSize * xPos - gridSize, gridSize * yPos);
+        g.setColor(Color.black);
+        g.fillOval(gridSize * xPos - gridSize / 3, gridSize * yPos - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
+        if (selected) {
+            g.setColor(Color.blue);
+        } else {
+            g.setColor(Color.white);
+        }
+        g.drawOval(gridSize * xPos - gridSize / 3, gridSize * yPos - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
     }
 
 }
