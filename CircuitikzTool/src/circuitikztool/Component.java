@@ -1,17 +1,10 @@
 package circuitikztool;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
-/* TODO: 
-    - give transistors a default label in the latex output (Q1, Q2, Q3, etc)
-
- */
 /**
  * Component is meant to be a data object for storing all possible component
  * objects in a single arrayList inside of the class CircuitMaker. For that

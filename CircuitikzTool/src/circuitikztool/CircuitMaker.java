@@ -32,9 +32,25 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
+    /**
+     * controls the background color of the circuitmaker window, this way it's
+     * easy to change visual parameters if we want to do so
+     */
     public static Color backgroundColor = new Color((float) .93, (float) .93, (float) .93);
+
+    /**
+     * color of components by default when they're placed and being displayed
+     */
     public static Color componentColor = Color.BLACK;
+
+    /**
+     * color of components when they are selected in the Components list box
+     */
     public static Color selectedColor = Color.blue;
+
+    /**
+     * color of the grid dots that are drawn in the circuitmaker window
+     */
     public static Color gridColor = Color.GRAY;
 
     //LaTeX formatting parameters used for generating the final latex output
