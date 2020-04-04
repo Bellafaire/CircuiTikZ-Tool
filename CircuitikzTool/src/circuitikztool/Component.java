@@ -92,22 +92,22 @@ public class Component {
         switch (componentSelected) {
             case TRANSISTOR_NPN:
                 deviceID = TransistorCounter++;
-                latexParameters = "node[npn](Q" + deviceID + "){}";
+                latexParameters = "node[npn](Q" + deviceID + "){Q" + deviceID + "}";
                 Label = "NPN Transistor";
                 break;
             case TRANSISTOR_PNP:
                 deviceID = TransistorCounter++;
-                latexParameters = "node[pnp](Q" + deviceID + "){}";
+                latexParameters = "node[pnp](Q" + deviceID + "){Q" + deviceID + "}";
                 Label = "PNP Transistor";
                 break;
             case NMOS:
                 deviceID = TransistorCounter++;
-                latexParameters = "node[nmos](Q" + deviceID + "){}";
+                latexParameters = "node[nmos](Q" + deviceID + "){Q" + deviceID + "}";
                 Label = "N-MOS";
                 break;
             case PMOS:
                 deviceID = TransistorCounter++;
-                latexParameters = "node[pmos](Q" + deviceID + "){}";
+                latexParameters = "node[pmos](Q" + deviceID + "){Q" + deviceID + "}";
                 Label = "P-MOS";
                 break;
             case GROUND_NODE:
