@@ -257,9 +257,9 @@ public class Component {
     public void paint(Graphics g, int gridSize, Point offset, boolean selected) {
         //if a component is selected we should set its color differently. 
         if (selected) {
-            g.setColor(Color.blue);
+            g.setColor(CircuitMaker.selectedColor);
         } else {
-            g.setColor(Color.white);
+            g.setColor(CircuitMaker.componentColor);
         }
 
         /*
@@ -328,17 +328,17 @@ public class Component {
         int boxPadding = 3;
 
         //create bounding box for the string
-        g.setColor(Color.BLACK);
+        g.setColor(CircuitMaker.backgroundColor);
         g.fillRect((int) labelPosition.getX() + offset.x * gridSize - stringWidth / 2 - boxPadding, (int) labelPosition.getY() + offset.y * gridSize + 2 - fontSize - boxPadding, stringWidth + boxPadding * 2, fontSize + boxPadding * 2);
 
         if (selected) {
-            g.setColor(Color.blue);
+            g.setColor(CircuitMaker.selectedColor);
         } else {
-            g.setColor(Color.white);
+            g.setColor(CircuitMaker.componentColor);
         }
 
         //create white border around label so it pops a little better
-        g.setColor(Color.WHITE);
+        g.setColor(CircuitMaker.componentColor);
         g.drawRect((int) labelPosition.getX() + offset.x * gridSize - stringWidth / 2 - boxPadding, (int) labelPosition.getY() + offset.y * gridSize + 2 - fontSize - boxPadding, stringWidth + boxPadding * 2, fontSize + boxPadding * 2);
         //draw label string
         g.drawString(Label, (int) labelPosition.getX() + offset.x * gridSize - stringWidth / 2, (int) labelPosition.getY() + offset.y * gridSize + 2);
@@ -613,19 +613,19 @@ public class Component {
      */
     public static void drawTransistor(Graphics g, int gridSize, int xPos, int yPos, boolean selected) {
         if (selected) {
-            g.setColor(Color.blue);
+            g.setColor(CircuitMaker.selectedColor);
         } else {
-            g.setColor(Color.white);
+            g.setColor(CircuitMaker.componentColor);
         }
         g.drawLine(gridSize * xPos, gridSize * yPos, gridSize * xPos, gridSize * yPos - gridSize);
         g.drawLine(gridSize * xPos, gridSize * yPos, gridSize * xPos, gridSize * yPos + gridSize);
         g.drawLine(gridSize * xPos, gridSize * yPos, gridSize * xPos - gridSize, gridSize * yPos);
-        g.setColor(Color.black);
+        g.setColor(CircuitMaker.backgroundColor);
         g.fillOval(gridSize * xPos - gridSize / 3, gridSize * yPos - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
         if (selected) {
-            g.setColor(Color.blue);
+            g.setColor(CircuitMaker.selectedColor);
         } else {
-            g.setColor(Color.white);
+            g.setColor(CircuitMaker.componentColor);
         }
         g.drawOval(gridSize * xPos - gridSize / 3, gridSize * yPos - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
     }
@@ -646,9 +646,9 @@ public class Component {
      */
     public static void drawOpamp(Graphics g, int gridSize, int xPos, int yPos, boolean selected, int component) {
         if (selected) {
-            g.setColor(Color.blue);
+            g.setColor(CircuitMaker.selectedColor);
         } else {
-            g.setColor(Color.white);
+            g.setColor(CircuitMaker.componentColor);
         }
 
         Polygon opampBody = new Polygon();
@@ -656,12 +656,12 @@ public class Component {
         opampBody.addPoint((int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos - 1.5)));
         opampBody.addPoint((int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos + 1.5)));
 
-        g.setColor(Color.black);
+        g.setColor(CircuitMaker.backgroundColor);
         g.fillPolygon(opampBody);
         if (selected) {
-            g.setColor(Color.blue);
+            g.setColor(CircuitMaker.selectedColor);
         } else {
-            g.setColor(Color.white);
+            g.setColor(CircuitMaker.componentColor);
         }
         g.drawPolygon(opampBody);
 

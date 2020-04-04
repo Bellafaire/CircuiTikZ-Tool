@@ -32,6 +32,11 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
+    public static Color backgroundColor = new Color((float) .93, (float) .93, (float) .93);
+    public static Color componentColor = Color.BLACK;
+    public static Color selectedColor = Color.blue;
+    public static Color gridColor = Color.GRAY;
+
     //LaTeX formatting parameters used for generating the final latex output
     boolean wrapInFigure = true;
     boolean americanStyleComponents = true;
@@ -238,17 +243,17 @@ public class CircuitMaker extends JPanel {
         originOffset = new Point(x_offset / GRID_SIZE, y_offset / GRID_SIZE);
 
         //fill in the background with the background color
-        g.setColor(Color.BLACK);
+        g.setColor(backgroundColor);
         g.fillRect(0, 0, 10000, 10000);
 
         //if someone hovers over the origin lets make sure they know that its the origin
         if (originOffsetX == xGridPosition * GRID_SIZE && originOffsetY == yGridPosition * GRID_SIZE) {
-            g.setColor(Color.white);
+            g.setColor(gridColor);
             g.drawString("Origin", originOffsetX - 10, originOffsetY - 5);
         }
 
         //draw the grid
-        g.setColor(Color.GRAY);
+        g.setColor(gridColor);
         for (int x = 0; x < this.getWidth(); x += GRID_SIZE) {
             for (int y = 0; y < this.getHeight(); y += GRID_SIZE) {
                 g.drawLine(x, y, x, y);
@@ -256,11 +261,11 @@ public class CircuitMaker extends JPanel {
         }
 
         //draw origin
-        g.setColor(Color.BLUE);
+        g.setColor(selectedColor);
         g.fillOval(originOffsetX - 3, originOffsetY - 3, 5, 5);
 
         //draw the current mouse position snapped to the grid
-        g.setColor(Color.white);
+        g.setColor(componentColor);
         g.fillOval(GRID_SIZE * xGridPosition - 3, GRID_SIZE * yGridPosition - 3, 5, 5);
 
         /*
@@ -269,7 +274,7 @@ public class CircuitMaker extends JPanel {
         for other components draw the component to the users's mouse position mapped to the grid. 
          */
         if (clicking) {
-            g.setColor(Color.white);
+            g.setColor(componentColor);
 
             //path components just draw a line from start to the current position
             if (Component.isPathComponent(currentTool)) {
