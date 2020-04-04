@@ -9,15 +9,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 
+/**
+ *
+ * @author James
+ */
 public class CircuitikzTool extends JFrame {
 
+    /**
+     *
+     */
     static public CircuitikzTool ct = new CircuitikzTool();
+
+    /**
+     *
+     */
     static public GUI ui = new GUI();
 
+    /**
+     *
+     */
     public CircuitikzTool() {
 
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         ui.setTitle("CircuiTikz Tool");
         ui.setLocationRelativeTo(null);

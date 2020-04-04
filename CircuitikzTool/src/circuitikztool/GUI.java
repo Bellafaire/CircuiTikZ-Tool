@@ -311,7 +311,7 @@ public class GUI extends javax.swing.JFrame {
     private void componentListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_componentListValueChanged
         //stuff that happens whenever we change the selected component in the selection list
         schematicWindow.setSelectedComponentIndex(componentList.getSelectedIndex());
-        componentString.setText(schematicWindow.getSelectedComponentString());
+        componentString.setText(schematicWindow.getSelectedComponentLatexString());
         componentLabel.setText(schematicWindow.getSelectedComponentLabel());
     }//GEN-LAST:event_componentListValueChanged
 
@@ -334,7 +334,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void componentStringCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_componentStringCaretUpdate
         //stuff that happens whenever component string is updated, mostly just need to pass the current string down the line so that the component's field can be updated
-        schematicWindow.setSelectedComponentString(componentString.getText());
+        schematicWindow.setSelectedComponentLatexString(componentString.getText());
         updateLatexString(); //since we made a change that affects the latex output we need to update the output window
     }//GEN-LAST:event_componentStringCaretUpdate
 
@@ -379,36 +379,48 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_wrapFigureCheckboxActionPerformed
 
     private void americanCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_americanCheckboxActionPerformed
+
         schematicWindow.americanStyleComponents = americanCheckbox.isSelected();
         updateLatexString(); //since we made a change that affects the latex output we need to update the output window
     }//GEN-LAST:event_americanCheckboxActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        //just the "about" window, just want there to be some information inside the program itself somewhere.
         JOptionPane.showMessageDialog(this, "Circuitikz Tool by Matthew James Bellafaire \nProject Github Repo https://github.com/Bellafaire/CircuiTikZ-Tool", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void outputFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_outputFieldFocusGained
-       //last check, when the user clicks into this window we need to make sure the output is up to date
-        updateLatexString(); 
+        //last check, when the user clicks into this window we need to make sure the output is up to date
+        updateLatexString();
     }//GEN-LAST:event_outputFieldFocusGained
 
+    /**updates the UI Component list with a current list of all the components in the schematic window. Should be called as often as possible if any change has occurred
+     * to any of the components in the schematic window
+     */
     public void updateComponentList() {
         String[] listItems = schematicWindow.getComponentList();
-        CircuitikzTool.ui.componentList.setListData(listItems);
-        CircuitikzTool.ui.componentList.setSelectedIndex(schematicWindow.getSelectedComponentIndex());
+        componentList.setListData(listItems);
+        componentList.setSelectedIndex(schematicWindow.getSelectedComponentIndex());
     }
 
+    /** updates the component label field of the UI, used by the schematicWindow 
+     * to change the UI Fields when a component is selected 
+     *
+     * @param text value for the UI "Component Label" field to be set to 
+     */
     public void updateComponentLabel(String text) {
         componentLabel.setText(text);
     }
 
+    /** updates the component string field of the UI, used by the schematicWindow 
+     * to change the UI Fields when a component is selected 
+     *
+     * @param text value for the UI "Component String" field to be set to 
+     */
     public void updateComponentString(String text) {
         componentString.setText(text);
     }
 
-    public int getCurrentToolSelected() {
-        return toolSelector.getSelectedIndex();
-    }
 
     private void keyHandler(java.awt.event.KeyEvent evt) {
         System.out.print("Key pressed ");
@@ -419,15 +431,16 @@ public class GUI extends javax.swing.JFrame {
         }
         System.out.println("");
     }
-
-    public void deslectList() {
-        componentList.clearSelection();
-    }
-
+    /**
+     *
+     */
     public void repaintCircuitMaker() {
         schematicWindow.repaint();
     }
 
+    /** Updates the output latex string by calling the generateLatexString() function of the schematicWindow class CircuitMaker
+     *
+     */
     public void updateLatexString() {
         //update output with the current LaTex string of the circuit
         outputField.setText(schematicWindow.generateLatexString());
