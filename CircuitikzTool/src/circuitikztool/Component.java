@@ -486,15 +486,15 @@ public class Component {
                     break;
                 case OPAMP_3TERMINAL:
                     //breakout the opamp's terminals to fit with the current grid system:
-                    output += "\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
-                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() + 1) + ");\n";
-                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX() + 2) + "," + (int) (-1) * (position.getY()) + ");";
+                    output += "\n\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 3) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 3) + "," + (int) (-1) * (position.getY() + 1) + ");";
+//                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX() +1 ) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
                 case OPAMP_5TERMINAL:
                     //breakout the opamp's terminals to fit with the current grid system:
-                    output += "\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
-                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() + 1) + ");\n";
-                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX() + 2) + "," + (int) (-1) * (position.getY()) + ");\n";
+                    output += "\n\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 3) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 3) + "," + (int) (-1) * (position.getY() + 1) + ");";
+//                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX()) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
             }
         }
@@ -659,8 +659,8 @@ public class Component {
         g.drawPolygon(opampBody);
 
         //add terminals
-        g.drawLine((int) (gridSize * (xPos - 2)), (int) (gridSize * (yPos - 1)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos - 1)));
-        g.drawLine((int) (gridSize * (xPos - 2)), (int) (gridSize * (yPos + 1)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos + 1)));
+        g.drawLine((int) (gridSize * (xPos - 3)), (int) (gridSize * (yPos - 1)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos - 1)));
+        g.drawLine((int) (gridSize * (xPos - 3)), (int) (gridSize * (yPos + 1)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos + 1)));
 
         //finally add the inverting and non-inverting input indicators  
         //inverting indicator
