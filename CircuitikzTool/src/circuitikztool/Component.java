@@ -83,7 +83,7 @@ public class Component {
      */
     public Component(Point position, int componentSelected) {
         this.position = position;                                //pass the input parameter to the object
- 
+
         /* Depending on the component selected we need to initalize the string parameter's such that the latex output is correct
         The values passed into latexParameters and Label are meant to be "template" values  
         when adding a non-path component it needs to be added ONLY to this constructor, the fact that this constructor throws an exception when
@@ -127,12 +127,12 @@ public class Component {
                 //original template string, however we have to treat them differently in the latex output
                 //and in the drawing
                 deviceID = OpAmpCounter++;
-                latexParameters = "node[op amp] (opamp" + deviceID + ") {}";
+                latexParameters = "node[op amp,scale=2.04] (opamp" + deviceID + ") {}";
                 Label = "3-Term Opamp";
                 break;
             case OPAMP_5TERMINAL:
                 deviceID = OpAmpCounter++;
-                latexParameters = "node[op amp] (opamp" + deviceID + ") {}";
+                latexParameters = "node[op amp,scale=2.04] (opamp" + deviceID + ") {}";
                 Label = "5-Term Opamp";
                 break;
             default:
@@ -493,11 +493,15 @@ public class Component {
                     break;
                 case OPAMP_3TERMINAL:
                     //breakout the opamp's terminals to fit with the current grid system:
-                    output += "\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() - .5) + ");\n";
-                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() + .5) + ");\n";
-                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX() + 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    output += "\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX() + 2) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
                 case OPAMP_5TERMINAL:
+                    //breakout the opamp's terminals to fit with the current grid system:
+                    output += "\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 2) + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX() + 2) + "," + (int) (-1) * (position.getY()) + ");\n";
                     break;
             }
         }
@@ -647,16 +651,10 @@ public class Component {
             g.setColor(Color.white);
         }
 
-        //have to draw the power supply inputs for 5 terminal opamps 
-        if (component == OPAMP_5TERMINAL) {
-            g.drawLine(gridSize * (xPos + 1), gridSize * yPos, gridSize * (xPos + 1), gridSize * (yPos - 1));
-            g.drawLine(gridSize * (xPos + 1), gridSize * yPos, gridSize * (xPos + 1), gridSize * (yPos + 1));
-        }
-
         Polygon opampBody = new Polygon();
-        opampBody.addPoint(gridSize * (xPos + 1), gridSize * yPos);
-        opampBody.addPoint((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos - .75)));
-        opampBody.addPoint((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos + .75)));
+        opampBody.addPoint(gridSize * (xPos + 2), gridSize * yPos);
+        opampBody.addPoint((int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos - 1.5)));
+        opampBody.addPoint((int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos + 1.5)));
 
         g.setColor(Color.black);
         g.fillPolygon(opampBody);
@@ -668,15 +666,21 @@ public class Component {
         g.drawPolygon(opampBody);
 
         //add terminals
-        g.drawLine((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos - .5)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos - .5)));
-        g.drawLine((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos + .5)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos + .5)));
+        g.drawLine((int) (gridSize * (xPos - 2)), (int) (gridSize * (yPos - 1)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos - 1)));
+        g.drawLine((int) (gridSize * (xPos - 2)), (int) (gridSize * (yPos + 1)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos + 1)));
 
         //finally add the inverting and non-inverting input indicators  
         //inverting indicator
-        g.drawLine((int) (gridSize * (xPos - .2)), (int) (gridSize * (yPos - .5)), (int) (gridSize * (xPos - .4)), (int) (gridSize * (yPos - .5)));
+        g.drawLine((int) (gridSize * (xPos - .4)), (int) (gridSize * (yPos - 1)), (int) (gridSize * (xPos - .8)), (int) (gridSize * (yPos - 1)));
         //non-inverting indicator
-        g.drawLine((int) (gridSize * (xPos - .3)), (int) (gridSize * (yPos + .4)), (int) (gridSize * (xPos - .3)), (int) (gridSize * (yPos + .6)));
-        g.drawLine((int) (gridSize * (xPos - .2)), (int) (gridSize * (yPos + .5)), (int) (gridSize * (xPos - .4)), (int) (gridSize * (yPos + .5)));
+        g.drawLine((int) (gridSize * (xPos - .6)), (int) (gridSize * (yPos + .8)), (int) (gridSize * (xPos - .6)), (int) (gridSize * (yPos + 1.2)));
+        g.drawLine((int) (gridSize * (xPos - .4)), (int) (gridSize * (yPos + 1)), (int) (gridSize * (xPos - .8)), (int) (gridSize * (yPos + 1)));
+
+        //have to draw the power supply inputs for 5 terminal opamps 
+        if (component == OPAMP_5TERMINAL) {
+            g.fillOval(gridSize * (xPos) - gridSize / 8, gridSize * (yPos - 1) - gridSize / 8, gridSize / 4, gridSize / 4);
+            g.fillOval(gridSize * (xPos) - gridSize / 8, gridSize * (yPos + 1) - gridSize / 8, gridSize / 4, gridSize / 4);
+        }
 
     }
 
