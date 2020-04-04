@@ -4,8 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
+/* TODO: 
+    - give transistors a default label in the latex output (Q1, Q2, Q3, etc)
+
+ */
 /**
  * Component is meant to be a data object for storing all possible component
  * objects in a single arrayList inside of the class CircuitMaker. For that
@@ -53,12 +59,17 @@ public class Component {
     final static int TRANSISTOR_PNP = 11;
     final static int NMOS = 12;
     final static int PMOS = 13;
+    final static int OPAMP_3TERMINAL = 14;
+    final static int OPAMP_5TERMINAL = 15;
 
     //LaTeX doesn't like 3 terminal devices having the same name, we use this variable so that their labels are iterated everytime a new 3 terminal component is placed. 
-    private static int nonPathCount = 1;
+    private static int TransistorCounter = 1;
+    private static int OpAmpCounter = 1;
 
-    //this is the value assigned from the above variable when a 3 terminal component is created (first transistor placed will have 1, second transistor will have 2, etc...) 
-    private int threeTerminalIdentifier;
+    //circuitikz requires us to give unique labels to components in order to connect nodes to them
+    //for transistors and other multi-terminal devices we need to have a unique ID
+    //the deviceID is only used in the LaTeX output
+    private int deviceID;
 
     /**
      * Constructor for NON-PATH components, requires only a position and a
@@ -72,7 +83,7 @@ public class Component {
      */
     public Component(Point position, int componentSelected) {
         this.position = position;                                //pass the input parameter to the object
-
+ 
         /* Depending on the component selected we need to initalize the string parameter's such that the latex output is correct
         The values passed into latexParameters and Label are meant to be "template" values  
         when adding a non-path component it needs to be added ONLY to this constructor, the fact that this constructor throws an exception when
@@ -80,23 +91,23 @@ public class Component {
          */
         switch (componentSelected) {
             case TRANSISTOR_NPN:
-                threeTerminalIdentifier = nonPathCount++;
-                latexParameters = "node[npn](Q" + threeTerminalIdentifier + "){}";
+                deviceID = TransistorCounter++;
+                latexParameters = "node[npn](Q" + deviceID + "){}";
                 Label = "NPN Transistor";
                 break;
             case TRANSISTOR_PNP:
-                threeTerminalIdentifier = nonPathCount++;
-                latexParameters = "node[pnp](Q" + threeTerminalIdentifier + "){}";
+                deviceID = TransistorCounter++;
+                latexParameters = "node[pnp](Q" + deviceID + "){}";
                 Label = "PNP Transistor";
                 break;
             case NMOS:
-                threeTerminalIdentifier = nonPathCount++;
-                latexParameters = "node[nmos](Q" + threeTerminalIdentifier + "){}";
+                deviceID = TransistorCounter++;
+                latexParameters = "node[nmos](Q" + deviceID + "){}";
                 Label = "N-MOS";
                 break;
             case PMOS:
-                threeTerminalIdentifier = nonPathCount++;
-                latexParameters = "node[pmos](Q" + threeTerminalIdentifier + "){}";
+                deviceID = TransistorCounter++;
+                latexParameters = "node[pmos](Q" + deviceID + "){}";
                 Label = "P-MOS";
                 break;
             case GROUND_NODE:
@@ -110,6 +121,19 @@ public class Component {
             case VSS_NODE:
                 latexParameters = "node[vss]{VSS}";
                 Label = "VSS";
+                break;
+            case OPAMP_3TERMINAL:
+                //3 terminal and 5 terminal opamps are actually identical in terms of their 
+                //original template string, however we have to treat them differently in the latex output
+                //and in the drawing
+                deviceID = OpAmpCounter++;
+                latexParameters = "node[op amp] (opamp" + deviceID + ") {}";
+                Label = "3-Term Opamp";
+                break;
+            case OPAMP_5TERMINAL:
+                deviceID = OpAmpCounter++;
+                latexParameters = "node[op amp] (opamp" + deviceID + ") {}";
+                Label = "5-Term Opamp";
                 break;
             default:
                 //this exception is important in isPathComponent();
@@ -257,6 +281,8 @@ public class Component {
             drawGNDNode(g, gridSize, position.x + offset.x, position.y + offset.y);
         } else if (componentType == VSS_NODE) {
             drawVSSNode(g, gridSize, position.x + offset.x, position.y + offset.y);
+        } else if (componentType == OPAMP_3TERMINAL || componentType == OPAMP_5TERMINAL) {
+            drawOpamp(g, gridSize, position.x + offset.x, position.y + offset.y, selected, componentType);
         } else {
             //if it's not any of those then it's a three terminal transistor so we just draw the transistor
             drawTransistor(g, gridSize, position.x + offset.x, position.y + offset.y, selected);
@@ -443,27 +469,35 @@ public class Component {
             switch (componentType) {
                 case TRANSISTOR_NPN:
                     //breakout the BJT's terminals to fit with the current grid system
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    output += "\\draw (Q" + deviceID + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
                 case TRANSISTOR_PNP:
                     //breakout the BJT's terminals to fit with the current grid system
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    output += "\\draw (Q" + deviceID + ".E) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".B) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
                 case NMOS:
                     //breakout the fet's terminals to fit with the current grid system:
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    output += "\\draw (Q" + deviceID + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
                 case PMOS:
                     //breakout the fets's terminals to fit with the current grid system:
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
-                    output += "\\draw (Q" + threeTerminalIdentifier + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    output += "\\draw (Q" + deviceID + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
+                case OPAMP_3TERMINAL:
+                    //breakout the opamp's terminals to fit with the current grid system:
+                    output += "\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() - .5) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".+) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() + .5) + ");\n";
+                    output += "\\draw (opamp" + deviceID + ".out) to[short] (" + (int) (position.getX() + 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
+                case OPAMP_5TERMINAL:
                     break;
             }
         }
@@ -590,6 +624,60 @@ public class Component {
             g.setColor(Color.white);
         }
         g.drawOval(gridSize * xPos - gridSize / 3, gridSize * yPos - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
+    }
+
+    /**
+     * draws the transistor at an x and y position (in CircuiTikz coordinates)
+     * to the schematic window, must
+     *
+     * @param g graphics object to be drawn onto
+     * @param gridSize current size of the grid
+     * @param xPos x position in circuitikz coordinates
+     * @param yPos y position in circuitikz coordinates
+     * @param selected boolean indicating whether or not the transistor should
+     * be drawn as a selected component
+     * @param component integer representing the component itself, since 5
+     * terminal and 3 terminal opamps need to be drawn differently. (uses
+     * constants defined at the top of Component class)
+     */
+    public static void drawOpamp(Graphics g, int gridSize, int xPos, int yPos, boolean selected, int component) {
+        if (selected) {
+            g.setColor(Color.blue);
+        } else {
+            g.setColor(Color.white);
+        }
+
+        //have to draw the power supply inputs for 5 terminal opamps 
+        if (component == OPAMP_5TERMINAL) {
+            g.drawLine(gridSize * (xPos + 1), gridSize * yPos, gridSize * (xPos + 1), gridSize * (yPos - 1));
+            g.drawLine(gridSize * (xPos + 1), gridSize * yPos, gridSize * (xPos + 1), gridSize * (yPos + 1));
+        }
+
+        Polygon opampBody = new Polygon();
+        opampBody.addPoint(gridSize * (xPos + 1), gridSize * yPos);
+        opampBody.addPoint((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos - .75)));
+        opampBody.addPoint((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos + .75)));
+
+        g.setColor(Color.black);
+        g.fillPolygon(opampBody);
+        if (selected) {
+            g.setColor(Color.blue);
+        } else {
+            g.setColor(Color.white);
+        }
+        g.drawPolygon(opampBody);
+
+        //add terminals
+        g.drawLine((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos - .5)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos - .5)));
+        g.drawLine((int) (gridSize * (xPos - .5)), (int) (gridSize * (yPos + .5)), (int) (gridSize * (xPos - 1)), (int) (gridSize * (yPos + .5)));
+
+        //finally add the inverting and non-inverting input indicators  
+        //inverting indicator
+        g.drawLine((int) (gridSize * (xPos - .2)), (int) (gridSize * (yPos - .5)), (int) (gridSize * (xPos - .4)), (int) (gridSize * (yPos - .5)));
+        //non-inverting indicator
+        g.drawLine((int) (gridSize * (xPos - .3)), (int) (gridSize * (yPos + .4)), (int) (gridSize * (xPos - .3)), (int) (gridSize * (yPos + .6)));
+        g.drawLine((int) (gridSize * (xPos - .2)), (int) (gridSize * (yPos + .5)), (int) (gridSize * (xPos - .4)), (int) (gridSize * (yPos + .5)));
+
     }
 
 }

@@ -5,7 +5,6 @@
  */
 package circuitikztool;
 
-import static circuitikztool.Component.drawTransistor;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
@@ -288,10 +287,11 @@ public class CircuitMaker extends JPanel {
             } else if (currentTool == Component.VSS_NODE) {
                 //for VSS we draw the node at the user's mouse position
                 Component.drawVSSNode(g, GRID_SIZE, xGridPosition, yGridPosition);
+            } else if (currentTool == Component.OPAMP_3TERMINAL || currentTool == Component.OPAMP_5TERMINAL) {
+                Component.drawOpamp(g, GRID_SIZE, xGridPosition, yGridPosition, false, currentTool);
             } else {
-                //TODO put this in a seperate function inside of Components class
                 //draw the transistor as a preview for the user
-                drawTransistor(g, GRID_SIZE, xGridPosition, yGridPosition, false);
+                Component.drawTransistor(g, GRID_SIZE, xGridPosition, yGridPosition, false);
             }
         }
 
