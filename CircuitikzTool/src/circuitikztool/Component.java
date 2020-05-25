@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Component is meant to be a data object for storing all possible component
@@ -26,6 +28,16 @@ public class Component {
 
     int componentType;                    //this variable defines what "Type" of component we're using, please reference the constant vairables below for possible values. 
     private boolean pathComponent = true;
+
+    //LaTeX doesn't like 3 terminal devices having the same name, we use this variable so that their labels are iterated everytime a new 3 terminal component is placed. 
+    private static int TransistorCounter = 1;
+    private static int OpAmpCounter = 1;
+
+    //circuitikz requires us to give unique labels to components in order to connect nodes to them
+    //for transistors and other multi-terminal devices we need to have a unique ID
+    //the deviceID is only used in the LaTeX output
+    private int deviceID;
+
 
     /*
         Since we have to handle as many components as possible with a single class we allow the class to define multiple different types of components
@@ -54,15 +66,6 @@ public class Component {
     final static int PMOS = 13;
     final static int OPAMP_3TERMINAL = 14;
     final static int OPAMP_5TERMINAL = 15;
-
-    //LaTeX doesn't like 3 terminal devices having the same name, we use this variable so that their labels are iterated everytime a new 3 terminal component is placed. 
-    private static int TransistorCounter = 1;
-    private static int OpAmpCounter = 1;
-
-    //circuitikz requires us to give unique labels to components in order to connect nodes to them
-    //for transistors and other multi-terminal devices we need to have a unique ID
-    //the deviceID is only used in the LaTeX output
-    private int deviceID;
 
     /**
      * Constructor for NON-PATH components, requires only a position and a
@@ -200,6 +203,59 @@ public class Component {
                 throw new IllegalArgumentException("No PATH component type exists for constant " + componentSelected);
         }
         componentType = componentSelected; //pass the selected component value to the object
+    }
+
+    public static Component getComponentFromXML(String xml) {
+        if (getDataFromXMLTag(xml, "pathComponent").equals("true")) {
+            Component ret = new Component(
+                    new Point(Integer.parseInt(getDataFromXMLTag(xml, "start-x")), Integer.parseInt(getDataFromXMLTag(xml, "start-y"))),
+                    new Point(Integer.parseInt(getDataFromXMLTag(xml, "end-x")), Integer.parseInt(getDataFromXMLTag(xml, "end-y"))),
+                    Integer.parseInt(getDataFromXMLTag(xml, "type"))
+            );
+            ret.setLatexString(getDataFromXMLTag(xml, "latexParameters"));
+            ret.setComponentLabel(getDataFromXMLTag(xml, "label"));
+            return ret;
+        } else {
+            Component ret = new Component(
+                    new Point(Integer.parseInt(getDataFromXMLTag(xml, "position-x")), Integer.parseInt(getDataFromXMLTag(xml, "position-y"))),
+                    Integer.parseInt(getDataFromXMLTag(xml, "type"))
+            );
+            ret.setLatexString(getDataFromXMLTag(xml, "latexParameters"));
+            ret.setComponentLabel(getDataFromXMLTag(xml, "label"));
+            return ret;
+        }
+    }
+
+    public static String getDataFromXMLTag(String xml, String tag) {
+        try{
+        int startPos = xml.indexOf("<" + tag + ">") + tag.length() + 2;
+        int endPos = xml.indexOf("</" + tag + ">");
+        System.out.println(xml.substring(startPos, endPos));
+        return xml.substring(startPos, endPos);
+        }catch(StringIndexOutOfBoundsException e){
+            System.out.println("tag \"" + tag + "\" not found");
+            return "";
+        }
+    }
+
+    public String toXML() {
+        String ret = "<component>";
+        if (pathComponent) {
+            ret += "<pathComponent>true</pathComponent>";
+            ret += "<start-x>" + wireStart.x + "</start-x>";
+            ret += "<start-y>" + wireStart.y + "</start-y>";
+            ret += "<end-x>" + wireEnd.x + "</end-x>";
+            ret += "<end-y>" + wireEnd.y + "</end-y>";
+        } else {
+            ret += "<pathComponent>false</pathComponent>";
+            ret += "<position-x>" + position.x + "</position-x>";
+            ret += "<position-y>" + position.y + "</position-y>";
+        }
+        ret += "<type>" + componentType + "</type>";
+        ret += "<label>" + Label + "</label>";
+        ret += "<latexParameters>" + latexParameters + "</latexParameters>";
+        ret += "</component>";
+        return ret;
     }
 
     /**
