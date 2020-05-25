@@ -4,7 +4,9 @@ The goal of this project isn't to do everything with CircuiTikz, just handle the
 Component labels, display parameters, and other configuration options are editable by the user through text fields. 
 Currently most of the basic functionality is implemented in the program, some "quality of life" features still need to be added before the program is out of the pre-release stage. 
 
-Currently Supported Components (Pre-release 0.0.3): 
+For a **How-to-use** guide please see the wiki of this github page.
+
+Currently Supported Components (Pre-release 0.0.5): 
 - Path (wire) 
 - Resistors
 - Capacitors
