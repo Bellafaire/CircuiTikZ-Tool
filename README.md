@@ -2,7 +2,7 @@
 This project is designed to be an open-source tool for creating schematics with CircuiTikz. 
 The goal of this project isn't to do everything with CircuiTikz, just handle the tedious parts of creating circuits in LaTex. 
 Component labels, display parameters, and other configuration options are editable by the user through text fields. 
-Currently most of the basic functionality is in the program with the exception of file input/output and some display parameters being editable in the UI. 
+Currently most of the basic functionality is implemented in the program, some "quality of life" features still need to be added before the program is out of the pre-release stage. 
 
 Currently Supported Components (Pre-release 0.0.3): 
 - Path (wire) 
@@ -19,8 +19,15 @@ Currently Supported Components (Pre-release 0.0.3):
 - PNP Transistor
 - N-Mos Transistor
 - P-Mos Transistor 
+- 3 terminal opamps
+- 5 terminal opamps
 
 (Technically these are just the components with a "template" in the editor, parameters can be edited freely in the program such that most components available in CircuiTikz are useable)
+
+TODO: 
+- implement creation of block/IC style devices
+- clean up UI 
+- add "customization menu" accessable by double clicking a given component
 
 ## Running CircuiTikZ Tool
 A lot of work still needs to be done before adding a full release to this repo.
