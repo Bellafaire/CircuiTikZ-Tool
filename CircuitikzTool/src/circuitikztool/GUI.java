@@ -6,20 +6,14 @@
 package circuitikztool;
 
 import com.sun.glass.events.KeyEvent;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -311,7 +305,8 @@ public class GUI extends javax.swing.JFrame {
 //        d.setVisible(true);
         //Handle open button action.
         JFileChooser fc = new JFileChooser();
-
+        fc.setApproveButtonText("Save");
+        
         int returnVal = fc.showOpenDialog(GUI.this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -339,15 +334,13 @@ public class GUI extends javax.swing.JFrame {
     private void openOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openOptionActionPerformed
         JFileChooser fc = new JFileChooser();
 
+        
         int returnVal = fc.showOpenDialog(GUI.this);
-
+       
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
 
             try {
-                //This is where a real application would open the file.
-//            log.append("Opening: " + file.getName() + "." + newline);
-//                BufferedReader r = new BufferedReader(new FileReader(file));
                 String xml = new String(Files.readAllBytes(file.toPath()));
                 schematicWindow.loadCircuitFromXML(xml);
                 updateComponentList();
