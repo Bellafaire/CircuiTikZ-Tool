@@ -400,6 +400,23 @@ public class CircuitMaker extends JPanel {
         }
     }
 
+    public String getCircuitXML() {
+        String ret = "";
+        for (int a = 0; a < components.size(); a++) {
+            ret += components.get(a).toXML() + "\n";
+        }
+        return ret;
+    }
+
+    public void loadCircuitFromXML(String xml) {
+        String[] coms = xml.split("\n");
+        components.clear();
+        Component.resetStatics();
+        for (int a = 0; a < coms.length; a++) {
+            components.add(Component.getComponentFromXML(coms[a]));
+        }
+    }
+
     /**
      * Converts the entire schematic into a LaTeX figure using circuitikz,
      * individual components generate their own latex line in the Components

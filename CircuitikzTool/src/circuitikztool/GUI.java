@@ -6,8 +6,19 @@
 package circuitikztool;
 
 import com.sun.glass.events.KeyEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -58,8 +69,8 @@ public class GUI extends javax.swing.JFrame {
         wrapFigureCheckbox = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        saveOption = new javax.swing.JMenuItem();
+        openOption = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -196,21 +207,21 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Save");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        saveOption.setText("Save");
+        saveOption.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                saveOptionActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(saveOption);
 
-        jMenuItem2.setText("Open");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        openOption.setText("Open");
+        openOption.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                openOptionActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(openOption);
 
         jMenuBar1.add(jMenu1);
 
@@ -292,21 +303,61 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void saveOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOptionActionPerformed
         // TODO add your handling code here:
-        JDialog d = new JDialog(this, "currently unsupported");
-        d.setSize(500, 100);
-        d.setLocationRelativeTo(null);
-        d.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+//        JDialog d = new JDialog(this, "currently unsupported");
+//        d.setSize(500, 100);
+//        d.setLocationRelativeTo(null);
+//        d.setVisible(true);
+        //Handle open button action.
+        JFileChooser fc = new JFileChooser();
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        JDialog d = new JDialog(this, "currently unsupported");
-        d.setSize(100, 100);
-        d.setLocationRelativeTo(null);
-        d.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+        int returnVal = fc.showOpenDialog(GUI.this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file;
+            if ((fc.getSelectedFile().getAbsolutePath() + "").contains(".ikz")) {
+                file = new File(fc.getSelectedFile().getAbsoluteFile() + "");
+            } else {
+                file = new File(fc.getSelectedFile().getAbsoluteFile() + ".ikz");
+            }
+            try {
+                //This is where a real application would open the file.
+//            log.append("Opening: " + file.getName() + "." + newline);
+                BufferedWriter w = new BufferedWriter(new FileWriter(file));
+                w.write(schematicWindow.getCircuitXML());
+                w.close();
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+//            log.append("Open command cancelled by user." + newline);
+        }
+
+    }//GEN-LAST:event_saveOptionActionPerformed
+
+    private void openOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openOptionActionPerformed
+        JFileChooser fc = new JFileChooser();
+
+        int returnVal = fc.showOpenDialog(GUI.this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+
+            try {
+                //This is where a real application would open the file.
+//            log.append("Opening: " + file.getName() + "." + newline);
+//                BufferedReader r = new BufferedReader(new FileReader(file));
+                String xml = new String(Files.readAllBytes(file.toPath()));
+                schematicWindow.loadCircuitFromXML(xml);
+                updateComponentList();
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+//            log.append("Open command cancelled by user." + newline);
+        }
+    }//GEN-LAST:event_openOptionActionPerformed
 
     private void componentListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_componentListValueChanged
         //stuff that happens whenever we change the selected component in the selection list
@@ -394,8 +445,10 @@ public class GUI extends javax.swing.JFrame {
         updateLatexString();
     }//GEN-LAST:event_outputFieldFocusGained
 
-    /**updates the UI Component list with a current list of all the components in the schematic window. Should be called as often as possible if any change has occurred
-     * to any of the components in the schematic window
+    /**
+     * updates the UI Component list with a current list of all the components
+     * in the schematic window. Should be called as often as possible if any
+     * change has occurred to any of the components in the schematic window
      */
     public void updateComponentList() {
         String[] listItems = schematicWindow.getComponentList();
@@ -403,24 +456,25 @@ public class GUI extends javax.swing.JFrame {
         componentList.setSelectedIndex(schematicWindow.getSelectedComponentIndex());
     }
 
-    /** updates the component label field of the UI, used by the schematicWindow 
-     * to change the UI Fields when a component is selected 
+    /**
+     * updates the component label field of the UI, used by the schematicWindow
+     * to change the UI Fields when a component is selected
      *
-     * @param text value for the UI "Component Label" field to be set to 
+     * @param text value for the UI "Component Label" field to be set to
      */
     public void updateComponentLabel(String text) {
         componentLabel.setText(text);
     }
 
-    /** updates the component string field of the UI, used by the schematicWindow 
-     * to change the UI Fields when a component is selected 
+    /**
+     * updates the component string field of the UI, used by the schematicWindow
+     * to change the UI Fields when a component is selected
      *
-     * @param text value for the UI "Component String" field to be set to 
+     * @param text value for the UI "Component String" field to be set to
      */
     public void updateComponentString(String text) {
         componentString.setText(text);
     }
-
 
     private void keyHandler(java.awt.event.KeyEvent evt) {
         System.out.print("Key pressed ");
@@ -431,6 +485,7 @@ public class GUI extends javax.swing.JFrame {
         }
         System.out.println("");
     }
+
     /**
      *
      */
@@ -438,7 +493,9 @@ public class GUI extends javax.swing.JFrame {
         schematicWindow.repaint();
     }
 
-    /** Updates the output latex string by calling the generateLatexString() function of the schematicWindow class CircuitMaker
+    /**
+     * Updates the output latex string by calling the generateLatexString()
+     * function of the schematicWindow class CircuitMaker
      *
      */
     public void updateLatexString() {
@@ -501,13 +558,13 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JMenuItem openOption;
     public javax.swing.JTextPane outputField;
+    private javax.swing.JMenuItem saveOption;
     /*
     private javax.swing.JPanel schematicWindow;
     */

@@ -38,7 +38,6 @@ public class Component {
     //the deviceID is only used in the LaTeX output
     private int deviceID;
 
-
     /*
         Since we have to handle as many components as possible with a single class we allow the class to define multiple different types of components
         in this way we are able to store everything in a single array list. 
@@ -227,12 +226,12 @@ public class Component {
     }
 
     public static String getDataFromXMLTag(String xml, String tag) {
-        try{
-        int startPos = xml.indexOf("<" + tag + ">") + tag.length() + 2;
-        int endPos = xml.indexOf("</" + tag + ">");
-        System.out.println(xml.substring(startPos, endPos));
-        return xml.substring(startPos, endPos);
-        }catch(StringIndexOutOfBoundsException e){
+        try {
+            int startPos = xml.indexOf("<" + tag + ">") + tag.length() + 2;
+            int endPos = xml.indexOf("</" + tag + ">");
+            System.out.println(xml.substring(startPos, endPos));
+            return xml.substring(startPos, endPos);
+        } catch (StringIndexOutOfBoundsException e) {
             System.out.println("tag \"" + tag + "\" not found");
             return "";
         }
@@ -256,6 +255,11 @@ public class Component {
         ret += "<latexParameters>" + latexParameters + "</latexParameters>";
         ret += "</component>";
         return ret;
+    }
+
+    public static void resetStatics() {
+        TransistorCounter = 1;
+        OpAmpCounter = 1;
     }
 
     /**
