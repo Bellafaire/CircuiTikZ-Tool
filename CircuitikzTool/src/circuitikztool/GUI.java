@@ -299,13 +299,9 @@ public class GUI extends javax.swing.JFrame {
 
     private void saveOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOptionActionPerformed
         // TODO add your handling code here:
-//        JDialog d = new JDialog(this, "currently unsupported");
-//        d.setSize(500, 100);
-//        d.setLocationRelativeTo(null);
-//        d.setVisible(true);
-        //Handle open button action.
         JFileChooser fc = new JFileChooser();
         fc.setApproveButtonText("Save");
+        fc.setCurrentDirectory(new File("."));
         
         int returnVal = fc.showOpenDialog(GUI.this);
 
@@ -333,10 +329,9 @@ public class GUI extends javax.swing.JFrame {
 
     private void openOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openOptionActionPerformed
         JFileChooser fc = new JFileChooser();
-
-        
+        fc.setCurrentDirectory(new File("."));
         int returnVal = fc.showOpenDialog(GUI.this);
-       
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
 
