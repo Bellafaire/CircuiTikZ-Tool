@@ -229,7 +229,6 @@ public class Component {
         try {
             int startPos = xml.indexOf("<" + tag + ">") + tag.length() + 2;
             int endPos = xml.indexOf("</" + tag + ">");
-            System.out.println(xml.substring(startPos, endPos));
             return xml.substring(startPos, endPos);
         } catch (StringIndexOutOfBoundsException e) {
             System.out.println("tag \"" + tag + "\" not found");
@@ -274,7 +273,7 @@ public class Component {
 
     /**
      * Since the circuit maker class will need to know which indexes are pathing
-     * components and which ones aren;t we use this function to test a given
+     * components and which ones aren't we use this function to test a given
      * index to determine whether or not a component is a path component. This
      * relys on the constructor's being properly split between pathing and non
      * pathing components.
