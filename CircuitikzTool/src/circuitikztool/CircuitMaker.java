@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -155,6 +156,8 @@ public class CircuitMaker extends JPanel {
                         lastMouseX = MouseInfo.getPointerInfo().getLocation().x;
                         lastMouseY = MouseInfo.getPointerInfo().getLocation().y;
                         break;
+                    case MouseEvent.BUTTON3:
+                        configComponent(getComponentClosestToPointer());
                     default:
                         break;
                 }
@@ -180,6 +183,7 @@ public class CircuitMaker extends JPanel {
                 }
 
             }
+
         });
 
         addMouseWheelListener(new MouseWheelListener() {
@@ -194,6 +198,35 @@ public class CircuitMaker extends JPanel {
                 //     System.out.println("Grid size is now " + GRID_SIZE);
             }
         });
+    }
+
+    private int getComponentClosestToPointer() {
+        Point position = new Point(xGridPosition - originOffset.x, yGridPosition - originOffset.y);
+
+        double shortestDistance = Double.MAX_VALUE;
+        int index = -1;
+
+        //for path components we look for the center of the line, non-path have a single position so that makes things easier. 
+        for (int a = 0; a < components.size(); a++) {
+            double distance = Double.MAX_VALUE;
+            if (components.get(a).isPathComponent()) {
+                //find center of line
+                Point center = new Point((components.get(a).wireStart.x + components.get(a).wireEnd.x) / 2, (components.get(a).wireStart.y + components.get(a).wireEnd.y) / 2);
+                distance = Point.distance(center.x, center.y, position.x, position.y);
+            } else {
+                distance = Point.distance(components.get(a).getPosition().x, components.get(a).getPosition().y, position.x, position.y);
+            }
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                index = a;
+            }
+        }
+        return index;
+    }
+
+    private void configComponent(int componentIndex) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JOptionPane.showMessageDialog(this, "Selected: " + componentIndex);
     }
 
     /**

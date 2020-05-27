@@ -65,6 +65,12 @@ public class Component {
     final static int PMOS = 13;
     final static int OPAMP_3TERMINAL = 14;
     final static int OPAMP_5TERMINAL = 15;
+    
+    
+    //non-component commands used for Latex Component Builder
+    final static int DELETE = 1000;
+    final static int CANCEL = 1001; 
+    
 
     /**
      * Constructor for NON-PATH components, requires only a position and a
@@ -471,6 +477,14 @@ public class Component {
         }
     }
 
+    public Point getPosition(){
+        if(pathComponent){
+            throw new IllegalStateException();
+        }else{
+            return position; 
+        }
+    }
+    
     /**
      * returns the component label string, including information about the
      * placement of the component for display in the UI.
