@@ -35,6 +35,24 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         latexString.setText(inputComponent.getLatexString());
         label.setText(inputComponent.getComponentLabel());
 
+        if (inputComponent.isPathComponent()) {
+            info.setText("Path Component CircuiTikz Reference\n"
+                    + "l= - label assigned to component\n"
+                    + "v= - labels voltage across component\n"
+                    + "i= - labels current through component\n"
+                    + "*- - adds \"connection\" dots at start of path\n"
+                    + "-* - adds \"connection\" dots at end of path\n"
+                    + "*-* - adds \"connection\" dots to both ends of path");
+        } else {
+            info.setText("");
+        }
+        int lineCount = 1;
+        for (int a = 0; a < info.getText().length(); a++) {
+            if (info.getText().charAt(a) == '\n') {
+                lineCount++;
+            }
+        }
+        this.setSize(this.getWidth(), this.getHeight() + 15 * lineCount);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -63,6 +81,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         latexString = new javax.swing.JTextField();
@@ -70,6 +89,10 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         delete = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
         Done = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        info = new javax.swing.JTextPane();
+
+        jFormattedTextField1.setText("jFormattedTextField1");
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -133,6 +156,12 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             }
         });
 
+        info.setEditable(false);
+        info.setBackground(new java.awt.Color(204, 204, 204));
+        info.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        info.setFocusable(false);
+        jScrollPane1.setViewportView(info);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,6 +169,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Done, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -167,12 +197,14 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 306, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(delete)
                     .addComponent(cancel)
                     .addComponent(Done))
-                .addContainerGap())
+                .addGap(10, 10, 10))
         );
 
         pack();
@@ -275,8 +307,11 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     private javax.swing.JButton Done;
     private javax.swing.JButton cancel;
     private javax.swing.JButton delete;
+    private javax.swing.JTextPane info;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField label;
     private javax.swing.JTextField latexString;
     // End of variables declaration//GEN-END:variables
