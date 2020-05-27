@@ -40,6 +40,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                     + "l= - label assigned to component\n"
                     + "v= - labels voltage across component\n"
                     + "i= - labels current through component\n"
+                    + "f= - labels arrow parallel to component\n"
                     + "*- - adds \"connection\" dots at start of path\n"
                     + "-* - adds \"connection\" dots at end of path\n"
                     + "*-* - adds \"connection\" dots to both ends of path");
