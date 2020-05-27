@@ -4,8 +4,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Component is meant to be a data object for storing all possible component
@@ -65,12 +63,28 @@ public class Component {
     final static int PMOS = 13;
     final static int OPAMP_3TERMINAL = 14;
     final static int OPAMP_5TERMINAL = 15;
-    
-    
+
     //non-component commands used for Latex Component Builder
     final static int DELETE = 1000;
-    final static int CANCEL = 1001; 
-    
+    final static int CANCEL = 1001;
+
+    /**Constructor for component as an option. In some instances (latex string builder window) we need to return a component
+     * or a command. this constructor allows us to pass a command as a component to logic higher up. 
+     * 
+     * @param componentSelected 
+     */
+    public Component(int componentSelected) {
+        switch (componentSelected) {
+            case DELETE:
+                break;
+            case CANCEL:
+                break;
+            default:
+                throw new IllegalArgumentException("No NON-PATH component type exists for constant " + componentSelected);
+        }
+        pathComponent = false; //simple boolean for the class to know whether or not it's a pathing variable (there are other ways to test this but this is the easiest) 
+        componentType = componentSelected; //set this object's componentType to the passed in value
+    }
 
     /**
      * Constructor for NON-PATH components, requires only a position and a
@@ -477,14 +491,14 @@ public class Component {
         }
     }
 
-    public Point getPosition(){
-        if(pathComponent){
+    public Point getPosition() {
+        if (pathComponent) {
             throw new IllegalStateException();
-        }else{
-            return position; 
+        } else {
+            return position;
         }
     }
-    
+
     /**
      * returns the component label string, including information about the
      * placement of the component for display in the UI.

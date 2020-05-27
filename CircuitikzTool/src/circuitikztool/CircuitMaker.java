@@ -226,7 +226,22 @@ public class CircuitMaker extends JPanel {
 
     private void configComponent(int componentIndex) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        JOptionPane.showMessageDialog(this, "Selected: " + componentIndex);
+//        JOptionPane.showMessageDialog(this, "Selected: " + componentIndex);
+        LatexStringBuilder w = new LatexStringBuilder(CircuitikzTool.ui, true, components.get(componentIndex));
+        w.setLocationRelativeTo(null);
+        w.setVisible(true);
+        switch (w.getReturnStatus().componentType) {
+            case Component.DELETE:
+                components.remove(componentIndex);
+                CircuitikzTool.ui.updateComponentList();
+                break;
+            case Component.CANCEL:
+                break;
+            default:
+                components.set(componentIndex, w.getReturnStatus());
+                System.out.println(w.getReturnStatus().getComponentLabel());
+                break;
+        }
     }
 
     /**
