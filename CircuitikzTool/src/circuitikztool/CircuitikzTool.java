@@ -5,6 +5,7 @@
  */
 package circuitikztool;
 
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -42,6 +43,10 @@ public class CircuitikzTool extends JFrame {
         ui.setVisible(true);
         ui.setFocusable(true);
         ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Preferences.importPreferences();
+        Preferences.ConfigPrefrences();
+
         while (true) {
             ui.repaintCircuitMaker();
             try {

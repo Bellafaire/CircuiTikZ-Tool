@@ -26,27 +26,6 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
-    /**
-     * controls the background color of the circuitmaker window, this way it's
-     * easy to change visual parameters if we want to do so
-     */
-    public static Color backgroundColor = new Color((float) .93, (float) .93, (float) .93);
-
-    /**
-     * color of components by default when they're placed and being displayed
-     */
-    public static Color componentColor = Color.BLACK;
-
-    /**
-     * color of components when they are selected in the Components list box
-     */
-    public static Color selectedColor = Color.blue;
-
-    /**
-     * color of the grid dots that are drawn in the circuitmaker window
-     */
-    public static Color gridColor = Color.GRAY;
-
     //LaTeX formatting parameters used for generating the final latex output
     boolean wrapInFigure = true;
     boolean americanStyleComponents = true;
@@ -300,17 +279,17 @@ public class CircuitMaker extends JPanel {
         originOffset = new Point(x_offset / GRID_SIZE, y_offset / GRID_SIZE);
 
         //fill in the background with the background color
-        g.setColor(backgroundColor);
+        g.setColor(Preferences.backgroundColor);
         g.fillRect(0, 0, 10000, 10000);
 
         //if someone hovers over the origin lets make sure they know that its the origin
         if (originOffsetX == xGridPosition * GRID_SIZE && originOffsetY == yGridPosition * GRID_SIZE) {
-            g.setColor(gridColor);
+            g.setColor(Preferences.gridColor);
             g.drawString("Origin", originOffsetX - 10, originOffsetY - 5);
         }
 
         //draw the grid
-        g.setColor(gridColor);
+        g.setColor(Preferences.gridColor);
         for (int x = 0; x < this.getWidth(); x += GRID_SIZE) {
             for (int y = 0; y < this.getHeight(); y += GRID_SIZE) {
                 g.drawLine(x, y, x, y);
@@ -318,11 +297,11 @@ public class CircuitMaker extends JPanel {
         }
 
         //draw origin
-        g.setColor(selectedColor);
+        g.setColor(Preferences.selectedColor);
         g.fillOval(originOffsetX - 3, originOffsetY - 3, 5, 5);
 
         //draw the current mouse position snapped to the grid
-        g.setColor(componentColor);
+        g.setColor(Preferences.componentColor);
         g.fillOval(GRID_SIZE * xGridPosition - 3, GRID_SIZE * yGridPosition - 3, 5, 5);
 
         /*
@@ -331,7 +310,7 @@ public class CircuitMaker extends JPanel {
         for other components draw the component to the users's mouse position mapped to the grid. 
          */
         if (clicking) {
-            g.setColor(componentColor);
+            g.setColor(Preferences.componentColor);
 
             //path components just draw a line from start to the current position
             if (Component.isPathComponent(currentTool)) {

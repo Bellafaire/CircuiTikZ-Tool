@@ -6,6 +6,7 @@
 package circuitikztool;
 
 import com.sun.glass.events.KeyEvent;
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,6 +28,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+
     }
 
     /**
@@ -45,6 +47,7 @@ public class GUI extends javax.swing.JFrame {
         buttonGroup5 = new javax.swing.ButtonGroup();
         buttonGroup6 = new javax.swing.ButtonGroup();
         jTextField1 = new javax.swing.JTextField();
+        jMenu3 = new javax.swing.JMenu();
         schematicWindow = new CircuitMaker();
         jLabel1 = new javax.swing.JLabel();
         componentString = new javax.swing.JTextField();
@@ -65,10 +68,14 @@ public class GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         saveOption = new javax.swing.JMenuItem();
         openOption = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        preferences = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
         jTextField1.setText("jTextField1");
+
+        jMenu3.setText("jMenu3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -219,6 +226,18 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu4.setText("Edit");
+
+        preferences.setText("Preferences");
+        preferences.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                preferencesActionPerformed(evt);
+            }
+        });
+        jMenu4.add(preferences);
+
+        jMenuBar1.add(jMenu4);
+
         jMenu2.setText("Help");
 
         jMenuItem3.setText("About");
@@ -302,7 +321,7 @@ public class GUI extends javax.swing.JFrame {
         JFileChooser fc = new JFileChooser();
         fc.setApproveButtonText("Save");
         fc.setCurrentDirectory(new File("."));
-        
+
         int returnVal = fc.showOpenDialog(GUI.this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -433,6 +452,15 @@ public class GUI extends javax.swing.JFrame {
         updateLatexString();
     }//GEN-LAST:event_outputFieldFocusGained
 
+    private void preferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesActionPerformed
+//           LatexStringBuilder w = new LatexStringBuilder(CircuitikzTool.ui, true, components.get(componentIndex));
+//        w.setLocationRelativeTo(null);
+//        w.setVisible(true);
+        preferencesConfig w = new preferencesConfig(this, true);
+        w.setLocationRelativeTo(null);
+        w.setVisible(true);
+    }//GEN-LAST:event_preferencesActionPerformed
+
     /**
      * updates the UI Component list with a current list of all the components
      * in the schematic window. Should be called as often as possible if any
@@ -442,6 +470,58 @@ public class GUI extends javax.swing.JFrame {
         String[] listItems = schematicWindow.getComponentList();
         componentList.setListData(listItems);
         componentList.setSelectedIndex(schematicWindow.getSelectedComponentIndex());
+    }
+
+    public void updateTheme() {
+        americanCheckbox.setBackground(Preferences.themeBackgroundColor);
+        componentLabel.setBackground(Preferences.themeAccent);
+        componentList.setBackground(Preferences.themeAccent);
+        componentString.setBackground(Preferences.themeAccent);
+        hCheckbox.setBackground(Preferences.themeBackgroundColor);
+        jLabel1.setBackground(Preferences.themeBackgroundColor);
+        jLabel2.setBackground(Preferences.themeBackgroundColor);
+        jLabel3.setBackground(Preferences.themeBackgroundColor);
+        jLabel4.setBackground(Preferences.themeBackgroundColor);
+        jLabel5.setBackground(Preferences.themeBackgroundColor);
+        wrapFigureCheckbox.setBackground(Preferences.themeBackgroundColor);
+        toolSelector.setBackground(Preferences.themeAccent);
+        jMenu1.setBackground(Preferences.themeAccent);
+        jMenu2.setBackground(Preferences.themeAccent);
+        jMenu3.setBackground(Preferences.themeAccent);
+        jMenu4.setBackground(Preferences.themeAccent);
+        jMenuBar1.setBackground(Preferences.themeAccent);
+        jMenuItem3.setBackground(Preferences.themeAccent);
+        jTextField1.setBackground(Preferences.themeAccent);
+        openOption.setBackground(Preferences.themeAccent);
+        outputField.setBackground(Preferences.themeAccent);
+        preferences.setBackground(Preferences.themeAccent);
+        saveOption.setBackground(Preferences.themeAccent);
+
+        americanCheckbox.setForeground(Preferences.themeText);
+        componentLabel.setForeground(Preferences.themeText);
+        componentList.setForeground(Preferences.themeText);
+        componentString.setForeground(Preferences.themeText);
+        hCheckbox.setForeground(Preferences.themeText);
+        jLabel1.setForeground(Preferences.themeText);
+        jLabel2.setForeground(Preferences.themeText);
+        jLabel3.setForeground(Preferences.themeText);
+        jLabel4.setForeground(Preferences.themeText);
+        jLabel5.setForeground(Preferences.themeText);
+        wrapFigureCheckbox.setForeground(Preferences.themeText);
+        toolSelector.setForeground(Preferences.themeText);
+        jMenu1.setForeground(Preferences.themeText);
+        jMenu2.setForeground(Preferences.themeText);
+        jMenu3.setForeground(Preferences.themeText);
+        jMenu4.setForeground(Preferences.themeText);
+        jMenuBar1.setForeground(Preferences.themeText);
+        jMenuItem3.setForeground(Preferences.themeText);
+        jTextField1.setForeground(Preferences.themeText);
+        openOption.setForeground(Preferences.themeText);
+        outputField.setForeground(Preferences.themeText);
+        preferences.setForeground(Preferences.themeText);
+        saveOption.setForeground(Preferences.themeText);
+
+
     }
 
     /**
@@ -466,7 +546,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void keyHandler(java.awt.event.KeyEvent evt) {
         System.out.print("Key pressed ");
-        if (evt.getKeyCode() == KeyEvent.VK_DELETE ||evt.getKeyCode() == KeyEvent.VK_BACKSPACE ) {
+        if (evt.getKeyCode() == KeyEvent.VK_DELETE || evt.getKeyCode() == KeyEvent.VK_BACKSPACE) {
             //removing items in this manner causes a bug where the list doesn't update properly since it's controlled in circuitmaker.java
             schematicWindow.deleteSelectedComponent();
             System.out.print("delete");
@@ -505,16 +585,24 @@ public class GUI extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -545,6 +633,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -552,6 +642,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JMenuItem openOption;
     public javax.swing.JTextPane outputField;
+    private javax.swing.JMenuItem preferences;
     private javax.swing.JMenuItem saveOption;
     /*
     private javax.swing.JPanel schematicWindow;
