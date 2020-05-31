@@ -30,6 +30,7 @@ public class Component {
     //LaTeX doesn't like 3 terminal devices having the same name, we use this variable so that their labels are iterated everytime a new 3 terminal component is placed. 
     private static int TransistorCounter = 1;
     private static int OpAmpCounter = 1;
+    private static int TransformerCount = 1;
 
     //circuitikz requires us to give unique labels to components in order to connect nodes to them
     //for transistors and other multi-terminal devices we need to have a unique ID
@@ -65,6 +66,8 @@ public class Component {
     final static int PIGBT = 15;
     final static int OPAMP_3TERMINAL = 16;
     final static int OPAMP_5TERMINAL = 17;
+    final static int TRANSFORMER = 18;
+    final static int TRANSFORMER_WITH_CORE = 19;
 
     //non-component commands used for Latex Component Builder
     final static int DELETE = 1000;
@@ -165,6 +168,17 @@ public class Component {
                 latexParameters = "node[op amp,scale=2.04] (opamp" + deviceID + ") {}";
                 Label = "5-Term Opamp";
                 break;
+            case TRANSFORMER:
+                deviceID = TransformerCount++;
+                latexParameters = "node[transformer,scale=.952] (T" + deviceID + ") {}";
+                Label = "Transformer";
+                break;
+            case TRANSFORMER_WITH_CORE:
+                deviceID = TransformerCount++;
+                latexParameters = "node[transformer core,scale=.952] (T" + deviceID + ") {}";
+                Label = "Transformer w/ Core";
+                break;
+
             default:
                 //this exception is important in isPathComponent();
                 //in the unlikely event that a path component some how used this constructor throw an error to alert the nearest code monkey
@@ -370,6 +384,8 @@ public class Component {
             drawVSSNode(g, gridSize, position.x + offset.x, position.y + offset.y);
         } else if (componentType == OPAMP_3TERMINAL || componentType == OPAMP_5TERMINAL) {
             drawOpamp(g, gridSize, position.x + offset.x, position.y + offset.y, selected, componentType);
+        } else if (componentType == TRANSFORMER || componentType == TRANSFORMER_WITH_CORE) {
+            drawTransformer(g, gridSize, position.x + offset.x, position.y + offset.y, selected);
         } else {
             //if it's not any of those then it's a three terminal transistor so we just draw the transistor
             drawTransistor(g, gridSize, position.x + offset.x, position.y + offset.y, selected);
@@ -598,6 +614,23 @@ public class Component {
                     output += "\\draw (Q" + deviceID + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
                     output += "\\draw (Q" + deviceID + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
                     break;
+
+                case TRANSFORMER:
+                    output += "\\draw (T" + deviceID + ".A1) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (T" + deviceID + ".A2) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+
+                    output += "\\draw (T" + deviceID + ".B1) to[short] (" + (int) (position.getX() + 1) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (T" + deviceID + ".B2) to[short] (" + (int) (position.getX() + 1) + "," + (int) (-1) * (position.getY() + 1) + ");";
+
+                    break;
+                case TRANSFORMER_WITH_CORE:
+                    output += "\\draw (T" + deviceID + ".A1) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (T" + deviceID + ".A2) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+
+                    output += "\\draw (T" + deviceID + ".B1) to[short] (" + (int) (position.getX() + 1) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (T" + deviceID + ".B2) to[short] (" + (int) (position.getX() + 1) + "," + (int) (-1) * (position.getY() + 1) + ");";
+
+                    break;
                 case OPAMP_3TERMINAL:
                     //breakout the opamp's terminals to fit with the current grid system:
                     output += "\n\\draw (opamp" + deviceID + ".-) to[short] (" + (int) (position.getX() - 3) + "," + (int) (-1) * (position.getY() - 1) + ");\n";
@@ -735,6 +768,30 @@ public class Component {
             g.setColor(Preferences.componentColor);
         }
         g.drawOval(gridSize * xPos - gridSize / 3, gridSize * yPos - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
+    }
+
+    public static void drawTransformer(Graphics g, int gridSize, int xPos, int yPos, boolean selected) {
+        if (selected) {
+            g.setColor(Preferences.selectedColor);
+        } else {
+            g.setColor(Preferences.componentColor);
+        }
+
+        //top and bottom horizontal lines on left side
+        g.drawLine((xPos - 1) * gridSize, (yPos + 1) * gridSize, (int) ((xPos - .25) * gridSize), (yPos + 1) * gridSize);
+        g.drawLine((xPos - 1) * gridSize, (yPos - 1) * gridSize, (int) ((xPos - .25) * gridSize), (yPos - 1) * gridSize);
+
+        //vertical horizontal lines on left and right side
+        g.drawLine((int) ((xPos + .25) * gridSize), (yPos + 1) * gridSize, (int) ((xPos + .25) * gridSize), (yPos - 1) * gridSize);
+        g.drawLine((int) ((xPos - .25) * gridSize), (yPos + 1) * gridSize, (int) ((xPos - .25) * gridSize), (yPos - 1) * gridSize);
+
+        //top and bottom horizontal lines on right side
+        g.drawLine((xPos + 1) * gridSize, (yPos + 1) * gridSize, (int) ((xPos + .25) * gridSize), (yPos + 1) * gridSize);
+        g.drawLine((xPos + 1) * gridSize, (yPos - 1) * gridSize, (int) ((xPos + .25) * gridSize), (yPos - 1) * gridSize);
+
+        //draw some impedence-like symbols to differentiate the transformer a bit
+        g.fillRect((int) ((xPos - .35) * gridSize), (int) ((yPos - .5) * gridSize), (int) (.2 * gridSize), gridSize);
+        g.fillRect((int) ((xPos + .15) * gridSize), (int) ((yPos - .5) * gridSize), (int) (.2 * gridSize), gridSize);
     }
 
     /**

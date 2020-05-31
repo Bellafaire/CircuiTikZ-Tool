@@ -330,6 +330,9 @@ public class CircuitMaker extends JPanel {
                 Component.drawVSSNode(g, GRID_SIZE, xGridPosition, yGridPosition);
             } else if (currentTool == Component.OPAMP_3TERMINAL || currentTool == Component.OPAMP_5TERMINAL) {
                 Component.drawOpamp(g, GRID_SIZE, xGridPosition, yGridPosition, false, currentTool);
+
+            } else if (currentTool == Component.TRANSFORMER || currentTool == Component.TRANSFORMER_WITH_CORE) {
+                Component.drawTransformer(g, GRID_SIZE, xGridPosition, yGridPosition, false);
             } else {
                 //draw the transistor as a preview for the user
                 Component.drawTransistor(g, GRID_SIZE, xGridPosition, yGridPosition, false);
