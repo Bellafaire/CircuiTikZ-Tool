@@ -1,0 +1,30 @@
+<component><pathComponent>false</pathComponent><position-x>1</position-x><position-y>-2</position-y><type>8</type><label>VCC</label><latexParameters>node[vcc]{VCC}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>5</position-x><position-y>-2</position-y><type>8</type><label>VCC</label><latexParameters>node[vcc]{VCC}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>9</position-x><position-y>-2</position-y><type>8</type><label>VCC</label><latexParameters>node[vcc]{VCC}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>12</position-x><position-y>-2</position-y><type>8</type><label>VCC</label><latexParameters>node[vcc]{VCC}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>1</position-x><position-y>0</position-y><type>10</type><label>NPN Transistor</label><latexParameters>node[npn](Q1){Q1}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>5</position-x><position-y>0</position-y><type>11</type><label>PNP Transistor</label><latexParameters>node[pnp](Q2){Q2}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>9</position-x><position-y>0</position-y><type>12</type><label>N-MOS</label><latexParameters>node[nmos](Q3){Q3}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>12</position-x><position-y>0</position-y><type>13</type><label>P-MOS</label><latexParameters>node[pmos](Q4){Q4}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>4</position-x><position-y>5</position-y><type>8</type><label>VCC</label><latexParameters>node[vcc]{VCC}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>8</position-x><position-y>5</position-y><type>8</type><label>VCC</label><latexParameters>node[vcc]{VCC}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>4</position-x><position-y>7</position-y><type>14</type><label>N-IGBT</label><latexParameters>node[nigbt](Q5){Q5}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>8</position-x><position-y>7</position-y><type>15</type><label>P-IGBT</label><latexParameters>node[pigbt](Q6){Q6}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>1</position-x><position-y>2</position-y><type>7</type><label>GND</label><latexParameters>node[ground]{}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>5</position-x><position-y>2</position-y><type>7</type><label>GND</label><latexParameters>node[ground]{}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>9</position-x><position-y>2</position-y><type>7</type><label>GND</label><latexParameters>node[ground]{}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>12</position-x><position-y>2</position-y><type>7</type><label>GND</label><latexParameters>node[ground]{}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>4</position-x><position-y>9</position-y><type>7</type><label>GND</label><latexParameters>node[ground]{}</latexParameters></component>
+<component><pathComponent>false</pathComponent><position-x>8</position-x><position-y>9</position-y><type>7</type><label>GND</label><latexParameters>node[ground]{}</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>4</start-x><start-y>8</start-y><end-x>4</end-x><end-y>9</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>4</start-x><start-y>5</start-y><end-x>4</end-x><end-y>6</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>8</start-x><start-y>5</start-y><end-x>8</end-x><end-y>6</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>8</start-x><start-y>8</start-y><end-x>8</end-x><end-y>9</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>1</start-x><start-y>1</start-y><end-x>1</end-x><end-y>2</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>1</start-x><start-y>-2</start-y><end-x>1</end-x><end-y>-1</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>5</start-x><start-y>-2</start-y><end-x>5</end-x><end-y>-1</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>5</start-x><start-y>1</start-y><end-x>5</end-x><end-y>2</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>9</start-x><start-y>1</start-y><end-x>9</end-x><end-y>2</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>9</start-x><start-y>-2</start-y><end-x>9</end-x><end-y>-1</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>12</start-x><start-y>-2</start-y><end-x>12</end-x><end-y>-1</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
+<component><pathComponent>true</pathComponent><start-x>12</start-x><start-y>1</start-y><end-x>12</end-x><end-y>2</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>

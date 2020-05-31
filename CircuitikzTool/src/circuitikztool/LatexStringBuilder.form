@@ -95,6 +95,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="latexString">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Preferences.themeAccent" type="code"/>
+        </Property>
+      </Properties>
       <Events>
         <EventHandler event="caretPositionChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="latexStringCaretPositionChanged"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="latexStringActionPerformed"/>
@@ -102,6 +107,11 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="label">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Preferences.themeAccent" type="code"/>
+        </Property>
+      </Properties>
       <Events>
         <EventHandler event="caretPositionChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="labelCaretPositionChanged"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="labelKeyTyped"/>
@@ -109,6 +119,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="delete">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Preferences.themeAccent" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Delete"/>
       </Properties>
       <Events>
@@ -117,6 +130,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="cancel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Preferences.themeAccent" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Cancel"/>
       </Properties>
       <Events>
@@ -125,6 +141,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="Done">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Preferences.themeAccent" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Done"/>
       </Properties>
       <Events>
@@ -141,8 +160,8 @@
         <Component class="javax.swing.JTextPane" name="info">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="cc" green="cc" red="cc" type="rgb"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="Preferences.themeAccent" type="code"/>
             </Property>
             <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>

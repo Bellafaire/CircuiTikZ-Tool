@@ -31,6 +31,19 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        getContentPane().setBackground(Preferences.themeBackgroundColor);
+
+        Done.setForeground(Preferences.themeText);
+        cancel.setForeground(Preferences.themeText);
+        delete.setForeground(Preferences.themeText);
+        info.setForeground(Preferences.themeText);
+        jFormattedTextField1.setForeground(Preferences.themeText);
+        jLabel1.setForeground(Preferences.themeText);
+        jLabel2.setForeground(Preferences.themeText);
+        jScrollPane1.setForeground(Preferences.themeText);
+        label.setForeground(Preferences.themeText);
+        latexString.setForeground(Preferences.themeText);
+
         inputComponent = com;
         latexString.setText(inputComponent.getLatexString());
         label.setText(inputComponent.getComponentLabel());
@@ -105,6 +118,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
 
         jLabel2.setText("Label ");
 
+        latexString.setBackground(Preferences.themeAccent);
         latexString.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 latexStringCaretPositionChanged(evt);
@@ -123,6 +137,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             }
         });
 
+        label.setBackground(Preferences.themeAccent);
         label.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 labelCaretPositionChanged(evt);
@@ -136,6 +151,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             }
         });
 
+        delete.setBackground(Preferences.themeAccent);
         delete.setText("Delete");
         delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +159,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             }
         });
 
+        cancel.setBackground(Preferences.themeAccent);
         cancel.setText("Cancel");
         cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +167,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             }
         });
 
+        Done.setBackground(Preferences.themeAccent);
         Done.setText("Done");
         Done.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,7 +176,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         });
 
         info.setEditable(false);
-        info.setBackground(new java.awt.Color(204, 204, 204));
+        info.setBackground(Preferences.themeAccent);
         info.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         info.setFocusable(false);
         jScrollPane1.setViewportView(info);

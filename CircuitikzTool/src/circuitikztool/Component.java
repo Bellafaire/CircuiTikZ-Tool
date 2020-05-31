@@ -61,17 +61,22 @@ public class Component {
     final static int TRANSISTOR_PNP = 11;
     final static int NMOS = 12;
     final static int PMOS = 13;
-    final static int OPAMP_3TERMINAL = 14;
-    final static int OPAMP_5TERMINAL = 15;
+    final static int NIGBT = 14;
+    final static int PIGBT = 15;
+    final static int OPAMP_3TERMINAL = 16;
+    final static int OPAMP_5TERMINAL = 17;
 
     //non-component commands used for Latex Component Builder
     final static int DELETE = 1000;
     final static int CANCEL = 1001;
 
-    /**Constructor for component as an option. In some instances (latex string builder window) we need to return a component
-     * or a command. this constructor allows us to pass a command as a component to logic higher up. 
-     * 
-     * @param componentSelected 
+    /**
+     * Constructor for component as an option. In some instances (latex string
+     * builder window) we need to return a component or a command. this
+     * constructor allows us to pass a command as a component to logic higher
+     * up.
+     *
+     * @param componentSelected
      */
     public Component(int componentSelected) {
         switch (componentSelected) {
@@ -119,6 +124,16 @@ public class Component {
                 deviceID = TransistorCounter++;
                 latexParameters = "node[nmos](Q" + deviceID + "){Q" + deviceID + "}";
                 Label = "N-MOS";
+                break;
+            case NIGBT:
+                deviceID = TransistorCounter++;
+                latexParameters = "node[nigbt](Q" + deviceID + "){Q" + deviceID + "}";
+                Label = "N-IGBT";
+                break;
+            case PIGBT:
+                deviceID = TransistorCounter++;
+                latexParameters = "node[pigbt](Q" + deviceID + "){Q" + deviceID + "}";
+                Label = "P-IGBT";
                 break;
             case PMOS:
                 deviceID = TransistorCounter++;
@@ -567,6 +582,18 @@ public class Component {
                     break;
                 case PMOS:
                     //breakout the fets's terminals to fit with the current grid system:
+                    output += "\\draw (Q" + deviceID + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
+                case NIGBT:
+                    //breakout the IGBT's terminals to fit with the current grid system:
+                    output += "\\draw (Q" + deviceID + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
+                    output += "\\draw (Q" + deviceID + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";
+                    break;
+                case PIGBT:
+                    //breakout the IGBT's terminals to fit with the current grid system:
                     output += "\\draw (Q" + deviceID + ".S) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
                     output += "\\draw (Q" + deviceID + ".D) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() + 1) + ");\n";
                     output += "\\draw (Q" + deviceID + ".G) to[short] (" + (int) (position.getX() - 1) + "," + (int) (-1) * (position.getY()) + ");";

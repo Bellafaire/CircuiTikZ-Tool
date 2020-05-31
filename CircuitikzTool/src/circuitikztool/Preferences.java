@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
 
 //all the important configuration preferences in one place. 
 public class Preferences {
@@ -21,7 +20,7 @@ public class Preferences {
     //basically apply changes
     public static void ConfigPrefrences() {
         if (getPreference("Use Dark Theme").equals("true")) {
-            backgroundColor = new Color((float) .07, (float) .07, (float) .07);
+            backgroundColor = new Color((float) .14, (float) .14, (float) .21);
             componentColor = Color.WHITE;
             gridColor = Color.darkGray;
             CircuitikzTool.ui.getContentPane().setBackground(darkThemeBackground);
