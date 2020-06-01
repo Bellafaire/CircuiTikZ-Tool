@@ -59,18 +59,26 @@ public class LatexStringBuilder extends javax.swing.JDialog {
 
         customizationPanel.setBackground(Preferences.themeBackgroundColor);
 
-        if (inputComponent.isPathComponent() && inputComponent.componentType != Component.PATH) {
-            //if it's a path component then we need to generate all the customization options and create an interface to allow the user to access them.
-
-            pathMenu = new PathComponentBuilder(inputComponent.latexParameters);
-            customizationPanel.setLayout(new BorderLayout());
-            customizationPanel.add(pathMenu);
-            customizationPanel.setSize(pathMenu.getWidth(), pathMenu.getHeight());
-            this.setSize(400, 350);
-            pathMenu.setVisible(true);
-
+//        if (inputComponent.isPathComponent() && inputComponent.componentType != Component.PATH) {
+        //if it's a path component then we need to generate all the customization options and create an interface to allow the user to access them.
+        switch (inputComponent.componentType) {
+            case Component.PATH:
+            case Component.RESISTOR:
+            case Component.CAPACITOR:
+            case Component.INDUCTOR:
+            case Component.DIODE:
+                pathMenu = new PathComponentBuilder(inputComponent.latexParameters);
+                customizationPanel.setLayout(new BorderLayout());
+                customizationPanel.add(pathMenu);
+                customizationPanel.setSize(pathMenu.getWidth(), pathMenu.getHeight());
+                this.setSize(400, 350);
+                pathMenu.setVisible(true);
+                break;
+            default:
+                break;
         }
 
+//        }
 //        if (inputComponent.isPathComponent()) {
 //            info.setText("Path Component CircuiTikz Reference\n"
 //                    + "l= - label assigned to component\n"
@@ -331,13 +339,17 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     }//GEN-LAST:event_customizationPanelCaretPositionChanged
 
     private void latexStringFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_latexStringFocusGained
-        if (inputComponent.isPathComponent() && inputComponent.componentType != Component.PATH) {
-            latexString.setText(pathMenu.getLatexParameters());
-        }
+
     }//GEN-LAST:event_latexStringFocusGained
 
     private void latexStringCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_latexStringCaretPositionChanged
-
+        if (inputComponent.componentType == Component.PATH
+                || inputComponent.componentType == Component.RESISTOR
+                || inputComponent.componentType == Component.CAPACITOR
+                || inputComponent.componentType == Component.INDUCTOR
+                || inputComponent.componentType == Component.DIODE) {
+            latexString.setText(pathMenu.getLatexParameters());
+        }
     }//GEN-LAST:event_latexStringCaretPositionChanged
 
     private void updateLabelAndString() {
@@ -346,7 +358,11 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     }
 
     private void doClose(Component retObj) {
-        if (inputComponent.isPathComponent() && inputComponent.componentType != Component.PATH) {
+        if (inputComponent.componentType == Component.PATH
+                || inputComponent.componentType == Component.RESISTOR
+                || inputComponent.componentType == Component.CAPACITOR
+                || inputComponent.componentType == Component.INDUCTOR
+                || inputComponent.componentType == Component.DIODE) {
             latexString.setText(pathMenu.getLatexParameters());
         }
         updateLabelAndString();
