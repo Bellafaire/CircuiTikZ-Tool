@@ -5,8 +5,13 @@
  */
 package circuitikztool;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -22,7 +27,11 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     public static final Component RET_CANCEL = new Component(Component.CANCEL);
     public static final Component RET_DELETE = new Component(Component.DELETE);
 
+    PathComponentBuilder pathMenu;
+
     Component inputComponent;
+
+    Executor fieldUpdater = Executors.newSingleThreadExecutor();
 
     /**
      * Creates new form LatexStringBuilder
@@ -36,11 +45,11 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         Done.setForeground(Preferences.themeText);
         cancel.setForeground(Preferences.themeText);
         delete.setForeground(Preferences.themeText);
-        info.setForeground(Preferences.themeText);
+//        info.setForeground(Preferences.themeText);
         jFormattedTextField1.setForeground(Preferences.themeText);
         jLabel1.setForeground(Preferences.themeText);
         jLabel2.setForeground(Preferences.themeText);
-        jScrollPane1.setForeground(Preferences.themeText);
+//        jScrollPane1.setForeground(Preferences.themeText);
         label.setForeground(Preferences.themeText);
         latexString.setForeground(Preferences.themeText);
 
@@ -48,35 +57,49 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         latexString.setText(inputComponent.getLatexString());
         label.setText(inputComponent.getComponentLabel());
 
-        if (inputComponent.isPathComponent()) {
-            info.setText("Path Component CircuiTikz Reference\n"
-                    + "l= - label assigned to component\n"
-                    + "v= - labels voltage across component\n"
-                    + "i= - labels current through component\n"
-                    + "f= - labels arrow parallel to component\n"
-                    + "*- - adds \"connection\" dots at start of path\n"
-                    + "-* - adds \"connection\" dots at end of path\n"
-                    + "*-* - adds \"connection\" dots to both ends of path");
-        } else if (inputComponent.componentType == Component.TRANSFORMER || inputComponent.componentType == Component.TRANSFORMER_WITH_CORE) {
-            info.setText("Transformer Information\n"
-                    + "Adding Dot Convention Markers: \n"
-                    + "add (T" + inputComponent.getDeviceID() + ".inner dot A1) node[circ]{} for upper left dot\n"
-                    + "add (T" + inputComponent.getDeviceID() + ".inner dot A2) node[circ]{} for lower left dot\n"
-                    + "add (T" + inputComponent.getDeviceID() + ".inner dot B1) node[circ]{} for upper right dot\n"
-                    + "add (T" + inputComponent.getDeviceID() + ".inner dot B2) node[circ]{} for lower right dot\n"
-                    + "\n"
-                    + "Adding K Turns ratio: \n"
-                    + "add (T" + inputComponent.getDeviceID() + ".base) node{*turns ratio here*}");
-        } else {
-            info.setText("");
+        customizationPanel.setBackground(Preferences.themeBackgroundColor);
+
+        if (inputComponent.isPathComponent() && inputComponent.componentType != Component.PATH) {
+            //if it's a path component then we need to generate all the customization options and create an interface to allow the user to access them.
+
+            pathMenu = new PathComponentBuilder(inputComponent.latexParameters);
+            customizationPanel.setLayout(new BorderLayout());
+            customizationPanel.add(pathMenu);
+            customizationPanel.setSize(pathMenu.getWidth(), pathMenu.getHeight());
+            this.setSize(400, 350);
+            pathMenu.setVisible(true);
+
         }
-        int lineCount = 1;
-        for (int a = 0; a < info.getText().length(); a++) {
-            if (info.getText().charAt(a) == '\n') {
-                lineCount++;
-            }
-        }
-        this.setSize(this.getWidth(), this.getHeight() + 15 * lineCount);
+
+//        if (inputComponent.isPathComponent()) {
+//            info.setText("Path Component CircuiTikz Reference\n"
+//                    + "l= - label assigned to component\n"
+//                    + "v= - labels voltage across component\n"
+//                    + "i= - labels current through component\n"
+//                    + "f= - labels arrow parallel to component\n"
+//                    + "*- - adds \"connection\" dots at start of path\n"
+//                    + "-* - adds \"connection\" dots at end of path\n"
+//                    + "*-* - adds \"connection\" dots to both ends of path");
+//        } else if (inputComponent.componentType == Component.TRANSFORMER || inputComponent.componentType == Component.TRANSFORMER_WITH_CORE) {
+//            info.setText("Transformer Information\n"
+//                    + "Adding Dot Convention Markers: \n"
+//                    + "add (T" + inputComponent.getDeviceID() + ".inner dot A1) node[circ]{} for upper left dot\n"
+//                    + "add (T" + inputComponent.getDeviceID() + ".inner dot A2) node[circ]{} for lower left dot\n"
+//                    + "add (T" + inputComponent.getDeviceID() + ".inner dot B1) node[circ]{} for upper right dot\n"
+//                    + "add (T" + inputComponent.getDeviceID() + ".inner dot B2) node[circ]{} for lower right dot\n"
+//                    + "\n"
+//                    + "Adding K Turns ratio: \n"
+//                    + "add (T" + inputComponent.getDeviceID() + ".base) node{*turns ratio here*}");
+//        } else {
+//            info.setText("");
+//        }
+//        int lineCount = 1;
+//        for (int a = 0; a < info.getText().length(); a++) {
+//            if (info.getText().charAt(a) == '\n') {
+//                lineCount++;
+//            }
+//        }
+//        this.setSize(this.getWidth(), this.getHeight() + 15 * lineCount);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -108,13 +131,13 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        latexString = new javax.swing.JTextField();
         label = new javax.swing.JTextField();
         delete = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
         Done = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        info = new javax.swing.JTextPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        latexString = new javax.swing.JEditorPane();
+        customizationPanel = new javax.swing.JPanel();
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
@@ -123,29 +146,18 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                 closeDialog(evt);
             }
         });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("LaTeX String");
 
         jLabel2.setText("Label ");
-
-        latexString.setBackground(Preferences.themeAccent);
-        latexString.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-                latexStringCaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        latexString.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                latexStringActionPerformed(evt);
-            }
-        });
-        latexString.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                latexStringKeyTyped(evt);
-            }
-        });
 
         label.setBackground(Preferences.themeAccent);
         label.addInputMethodListener(new java.awt.event.InputMethodListener() {
@@ -185,10 +197,47 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             }
         });
 
-        info.setEditable(false);
-        info.setBackground(Preferences.themeAccent);
-        info.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setViewportView(info);
+        latexString.setEditable(false);
+        latexString.setBackground(Preferences.themeAccent );
+        latexString.setAutoscrolls(false);
+        latexString.setCaretColor(Preferences.themeText);
+        latexString.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                latexStringFocusGained(evt);
+            }
+        });
+        latexString.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                latexStringCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        jScrollPane2.setViewportView(latexString);
+
+        customizationPanel.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                customizationPanelCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
+        customizationPanel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                customizationPanelKeyTyped(evt);
+            }
+        });
+
+        javax.swing.GroupLayout customizationPanelLayout = new javax.swing.GroupLayout(customizationPanel);
+        customizationPanel.setLayout(customizationPanelLayout);
+        customizationPanelLayout.setHorizontalGroup(
+            customizationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        customizationPanelLayout.setVerticalGroup(
+            customizationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 107, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -197,7 +246,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(customizationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Done, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -211,22 +260,22 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(label)
-                            .addComponent(latexString))))
+                            .addComponent(jScrollPane2))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(latexString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(customizationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(delete)
@@ -245,10 +294,6 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void latexStringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latexStringActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_latexStringActionPerformed
-
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         doClose(RET_DELETE);
     }//GEN-LAST:event_deleteActionPerformed
@@ -261,21 +306,39 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         doClose(inputComponent);
     }//GEN-LAST:event_DoneActionPerformed
 
-    private void latexStringCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_latexStringCaretPositionChanged
-
-    }//GEN-LAST:event_latexStringCaretPositionChanged
-
     private void labelCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_labelCaretPositionChanged
-
+        System.out.println("teest");
     }//GEN-LAST:event_labelCaretPositionChanged
 
     private void labelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_labelKeyTyped
         updateLabelAndString();
     }//GEN-LAST:event_labelKeyTyped
 
-    private void latexStringKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_latexStringKeyTyped
-        updateLabelAndString();
-    }//GEN-LAST:event_latexStringKeyTyped
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+
+    }//GEN-LAST:event_formKeyTyped
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+    }//GEN-LAST:event_formKeyPressed
+
+    private void customizationPanelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customizationPanelKeyTyped
+
+    }//GEN-LAST:event_customizationPanelKeyTyped
+
+    private void customizationPanelCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_customizationPanelCaretPositionChanged
+
+    }//GEN-LAST:event_customizationPanelCaretPositionChanged
+
+    private void latexStringFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_latexStringFocusGained
+        if (inputComponent.isPathComponent() && inputComponent.componentType != Component.PATH) {
+            latexString.setText(pathMenu.getLatexParameters());
+        }
+    }//GEN-LAST:event_latexStringFocusGained
+
+    private void latexStringCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_latexStringCaretPositionChanged
+
+    }//GEN-LAST:event_latexStringCaretPositionChanged
 
     private void updateLabelAndString() {
         inputComponent.setLatexString(latexString.getText());
@@ -283,6 +346,9 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     }
 
     private void doClose(Component retObj) {
+        if (inputComponent.isPathComponent() && inputComponent.componentType != Component.PATH) {
+            latexString.setText(pathMenu.getLatexParameters());
+        }
         updateLabelAndString();
         returnStatus = retObj;
         setVisible(false);
@@ -292,7 +358,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -319,14 +385,14 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                LatexStringBuilder dialog = new LatexStringBuilder(new javax.swing.JFrame(), true, inputComponent);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
+                LatexStringBuilder dialog = new LatexStringBuilder(new javax.swing.JFrame(), true, inputComponent);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -334,14 +400,14 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Done;
     private javax.swing.JButton cancel;
+    private javax.swing.JPanel customizationPanel;
     private javax.swing.JButton delete;
-    private javax.swing.JTextPane info;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField label;
-    private javax.swing.JTextField latexString;
+    private javax.swing.JEditorPane latexString;
     // End of variables declaration//GEN-END:variables
 
     private Component returnStatus = RET_CANCEL;

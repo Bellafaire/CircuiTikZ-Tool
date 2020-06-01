@@ -403,7 +403,7 @@ public class GUI extends javax.swing.JFrame {
 //           LatexStringBuilder w = new LatexStringBuilder(CircuitikzTool.ui, true, components.get(componentIndex));
 //        w.setLocationRelativeTo(null);
 //        w.setVisible(true);
-        preferencesConfig w = new preferencesConfig(this, true);
+        PreferencesConfig w = new PreferencesConfig(this, true);
         w.setLocationRelativeTo(null);
         w.setVisible(true);
     }//GEN-LAST:event_preferencesActionPerformed
