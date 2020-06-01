@@ -57,6 +57,16 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                     + "*- - adds \"connection\" dots at start of path\n"
                     + "-* - adds \"connection\" dots at end of path\n"
                     + "*-* - adds \"connection\" dots to both ends of path");
+        } else if (inputComponent.componentType == Component.TRANSFORMER || inputComponent.componentType == Component.TRANSFORMER_WITH_CORE) {
+            info.setText("Transformer Information\n"
+                    + "Adding Dot Convention Markers: \n"
+                    + "add (T" + inputComponent.getDeviceID() + ".inner dot A1) node[circ]{} for upper left dot\n"
+                    + "add (T" + inputComponent.getDeviceID() + ".inner dot A2) node[circ]{} for lower left dot\n"
+                    + "add (T" + inputComponent.getDeviceID() + ".inner dot B1) node[circ]{} for upper right dot\n"
+                    + "add (T" + inputComponent.getDeviceID() + ".inner dot B2) node[circ]{} for lower right dot\n"
+                    + "\n"
+                    + "Adding K Turns ratio: \n"
+                    + "add (T" + inputComponent.getDeviceID() + ".base) node{*turns ratio here*}");
         } else {
             info.setText("");
         }
@@ -178,7 +188,6 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         info.setEditable(false);
         info.setBackground(Preferences.themeAccent);
         info.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        info.setFocusable(false);
         jScrollPane1.setViewportView(info);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -253,6 +253,10 @@ public class Component {
         componentType = componentSelected; //pass the selected component value to the object
     }
 
+    public int getDeviceID(){
+      return deviceID;
+    }
+    
     public static Component getComponentFromXML(String xml) {
         if (getDataFromXMLTag(xml, "pathComponent").equals("true")) {
             Component ret = new Component(

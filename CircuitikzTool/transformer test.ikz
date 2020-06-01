@@ -1,7 +1,0 @@
-<component><pathComponent>false</pathComponent><position-x>5</position-x><position-y>1</position-y><type>18</type><label>Transformer</label><latexParameters>node[transformer] (T1) {}</latexParameters></component>
-<component><pathComponent>true</pathComponent><start-x>0</start-x><start-y>0</start-y><end-x>0</end-x><end-y>2</end-y><type>5</type><label>V</label><latexParameters>to[V,l=$V$]</latexParameters></component>
-<component><pathComponent>true</pathComponent><start-x>0</start-x><start-y>0</start-y><end-x>4</end-x><end-y>0</end-y><type>1</type><label>R</label><latexParameters>to[R,l=$R$]</latexParameters></component>
-<component><pathComponent>true</pathComponent><start-x>0</start-x><start-y>2</start-y><end-x>4</end-x><end-y>2</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
-<component><pathComponent>true</pathComponent><start-x>9</start-x><start-y>0</start-y><end-x>9</end-x><end-y>2</end-y><type>1</type><label>R</label><latexParameters>to[R,l=$R$]</latexParameters></component>
-<component><pathComponent>true</pathComponent><start-x>6</start-x><start-y>0</start-y><end-x>9</end-x><end-y>0</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
-<component><pathComponent>true</pathComponent><start-x>6</start-x><start-y>2</start-y><end-x>9</end-x><end-y>2</end-y><type>0</type><label>Wire</label><latexParameters>to[short]</latexParameters></component>
