@@ -30,16 +30,13 @@ public class preferencesConfig extends javax.swing.JDialog {
         panel.setBackground(Preferences.themeBackgroundColor);
 
         panel.setLayout(new java.awt.GridLayout(Preferences.getPreferences().length, 1));
-        setSize(200, 30 * Preferences.getPreferences().length + 100);
+        setSize(300, 30 * Preferences.getPreferences().length + 100);
 
         for (int a = 0; a < Preferences.getPreferences().length; a++) {
 
             if (Preferences.getPreferences()[a].type == preferenceOption.BOOLEAN) {
                 checkBoxes.add(new JCheckBox(Preferences.getPreferences()[a].name, Preferences.getPreferences()[a].value.equals("true")));
 //                this.add(checkBoxes.get(a));
-                System.out.println(Preferences.getPreferences()[a].value);
-
-                System.out.println("creating checkbox for " + Preferences.getPreferences()[a].name + "(" + Preferences.getPreferences()[a].toString() + ")");
                 panel.add(checkBoxes.get(a));
                 checkBoxes.get(a).setForeground(Preferences.themeText);
                 checkBoxes.get(a).setBackground(Preferences.themeBackgroundColor);
@@ -83,15 +80,15 @@ public class preferencesConfig extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(apply, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                    .addComponent(apply, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(apply)
                 .addContainerGap())

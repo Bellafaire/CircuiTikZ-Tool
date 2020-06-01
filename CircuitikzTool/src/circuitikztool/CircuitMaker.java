@@ -26,11 +26,6 @@ import javax.swing.JPanel;
  */
 public class CircuitMaker extends JPanel {
 
-    //LaTeX formatting parameters used for generating the final latex output
-    boolean wrapInFigure = true;
-    boolean americanStyleComponents = true;
-    boolean useHMarker = true;
-
     //GRID_SIZE determines the current zoom level of the schematic window, a lower values indicates zooming out and a larger values indicates zooming in
     static int GRID_SIZE = 50;
 
@@ -461,30 +456,34 @@ public class CircuitMaker extends JPanel {
         //if we're going to wrap the circuitikz in a \figure then we need to add that at the beginning
         //most of the user customizations are kind of a mess since they have to be written in the figure in a 
         //specific order. 
-        if (wrapInFigure) {
+        if (Preferences.getPreference("Wrap in Figure").equals("true")) {
             output += "\\begin{figure}";
-            if (useHMarker) {
+            if (Preferences.getPreference("Use [h] annotation").equals("true")) {
                 output += "[h]\n";
             } else {
                 output += "\n";
             }
             output += "\\centering\n";
             output += "\\begin{circuitikz}";
-            if (americanStyleComponents) {
+            if (Preferences.getPreference("American Style Components").equals("true")) {
                 output += "[american]";
             }
             output += "\n";
         } else {
             output += "\\begin{circuitikz}";
-            if (useHMarker && americanStyleComponents) {
+            if (Preferences.getPreference("Use [h] annotation").equals("true") && Preferences.getPreference("American Style Components").equals("true")) {
                 output += "[h, american]\n";
-            } else if (useHMarker && !americanStyleComponents) {
+            } else if (Preferences.getPreference("Use [h] annotation").equals("true") && !Preferences.getPreference("American Style Components").equals("true")) {
                 output += "[h]\n";
-            } else if (!useHMarker && americanStyleComponents) {
+            } else if (!Preferences.getPreference("Use [h] annotation").equals("true") && Preferences.getPreference("American Style Components").equals("true")) {
                 output += "[american]\n";
             } else {
                 output += "\n";
             }
+        }
+
+        if (Preferences.getPreference("Smaller Path Components").equals("true")) {
+            output += "\\ctikzset{resistors/scale=0.7, capacitors/scale=0.7, diodes/scale=0.7, inductors/scale=0.7}\n";
         }
 
         //determine whether we have any mosfets in the placed components, if we do then we need to add some extra formatting 
@@ -508,7 +507,7 @@ public class CircuitMaker extends JPanel {
         }
 
         output += "\\end{circuitikz}";
-        if (wrapInFigure) {
+        if (Preferences.getPreference("Wrap in Figure").equals("true")) {
             output += "\n\\end{figure}";
         }
         return output;

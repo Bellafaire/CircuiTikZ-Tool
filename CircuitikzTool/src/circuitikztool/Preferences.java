@@ -14,7 +14,11 @@ import java.util.logging.Logger;
 public class Preferences {
 
     private static preferenceOption[] options = {
-        new preferenceOption("Use Dark Theme", "false", preferenceOption.BOOLEAN)
+        new preferenceOption("Use Dark Theme", "false", preferenceOption.BOOLEAN),
+        new preferenceOption("American Style Components", "true", preferenceOption.BOOLEAN),
+        new preferenceOption("Wrap in Figure", "true", preferenceOption.BOOLEAN),
+        new preferenceOption("Use [h] annotation", "true", preferenceOption.BOOLEAN),
+        new preferenceOption("Smaller Path Components", "false", preferenceOption.BOOLEAN)
     };
 
     //basically apply changes
