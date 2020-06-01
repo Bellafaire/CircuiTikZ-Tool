@@ -6,7 +6,7 @@ Currently most of the basic functionality is implemented in the program, some "q
 
 For a **How-to-use** guide please see the wiki of this github page.
 
-Currently Supported Components (Pre-release 0.0.5): 
+Currently Supported Components (Pre-release 0.0.7): 
 - Path (wire) 
 - Resistors
 - Capacitors
@@ -20,7 +20,11 @@ Currently Supported Components (Pre-release 0.0.5):
 - NPN Transistor
 - PNP Transistor
 - N-Mos Transistor
-- P-Mos Transistor 
+- P-Mos Transistor
+- N-IGBT
+- P-IGBT
+- Basic Transformer (Open Air)
+- Transformer with Core
 - 3 terminal opamps
 - 5 terminal opamps
 
