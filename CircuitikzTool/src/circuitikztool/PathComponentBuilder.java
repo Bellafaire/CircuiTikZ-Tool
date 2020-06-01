@@ -19,7 +19,11 @@ public class PathComponentBuilder extends javax.swing.JPanel {
 
     public void parseLatexParameters(String input) {
         try {
-            componentType = input.substring(input.indexOf("to[") + 3, input.indexOf(","));
+            try {
+                componentType = input.substring(input.indexOf("to[") + 3, input.indexOf(","));
+            } catch (IndexOutOfBoundsException e) {
+                componentType = input.substring(input.indexOf("to[") + 3, input.indexOf("]"));
+            }
             componentLabel.setText(getParameter(input, "l"));
             voltageLabel.setText(getParameter(input, "v"));
             if (input.contains("f=")) {
@@ -76,7 +80,7 @@ public class PathComponentBuilder extends javax.swing.JPanel {
                 return params[a].replace(parameter + "=", "");
             }
         }
-    return ""; 
+        return "";
     }
 
     /**
@@ -113,8 +117,8 @@ public class PathComponentBuilder extends javax.swing.JPanel {
         componentLabel.setForeground(Preferences.themeText);
         voltageLabel.setForeground(Preferences.themeText);
         currentLabel.setForeground(Preferences.themeText);
-        
-           componentLabel.setCaretColor(Preferences.themeText);
+
+        componentLabel.setCaretColor(Preferences.themeText);
         voltageLabel.setCaretColor(Preferences.themeText);
         currentLabel.setCaretColor(Preferences.themeText);
     }
