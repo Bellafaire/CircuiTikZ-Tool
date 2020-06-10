@@ -5,10 +5,6 @@
  */
 package circuitikztool;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author James
@@ -17,7 +13,7 @@ public class PathComponentBuilder extends javax.swing.JPanel {
 
     String componentType;
 
-    public void parseLatexParameters(String input) {
+    private void parseLatexParameters(String input) {
         try {
             try {
                 componentType = input.substring(input.indexOf("to[") + 3, input.indexOf(","));

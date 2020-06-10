@@ -28,6 +28,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     public static final Component RET_DELETE = new Component(Component.DELETE);
 
     PathComponentBuilder pathMenu;
+    DiodeBuilder diodeMenu;
 
     Component inputComponent;
 
@@ -66,7 +67,6 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             case Component.RESISTOR:
             case Component.CAPACITOR:
             case Component.INDUCTOR:
-            case Component.DIODE:
                 pathMenu = new PathComponentBuilder(inputComponent.latexParameters);
                 customizationPanel.setLayout(new BorderLayout());
                 customizationPanel.add(pathMenu);
@@ -74,6 +74,13 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                 this.setSize(400, 350);
                 pathMenu.setVisible(true);
                 break;
+            case Component.DIODE:
+                diodeMenu = new DiodeBuilder(inputComponent.latexParameters);
+                customizationPanel.setLayout(new BorderLayout());
+                customizationPanel.add(diodeMenu);
+                customizationPanel.setSize(diodeMenu.getWidth(), diodeMenu.getHeight());
+                this.setSize(400, 275);
+                diodeMenu.setVisible(true);
             default:
                 break;
         }
@@ -343,13 +350,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     }//GEN-LAST:event_latexStringFocusGained
 
     private void latexStringCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_latexStringCaretPositionChanged
-        if (inputComponent.componentType == Component.PATH
-                || inputComponent.componentType == Component.RESISTOR
-                || inputComponent.componentType == Component.CAPACITOR
-                || inputComponent.componentType == Component.INDUCTOR
-                || inputComponent.componentType == Component.DIODE) {
-            latexString.setText(pathMenu.getLatexParameters());
-        }
+
     }//GEN-LAST:event_latexStringCaretPositionChanged
 
     private void updateLabelAndString() {
@@ -358,17 +359,22 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     }
 
     private void doClose(Component retObj) {
-        if (inputComponent.componentType == Component.PATH
-                || inputComponent.componentType == Component.RESISTOR
-                || inputComponent.componentType == Component.CAPACITOR
-                || inputComponent.componentType == Component.INDUCTOR
-                || inputComponent.componentType == Component.DIODE) {
-            latexString.setText(pathMenu.getLatexParameters());
-        }
+        getCurrentComponentLatex();
         updateLabelAndString();
         returnStatus = retObj;
         setVisible(false);
         dispose();
+    }
+
+    public void getCurrentComponentLatex() {
+        if (inputComponent.componentType == Component.PATH
+                || inputComponent.componentType == Component.RESISTOR
+                || inputComponent.componentType == Component.CAPACITOR
+                || inputComponent.componentType == Component.INDUCTOR) {
+            latexString.setText(pathMenu.getLatexParameters());
+        } else if (inputComponent.componentType == Component.DIODE) {
+            latexString.setText(diodeMenu.getLatexParameters());
+        }
     }
 
     /**
