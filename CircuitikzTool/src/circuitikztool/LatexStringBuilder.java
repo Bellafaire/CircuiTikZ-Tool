@@ -30,6 +30,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     PathComponentBuilder pathMenu;
     DiodeBuilder diodeMenu;
     VoltageSourceBuilder voltageMenu;
+    CurrentSourceBuilder currentMenu;
 
     Component inputComponent;
 
@@ -87,6 +88,12 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                 customizationPanel.setLayout(new BorderLayout());
                 customizationPanel.add(voltageMenu);
                 customizationPanel.setSize(voltageMenu.getWidth(), voltageMenu.getHeight());
+                this.setSize(400, 250);
+            case Component.CURRENT_SOURCE:
+                currentMenu = new CurrentSourceBuilder(inputComponent.latexParameters);
+                customizationPanel.setLayout(new BorderLayout());
+                customizationPanel.add(currentMenu);
+                customizationPanel.setSize(currentMenu.getWidth(), currentMenu.getHeight());
                 this.setSize(400, 250);
             default:
                 break;
@@ -381,8 +388,10 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             latexString.setText(pathMenu.getLatexParameters());
         } else if (inputComponent.componentType == Component.DIODE) {
             latexString.setText(diodeMenu.getLatexParameters());
-        } else if(inputComponent.componentType == Component.VOLTAGE_SOURCE){
+        } else if (inputComponent.componentType == Component.VOLTAGE_SOURCE) {
             latexString.setText(voltageMenu.getLatexParameters());
+        } else if (inputComponent.componentType == Component.CURRENT_SOURCE) {
+            latexString.setText(currentMenu.getLatexParameters());
         }
     }
 
