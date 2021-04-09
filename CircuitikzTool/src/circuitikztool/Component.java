@@ -35,8 +35,8 @@ public class Component {
     private static int BlockComponentCount = 1;
 
     //block component specific variables
-    private static int BlockComponent_pinCount = 12;
-    private static double BlockComponent_width = 1.45;
+    int BlockComponent_pinCount = 2;
+    double BlockComponent_width = 1.45;
 
     //circuitikz requires us to give unique labels to components in order to connect nodes to them
     //for transistors and other multi-terminal devices we need to have a unique ID
@@ -122,7 +122,16 @@ public class Component {
         switch (componentSelected) {
             case BLOCK_COMPONENT:
                 deviceID = BlockComponentCount++;
-                latexParameters = "node[dipchip, num pins=" + BlockComponent_pinCount + ", hide numbers, no topmark, external pins width=0]( U" + BlockComponentCount + "){U" + BlockComponentCount + "};";
+                latexParameters = "node[dipchip, num pins=" + BlockComponent_pinCount + ", hide numbers, no topmark, external pins width=0](U" + BlockComponentCount + "){U" + BlockComponentCount + "};\n";
+
+                for (int a = 1; a <= BlockComponent_pinCount; a++) {
+                    if (a <= BlockComponent_pinCount / 2) {
+                        latexParameters += "\\node [right, font=\\tiny] at (U" + BlockComponentCount + ".bpin " + a + ") {};";
+                    } else {
+                        latexParameters += "\\node [left, font=\\tiny] at (U" + BlockComponentCount + ".bpin " + a + ") {};";
+                    }
+                    latexParameters += "\n";
+                }
                 Label = "Generic Block";
                 break;
             case TRANSISTOR_NPN:
@@ -284,6 +293,10 @@ public class Component {
                     new Point(Integer.parseInt(getDataFromXMLTag(xml, "position-x")), Integer.parseInt(getDataFromXMLTag(xml, "position-y"))),
                     Integer.parseInt(getDataFromXMLTag(xml, "type"))
             );
+            //special case for the block component, we need the pinCount in order to display it properly
+            if (ret.componentType == BLOCK_COMPONENT) {
+                ret.BlockComponent_pinCount = Integer.parseInt(getDataFromXMLTag(xml, "pinCount"));
+            }
             ret.setLatexString(getDataFromXMLTag(xml, "latexParameters"));
             ret.setComponentLabel(getDataFromXMLTag(xml, "label"));
             return ret;
@@ -313,10 +326,13 @@ public class Component {
             ret += "<pathComponent>false</pathComponent>";
             ret += "<position-x>" + position.x + "</position-x>";
             ret += "<position-y>" + position.y + "</position-y>";
+            if (componentType == BLOCK_COMPONENT) {
+                ret += "<pinCount>" + BlockComponent_pinCount + "</pinCount>";
+            }
         }
         ret += "<type>" + componentType + "</type>";
         ret += "<label>" + Label + "</label>";
-        ret += "<latexParameters>" + latexParameters + "</latexParameters>";
+        ret += "<latexParameters>" + latexParameters.replace("\n", "") + "</latexParameters>";
         ret += "</component>";
         return ret;
     }
@@ -596,7 +612,12 @@ public class Component {
                         + "\\ctikzset{multipoles/dipchip/width=" + BlockComponent_width + "}\n"
                         + "\\ctikzset{multipoles/dipchip/pin spacing={0.715}}";
                 output += "\\draw (";
-                output += (int) position.getX() + "," + (int) (-1) * (position.getY() + 0.5) + ") ";
+                if ((BlockComponent_pinCount / 2) % 2 == 0) {
+                    output += (int) position.getX() + "," + (int) (-1) * (position.getY() + 0.5) + ") ";
+                } else {
+                    output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
+
+                }
                 output += getLatexString() + ";";
 
             } else {
@@ -881,9 +902,16 @@ public class Component {
     }
 
     public static void drawBlockComponent(Graphics g, int gridSize, int xPos, int yPos, double width, int pinCount, boolean selected) {
+
+        double adj = 0.5;
+        double boxadj = 0;
+        if ((pinCount / 2) % 2 == 0) {
+            adj = 1;
+            boxadj = 0.5;
+        }
         g.drawRect(
                 gridSize * xPos - (int) (Math.ceil(width / 2) * gridSize),
-                (int) (gridSize * (yPos - pinCount / 4.0 + 0.5)),
+                (int) (gridSize * (yPos - pinCount / 4.0 + boxadj)),
                 (int) (Math.ceil(width) * gridSize),
                 (int) (0.5 + pinCount / 2) * gridSize
         );
@@ -891,13 +919,13 @@ public class Component {
         for (int a = 0; a < pinCount / 2; a++) {
             g.drawRect(
                     gridSize * xPos - (int) (Math.ceil(width / 2) * gridSize) - 2,
-                    (int) (gridSize * (yPos - pinCount / 4.0 + 1)) + a * gridSize - 2,
+                    (int) (gridSize * (yPos - pinCount / 4.0 + adj)) + a * gridSize - 2,
                     4,
                     4
             );
             g.drawRect(
                     gridSize * xPos + (int) (Math.ceil(width / 2) * gridSize) - 2,
-                    (int) (gridSize * (yPos - pinCount / 4.0 + 1)) + a * gridSize - 2,
+                    (int) (gridSize * (yPos - pinCount / 4.0 + adj)) + a * gridSize - 2,
                     4,
                     4
             );

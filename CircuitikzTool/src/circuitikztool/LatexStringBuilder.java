@@ -31,6 +31,7 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     DiodeBuilder diodeMenu;
     VoltageSourceBuilder voltageMenu;
     CurrentSourceBuilder currentMenu;
+    BlockComponentBuilder blockMenu;
 
     Component inputComponent;
 
@@ -98,9 +99,16 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                 customizationPanel.setSize(currentMenu.getWidth(), currentMenu.getHeight());
                 this.setSize(400, 250);
                 break;
+            case Component.BLOCK_COMPONENT:
+                blockMenu = new BlockComponentBuilder(inputComponent.latexParameters);
+                customizationPanel.setLayout(new BorderLayout());
+                customizationPanel.add(blockMenu);
+                customizationPanel.setSize(blockMenu.getWidth(), blockMenu.getHeight());
+                this.setSize(400, 400);
+                break;
             default:
                 latexString.setEditable(true);
-                this.setSize(400,180);
+                this.setSize(400, 180);
                 break;
         }
 
@@ -375,6 +383,9 @@ public class LatexStringBuilder extends javax.swing.JDialog {
     private void updateLabelAndString() {
         inputComponent.setLatexString(latexString.getText());
         inputComponent.setComponentLabel(label.getText());
+        if(inputComponent.componentType == Component.BLOCK_COMPONENT){
+            inputComponent.BlockComponent_pinCount = blockMenu.pinCount;
+        }
     }
 
     private void doClose(Component retObj) {
@@ -397,6 +408,8 @@ public class LatexStringBuilder extends javax.swing.JDialog {
             latexString.setText(voltageMenu.getLatexParameters());
         } else if (inputComponent.componentType == Component.CURRENT_SOURCE) {
             latexString.setText(currentMenu.getLatexParameters());
+        } else if (inputComponent.componentType == Component.BLOCK_COMPONENT) {
+           latexString.setText(blockMenu.getLatexParameters());
         }
     }
 
