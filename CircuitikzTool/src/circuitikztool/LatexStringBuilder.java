@@ -99,6 +99,8 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                 this.setSize(400, 250);
                 break;
             default:
+                latexString.setEditable(true);
+                this.setSize(400,180);
                 break;
         }
 
