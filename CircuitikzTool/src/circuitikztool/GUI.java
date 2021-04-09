@@ -425,6 +425,9 @@ public class GUI extends javax.swing.JFrame {
         componentList.setSelectedIndex(schematicWindow.getSelectedComponentIndex());
     }
 
+    /**
+     *
+     */
     public void updateTheme() {
 
         componentLabel.setBackground(Preferences.themeAccent);
@@ -505,7 +508,7 @@ public class GUI extends javax.swing.JFrame {
         System.out.println("");
     }
 
-    /**
+    /**Redraws the main circuit window on the main GUI
      *
      */
     public void repaintCircuitMaker() {

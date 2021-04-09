@@ -396,6 +396,10 @@ public class LatexStringBuilder extends javax.swing.JDialog {
         dispose();
     }
 
+    /**Returns the latex string out of the builder window representing the component with 
+     * all modifications made by the user. 
+     *
+     */
     public void getCurrentComponentLatex() {
         if (inputComponent.componentType == Component.PATH
                 || inputComponent.componentType == Component.RESISTOR

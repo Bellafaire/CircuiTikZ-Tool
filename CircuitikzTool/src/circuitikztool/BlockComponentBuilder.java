@@ -23,6 +23,7 @@ public class BlockComponentBuilder extends javax.swing.JPanel {
 
     /**
      * Creates new form BlockComponentBuilder
+     * @param latexParams latex parameters for a given component on the window.
      */
     public BlockComponentBuilder(String latexParams) {
         parseLatexParameters(latexParams);
@@ -69,6 +70,10 @@ public class BlockComponentBuilder extends javax.swing.JPanel {
 
     }
 
+    /** builds the latex parameters from the user input in the component builder window. 
+     *
+     * @return latex parameters for component being modified
+     */
     public String getLatexParameters() {
         String ret = "";
         ret += "node[dipchip, num pins=" + pinCount + ", hide numbers, no topmark, external pins width=0](" + componentReference + "){" + componentLabel + "};\n";

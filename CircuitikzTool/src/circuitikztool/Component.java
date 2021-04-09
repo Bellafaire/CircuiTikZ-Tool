@@ -124,6 +124,8 @@ public class Component {
                 deviceID = BlockComponentCount++;
                 latexParameters = "node[dipchip, num pins=" + BlockComponent_pinCount + ", hide numbers, no topmark, external pins width=0](U" + BlockComponentCount + "){U" + BlockComponentCount + "};\n";
 
+                //throw some nodes on the component block, we need something there in order for the 
+                //put right nodes on the left side and left nodes on the right side (makes sense right?)
                 for (int a = 1; a <= BlockComponent_pinCount; a++) {
                     if (a <= BlockComponent_pinCount / 2) {
                         latexParameters += "\\node [right, font=\\tiny] at (U" + BlockComponentCount + ".bpin " + a + ") {};";
@@ -274,10 +276,19 @@ public class Component {
         componentType = componentSelected; //pass the selected component value to the object
     }
 
+    /** gets the identifier of a component as it would appear in the latex code
+     *
+     * @return component identifier used in latex code
+     */
     public int getDeviceID() {
         return deviceID;
     }
 
+    /** loads a component from a single line of XML
+     *
+     * @param xml XML line that contains the component data
+     * @return loaded component object
+     */
     public static Component getComponentFromXML(String xml) {
         if (getDataFromXMLTag(xml, "pathComponent").equals("true")) {
             Component ret = new Component(
@@ -303,6 +314,12 @@ public class Component {
         }
     }
 
+    /** pulls the data from a given XML line that is present within a given tag
+     *
+     * @param xml the single line of XML data to pull from
+     * @param tag the tag within which is contained the desired data
+     * @return the data from within the specified XML tag
+     */
     public static String getDataFromXMLTag(String xml, String tag) {
         try {
             int startPos = xml.indexOf("<" + tag + ">") + tag.length() + 2;
@@ -314,6 +331,11 @@ public class Component {
         }
     }
 
+    /** Converts a component object into an XML string that can be loaded, used
+     * for saving the components to files. 
+     *
+     * @return a string XML representation of the component 
+     */
     public String toXML() {
         String ret = "<component>";
         if (pathComponent) {
@@ -326,6 +348,11 @@ public class Component {
             ret += "<pathComponent>false</pathComponent>";
             ret += "<position-x>" + position.x + "</position-x>";
             ret += "<position-y>" + position.y + "</position-y>";
+            
+            //special case for the block components, we need to know the pinCount
+            //in order to display them properly in the circuitmaker window.
+            //this could be parsed directly out of the latex parameters but I decided
+            //to just add an xml field, either way would work just as well
             if (componentType == BLOCK_COMPONENT) {
                 ret += "<pinCount>" + BlockComponent_pinCount + "</pinCount>";
             }
@@ -337,9 +364,14 @@ public class Component {
         return ret;
     }
 
+    /** resets the count of each component present, really only used in the 
+     * case of file loading when we want to start from scratch.
+     *
+     */
     public static void resetStatics() {
         TransistorCounter = 1;
         OpAmpCounter = 1;
+        BlockComponentCount = 1;
     }
 
     /**
@@ -556,6 +588,10 @@ public class Component {
         }
     }
 
+    /** gets the position of a non-path component 
+     *
+     * @return point object representing the position of a component.
+     */
     public Point getPosition() {
         if (pathComponent) {
             throw new IllegalStateException();
@@ -823,6 +859,18 @@ public class Component {
         g.drawOval(gridSize * xPos - gridSize / 3, gridSize * yPos - gridSize / 3, gridSize * 2 / 3, gridSize * 2 / 3);
     }
 
+    
+    /**
+     * draws the transformer at an x and y position (in CircuiTikz coordinates)
+     * to the schematic window, must
+     *
+     * @param g graphics object to be drawn onto
+     * @param gridSize current size of the grid
+     * @param xPos x position in circuitikz coordinates
+     * @param yPos y position in circuitikz coordinates
+     * @param selected boolean indicating whether or not the transistor should
+     * be drawn as a selected component
+     */
     public static void drawTransformer(Graphics g, int gridSize, int xPos, int yPos, boolean selected) {
         if (selected) {
             g.setColor(Preferences.selectedColor);
@@ -901,14 +949,30 @@ public class Component {
 
     }
 
+    /**Draws block component to the screen at a given x and y position. 
+     *
+     * @param g graphics object to be drawn onto
+     * @param gridSize current size of the grid
+     * @param xPos x position in circuitikz coordinates
+     * @param yPos y position in circuitikz coordinates
+     * @param width configured width of the block component (Currently fixed at 1.45)
+     * @param pinCount number of pins the block component has 
+     * @param selected whether the component is currently selected
+     */
     public static void drawBlockComponent(Graphics g, int gridSize, int xPos, int yPos, double width, int pinCount, boolean selected) {
 
+        //since we're essentially "fitting" circuitikz components onto our own
+        //grid there sometimes needs to be some adjustment to the circuitmaker window
+        //in this case when the components have an even number of pins the circuit representation
+        //in the window needs to be adjusted differently from the odd
         double adj = 0.5;
         double boxadj = 0;
         if ((pinCount / 2) % 2 == 0) {
             adj = 1;
             boxadj = 0.5;
         }
+        
+        //basically draw a box 
         g.drawRect(
                 gridSize * xPos - (int) (Math.ceil(width / 2) * gridSize),
                 (int) (gridSize * (yPos - pinCount / 4.0 + boxadj)),
@@ -916,6 +980,9 @@ public class Component {
                 (int) (0.5 + pinCount / 2) * gridSize
         );
 
+        //place the pin markers on either side of the block component, these won't 
+        //be shown when compiled to latex, they're only a visual aid for the 
+        //circuitmaker window
         for (int a = 0; a < pinCount / 2; a++) {
             g.drawRect(
                     gridSize * xPos - (int) (Math.ceil(width / 2) * gridSize) - 2,
