@@ -83,18 +83,21 @@ public class LatexStringBuilder extends javax.swing.JDialog {
                 customizationPanel.setSize(diodeMenu.getWidth(), diodeMenu.getHeight());
                 this.setSize(400, 275);
                 diodeMenu.setVisible(true);
+                break;
             case Component.VOLTAGE_SOURCE:
                 voltageMenu = new VoltageSourceBuilder(inputComponent.latexParameters);
                 customizationPanel.setLayout(new BorderLayout());
                 customizationPanel.add(voltageMenu);
                 customizationPanel.setSize(voltageMenu.getWidth(), voltageMenu.getHeight());
                 this.setSize(400, 250);
+                break;
             case Component.CURRENT_SOURCE:
                 currentMenu = new CurrentSourceBuilder(inputComponent.latexParameters);
                 customizationPanel.setLayout(new BorderLayout());
                 customizationPanel.add(currentMenu);
                 customizationPanel.setSize(currentMenu.getWidth(), currentMenu.getHeight());
                 this.setSize(400, 250);
+                break;
             default:
                 break;
         }

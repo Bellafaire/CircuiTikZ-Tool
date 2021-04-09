@@ -171,6 +171,11 @@ public class VoltageSourceBuilder extends javax.swing.JPanel {
         jLabel2.setText("Source Type");
 
         sourceSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Voltage Source", "Controlled Voltage Source", "Sinusoidal Voltage Source", "Controlled Sinusoidal Voltage Source", "Square Voltage Source", "Triangle Voltage Source", "Photovoltaic Source", "Battery", "Single Cell Battery", "Single Cell Battery 2 " }));
+        sourceSelector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sourceSelectorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -197,6 +202,10 @@ public class VoltageSourceBuilder extends javax.swing.JPanel {
                     .addComponent(sourceSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void sourceSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sourceSelectorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sourceSelectorActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

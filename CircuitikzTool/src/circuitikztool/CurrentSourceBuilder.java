@@ -112,7 +112,7 @@ public class CurrentSourceBuilder extends javax.swing.JPanel {
 
         jLabel2.setText("Source Type");
 
-        sourceSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Current Source", "Controlled Current Source", " " }));
+        sourceSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Current Source", "Controlled Current Source", "" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
