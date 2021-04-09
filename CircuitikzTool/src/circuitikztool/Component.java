@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+import javax.swing.JOptionPane;
 
 /**
  * Component is meant to be a data object for storing all possible component
@@ -31,6 +32,11 @@ public class Component {
     private static int TransistorCounter = 1;
     private static int OpAmpCounter = 1;
     private static int TransformerCount = 1;
+    private static int BlockComponentCount = 1;
+
+    //block component specific variables
+    private static int BlockComponent_pinCount = 12;
+    private static double BlockComponent_width = 1.45;
 
     //circuitikz requires us to give unique labels to components in order to connect nodes to them
     //for transistors and other multi-terminal devices we need to have a unique ID
@@ -55,19 +61,20 @@ public class Component {
     final static int CURRENT_SOURCE = 6;
 
     //non-path components
-    final static int GROUND_NODE = 7;
-    final static int VCC_NODE = 8;
-    final static int VSS_NODE = 9;
-    final static int TRANSISTOR_NPN = 10;
-    final static int TRANSISTOR_PNP = 11;
-    final static int NMOS = 12;
-    final static int PMOS = 13;
-    final static int NIGBT = 14;
-    final static int PIGBT = 15;
-    final static int OPAMP_3TERMINAL = 16;
-    final static int OPAMP_5TERMINAL = 17;
-    final static int TRANSFORMER = 18;
-    final static int TRANSFORMER_WITH_CORE = 19;
+    final static int BLOCK_COMPONENT = 7;
+    final static int GROUND_NODE = 8;
+    final static int VCC_NODE = 9;
+    final static int VSS_NODE = 10;
+    final static int TRANSISTOR_NPN = 11;
+    final static int TRANSISTOR_PNP = 12;
+    final static int NMOS = 13;
+    final static int PMOS = 14;
+    final static int NIGBT = 15;
+    final static int PIGBT = 16;
+    final static int OPAMP_3TERMINAL = 17;
+    final static int OPAMP_5TERMINAL = 18;
+    final static int TRANSFORMER = 19;
+    final static int TRANSFORMER_WITH_CORE = 20;
 
     //non-component commands used for Latex Component Builder
     final static int DELETE = 1000;
@@ -113,6 +120,11 @@ public class Component {
         a path component is input into it is very important to the functioning of the program.
          */
         switch (componentSelected) {
+            case BLOCK_COMPONENT:
+                deviceID = BlockComponentCount++;
+                latexParameters = "node[dipchip, num pins=" + BlockComponent_pinCount + ", hide numbers, no topmark, external pins width=0]( U" + BlockComponentCount + "){U" + BlockComponentCount + "};";
+                Label = "Generic Block";
+                break;
             case TRANSISTOR_NPN:
                 deviceID = TransistorCounter++;
                 latexParameters = "node[npn](Q" + deviceID + "){Q" + deviceID + "}";
@@ -253,10 +265,10 @@ public class Component {
         componentType = componentSelected; //pass the selected component value to the object
     }
 
-    public int getDeviceID(){
-      return deviceID;
+    public int getDeviceID() {
+        return deviceID;
     }
-    
+
     public static Component getComponentFromXML(String xml) {
         if (getDataFromXMLTag(xml, "pathComponent").equals("true")) {
             Component ret = new Component(
@@ -390,6 +402,8 @@ public class Component {
             drawOpamp(g, gridSize, position.x + offset.x, position.y + offset.y, selected, componentType);
         } else if (componentType == TRANSFORMER || componentType == TRANSFORMER_WITH_CORE) {
             drawTransformer(g, gridSize, position.x + offset.x, position.y + offset.y, selected);
+        } else if (componentType == BLOCK_COMPONENT) {
+            drawBlockComponent(g, gridSize, position.x + offset.x, position.y + offset.y, BlockComponent_width, BlockComponent_pinCount, selected);
         } else {
             //if it's not any of those then it's a three terminal transistor so we just draw the transistor
             drawTransistor(g, gridSize, position.x + offset.x, position.y + offset.y, selected);
@@ -577,11 +591,25 @@ public class Component {
             together in the final output, there are much better and more human-readable ways to do this in CircuiTikz however those are much more difficult to implement
             and for the time being this serves most of the functionality at the cost of outputing more code. 
              */
-            output += "\\draw (";
-            output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
-            output += getLatexString() + ";";
+            if (componentType == BLOCK_COMPONENT) {
+                output += "\\ctikzset{multipoles/thickness=3}\n"
+                        + "\\ctikzset{multipoles/dipchip/width=" + BlockComponent_width + "}\n"
+                        + "\\ctikzset{multipoles/dipchip/pin spacing={0.715}}";
+                output += "\\draw (";
+                output += (int) position.getX() + "," + (int) (-1) * (position.getY() + 0.5) + ") ";
+                output += getLatexString() + ";";
+
+            } else {
+                output += "\\draw (";
+                output += (int) position.getX() + "," + (int) (-1) * (position.getY()) + ") ";
+                output += getLatexString() + ";";
+
+            }
 
             switch (componentType) {
+                case BLOCK_COMPONENT:
+                    //special handling for block components
+                    break;
                 case TRANSISTOR_NPN:
                     //breakout the BJT's terminals to fit with the current grid system
                     output += "\\draw (Q" + deviceID + ".C) to[short] (" + (int) position.getX() + "," + (int) (-1) * (position.getY() - 1) + ");\n";
@@ -848,6 +876,31 @@ public class Component {
         if (component == OPAMP_5TERMINAL) {
             g.fillOval(gridSize * (xPos) - gridSize / 8, gridSize * (yPos - 1) - gridSize / 8, gridSize / 4, gridSize / 4);
             g.fillOval(gridSize * (xPos) - gridSize / 8, gridSize * (yPos + 1) - gridSize / 8, gridSize / 4, gridSize / 4);
+        }
+
+    }
+
+    public static void drawBlockComponent(Graphics g, int gridSize, int xPos, int yPos, double width, int pinCount, boolean selected) {
+        g.drawRect(
+                gridSize * xPos - (int) (Math.ceil(width / 2) * gridSize),
+                (int) (gridSize * (yPos - pinCount / 4.0 + 0.5)),
+                (int) (Math.ceil(width) * gridSize),
+                (int) (0.5 + pinCount / 2) * gridSize
+        );
+
+        for (int a = 0; a < pinCount / 2; a++) {
+            g.drawRect(
+                    gridSize * xPos - (int) (Math.ceil(width / 2) * gridSize) - 2,
+                    (int) (gridSize * (yPos - pinCount / 4.0 + 1)) + a * gridSize - 2,
+                    4,
+                    4
+            );
+            g.drawRect(
+                    gridSize * xPos + (int) (Math.ceil(width / 2) * gridSize) - 2,
+                    (int) (gridSize * (yPos - pinCount / 4.0 + 1)) + a * gridSize - 2,
+                    4,
+                    4
+            );
         }
 
     }

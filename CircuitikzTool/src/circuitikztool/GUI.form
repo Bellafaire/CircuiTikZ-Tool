@@ -276,7 +276,7 @@
     <Component class="javax.swing.JComboBox" name="toolSelector">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="20">
+          <StringArray count="21">
             <StringItem index="0" value="Path"/>
             <StringItem index="1" value="Resistor"/>
             <StringItem index="2" value="Capacitor"/>
@@ -284,19 +284,20 @@
             <StringItem index="4" value="Diode"/>
             <StringItem index="5" value="Voltage Source"/>
             <StringItem index="6" value="Current Source"/>
-            <StringItem index="7" value="GND Node"/>
-            <StringItem index="8" value="VCC Node"/>
-            <StringItem index="9" value="VSS Node"/>
-            <StringItem index="10" value="NPN Transistor"/>
-            <StringItem index="11" value="PNP Transistor"/>
-            <StringItem index="12" value="N-Mos"/>
-            <StringItem index="13" value="P-Mos"/>
-            <StringItem index="14" value="N-IGBT"/>
-            <StringItem index="15" value="P-IGBT"/>
-            <StringItem index="16" value="Opamp 3 Terminal"/>
-            <StringItem index="17" value="Opamp 5 Terminal"/>
-            <StringItem index="18" value="Basic Transformer"/>
-            <StringItem index="19" value="Transformer With Core"/>
+            <StringItem index="7" value="Block Component"/>
+            <StringItem index="8" value="GND Node"/>
+            <StringItem index="9" value="VCC Node"/>
+            <StringItem index="10" value="VSS Node"/>
+            <StringItem index="11" value="NPN Transistor"/>
+            <StringItem index="12" value="PNP Transistor"/>
+            <StringItem index="13" value="N-Mos"/>
+            <StringItem index="14" value="P-Mos"/>
+            <StringItem index="15" value="N-IGBT"/>
+            <StringItem index="16" value="P-IGBT"/>
+            <StringItem index="17" value="Opamp 3 Terminal"/>
+            <StringItem index="18" value="Opamp 5 Terminal"/>
+            <StringItem index="19" value="Basic Transformer"/>
+            <StringItem index="20" value="Transformer With Core"/>
           </StringArray>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value=""/>
