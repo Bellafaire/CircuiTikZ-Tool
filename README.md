@@ -12,6 +12,7 @@ Currently Supported Components (Pre-release 0.0.7):
 - Capacitors
 - Inductors
 - Diodes
+- Block Components (ICs/system blocks)
 - Voltage Source (DC)
 - Current Source (DC)
 - GND
@@ -30,10 +31,6 @@ Currently Supported Components (Pre-release 0.0.7):
 
 (Technically these are just the components with a "template" in the editor, parameters can be edited freely in the program such that most components available in CircuiTikz are useable)
 
-TODO: 
-- implement creation of block/IC style devices
-- clean up UI 
-- add "customization menu" accessable by double clicking a given component
 
 ## Running CircuiTikZ Tool
 A lot of work still needs to be done before adding a full release to this repo.
